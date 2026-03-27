@@ -1,0 +1,32 @@
+---
+import DocsPage from "../../layouts/DocsPage.astro";
+---
+
+<DocsPage
+  title="Nodus docs"
+  description="Start here for install, quick start, and package-management workflows."
+>
+  <p>
+    Nodus is a package manager for repo-scoped AI tooling. It installs skills, agents,
+    rules, and commands from GitHub, Git URLs, or local paths, then writes the runtime
+    files your enabled adapters actually use.
+  </p>
+
+  <h2>Start here</h2>
+  <ul>
+    <li><a href="/docs/getting-started/">Getting started</a></li>
+    <li><a href="/docs/install/">Install</a></li>
+    <li><a href="/docs/package-discovery/">Package discovery</a></li>
+  </ul>
+
+  <h2>Core workflow</h2>
+  <pre><code>{`nodus add owner/repo --adapter codex\nnodus sync\nnodus doctor`}</code></pre>
+
+  <p>Most teams only need a few commands:</p>
+  <ul>
+    <li><code>nodus add</code> to declare a dependency</li>
+    <li><code>nodus sync</code> to rebuild managed output</li>
+    <li><code>nodus update</code> to move dependencies forward</li>
+    <li><code>nodus doctor</code> to validate manifest, lockfile, store, and generated files</li>
+  </ul>
+</DocsPage>

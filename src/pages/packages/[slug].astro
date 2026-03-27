@@ -1,0 +1,56 @@
+---
+import { getCollection, render } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+
+export async function getStaticPaths() {
+  const packages = await getCollection("packages");
+  return packages.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<SiteLayout title={`${entry.data.name} | Nodus packages`} description={entry.data.summary}>
+  <section class="page-hero">
+    <span class="eyebrow">Package</span>
+    <h1>{entry.data.name}</h1>
+    <p>{entry.data.summary}</p>
+    <div class="package-meta">
+      <span>{entry.data.repo}</span>
+      <span>{entry.data.maintainer}</span>
+      <span>{entry.data.latestVersion}</span>
+    </div>
+    <div class="tag-row">
+      {entry.data.adapters.map((adapter) => <span class="tag">{adapter}</span>)}
+      {entry.data.components.map((component) => <span class="tag">{component}</span>)}
+      {entry.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid-2">
+      <article class="card">
+        <h2>Package details</h2>
+        <div class="tag-row">
+          <a class="button button-secondary" href={`https://github.com/${entry.data.repo}`}>View repository</a>
+          {entry.data.homepage && <a class="button button-secondary" href={entry.data.homepage}>Homepage</a>}
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Quick add</h2>
+        <pre><code>{`nodus add ${entry.data.repo}`}</code></pre>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <article class="card">
+      <Content />
+    </article>
+  </section>
+</SiteLayout>

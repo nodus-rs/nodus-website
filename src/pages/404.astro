@@ -1,0 +1,19 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+---
+
+<SiteLayout title="Page not found" description="The page you requested does not exist.">
+  <section class="page-hero">
+    <span class="eyebrow">404</span>
+    <h1>Page not found.</h1>
+    <p>
+      The URL does not match a public Nodus route. Jump back to the docs, install page,
+      or package catalog instead.
+    </p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="/docs/">Docs</a>
+      <a class="button button-secondary" href="/packages/">Packages</a>
+      <a class="button button-secondary" href="/install/">Install</a>
+    </div>
+  </section>
+</SiteLayout>

@@ -1,0 +1,84 @@
+---
+import "../styles/global.css";
+import logo from "../assets/nodus-mark.svg";
+import { siteConfig } from "../site-config";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const pathname = Astro.url.pathname;
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: siteConfig.docsPath, label: "Docs" },
+  { href: siteConfig.packagesPath, label: "Packages" },
+  { href: siteConfig.installPath, label: "Install" }
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.toString()} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href={logo.src} type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <img src={logo.src} alt="" width="36" height="36" />
+          <span>Nodus</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary">
+          {
+            navItems.map((item) => (
+              <a
+                class={pathname === item.href || pathname.startsWith(item.href) && item.href !== "/" ? "active" : ""}
+                href={item.href}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+
+        <div class="header-actions">
+          <a class="subtle-link" href={siteConfig.repoUrl}>GitHub</a>
+          <a class="button button-small" href={siteConfig.installPath}>Install</a>
+        </div>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <div>
+          <strong>Nodus</strong>
+          <p>Package manager for repo-scoped AI tooling.</p>
+        </div>
+        <div class="footer-links">
+          <a href={siteConfig.docsPath}>Docs</a>
+          <a href={siteConfig.packagesPath}>Packages</a>
+          <a href="/install.sh">install.sh</a>
+          <a href="/install.ps1">install.ps1</a>
+          <a href={siteConfig.repoUrl}>GitHub</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

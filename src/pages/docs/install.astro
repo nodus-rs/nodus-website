@@ -1,0 +1,28 @@
+---
+import DocsPage from "../../layouts/DocsPage.astro";
+---
+
+<DocsPage
+  title="Install"
+  description="Public install endpoints, alternative install methods, and version pinning."
+>
+  <h2>Public installer URLs</h2>
+  <p>Unix:</p>
+  <pre><code>curl -fsSL https://nodus.elata.ai/install.sh | bash</code></pre>
+  <p>Windows PowerShell:</p>
+  <pre><code>irm https://nodus.elata.ai/install.ps1 | iex</code></pre>
+
+  <h2>Alternative methods</h2>
+  <p>Cargo:</p>
+  <pre><code>cargo install nodus</code></pre>
+  <p>Homebrew:</p>
+  <pre><code>brew install nodus-rs/nodus/nodus</code></pre>
+
+  <h2>Pin a version</h2>
+  <pre><code>curl -fsSL https://nodus.elata.ai/install.sh | NODUS_VERSION=v0.5.2 bash</code></pre>
+  <pre><code>{`$env:NODUS_VERSION = "v0.5.2"\nirm https://nodus.elata.ai/install.ps1 | iex`}</code></pre>
+
+  <h2>Verify checksums</h2>
+  <pre><code>curl -fsSL https://nodus.elata.ai/install.sh | bash -s -- --verify</code></pre>
+  <pre><code>{`$script = Join-Path $env:TEMP "nodus-install.ps1"\nirm https://nodus.elata.ai/install.ps1 -OutFile $script\n& $script -Verify\nRemove-Item $script`}</code></pre>
+</DocsPage>

@@ -1,0 +1,30 @@
+---
+import SiteLayout from "./SiteLayout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<SiteLayout title={`${title} | Nodus docs`} description={description}>
+  <section class="page-hero">
+    <span class="eyebrow">Docs</span>
+    <h1>{title}</h1>
+    <p>{description}</p>
+    <div class="tag-row">
+      <a class="tag" href="/docs/">Overview</a>
+      <a class="tag" href="/docs/getting-started/">Getting started</a>
+      <a class="tag" href="/docs/install/">Install</a>
+      <a class="tag" href="/docs/package-discovery/">Package discovery</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <article class="card">
+      <slot />
+    </article>
+  </section>
+</SiteLayout>

@@ -1,0 +1,102 @@
+---
+import { getCollection } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+
+const packages = await getCollection("packages");
+const adapters = [...new Set(packages.flatMap((entry) => entry.data.adapters))].sort();
+const tags = [...new Set(packages.flatMap((entry) => entry.data.tags))].sort();
+---
+
+<SiteLayout
+  title="Discover Nodus packages"
+  description="Browse curated Nodus packages by adapter, component, and workflow."
+>
+  <section class="page-hero">
+    <span class="eyebrow">Packages</span>
+    <h1>Curated packages for repo-scoped AI tooling.</h1>
+    <p>
+      Start with a focused catalog instead of scraping random repos. Filter by adapter,
+      workflow, or package type, then jump straight to docs or GitHub.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="filters">
+      <div class="filters-row">
+        <input id="package-search" type="search" placeholder="Search package name, repo, or summary" />
+        <select id="adapter-filter">
+          <option value="">All adapters</option>
+          {adapters.map((adapter) => <option value={adapter}>{adapter}</option>)}
+        </select>
+        <select id="tag-filter">
+          <option value="">All tags</option>
+          {tags.map((tag) => <option value={tag}>{tag}</option>)}
+        </select>
+      </div>
+    </div>
+
+    <div class="packages-grid" id="package-grid">
+      {
+        packages.map((entry) => (
+          <article
+            class="package-card"
+            data-search={`${entry.data.name} ${entry.data.repo} ${entry.data.summary}`.toLowerCase()}
+            data-adapters={entry.data.adapters.join("|")}
+            data-tags={entry.data.tags.join("|")}
+          >
+            <div class="pill-row">
+              {entry.data.featured && <span class="pill">Featured</span>}
+              <span class="tag">{entry.data.latestVersion}</span>
+            </div>
+            <h3><a href={`/packages/${entry.slug}/`}>{entry.data.name}</a></h3>
+            <p>{entry.data.summary}</p>
+            <div class="tag-row">
+              {entry.data.adapters.map((adapter) => <span class="tag">{adapter}</span>)}
+              {entry.data.components.map((component) => <span class="tag">{component}</span>)}
+            </div>
+            <div class="package-meta">
+              <span>{entry.data.repo}</span>
+              <span>{entry.data.maintainer}</span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="empty-state" id="package-empty" hidden>No packages match the current filters.</p>
+  </section>
+
+  <script>
+    const search = document.querySelector("#package-search");
+    const adapter = document.querySelector("#adapter-filter");
+    const tag = document.querySelector("#tag-filter");
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".package-card"));
+    const emptyState = document.querySelector("#package-empty");
+
+    const applyFilters = () => {
+      const searchValue = search instanceof HTMLInputElement ? search.value.trim().toLowerCase() : "";
+      const adapterValue = adapter instanceof HTMLSelectElement ? adapter.value : "";
+      const tagValue = tag instanceof HTMLSelectElement ? tag.value : "";
+
+      let visibleCount = 0;
+
+      for (const card of cards) {
+        const matchesSearch = !searchValue || card.dataset.search?.includes(searchValue);
+        const matchesAdapter = !adapterValue || card.dataset.adapters?.split("|").includes(adapterValue);
+        const matchesTag = !tagValue || card.dataset.tags?.split("|").includes(tagValue);
+        const visible = Boolean(matchesSearch && matchesAdapter && matchesTag);
+
+        card.hidden = !visible;
+        if (visible) visibleCount += 1;
+      }
+
+      if (emptyState instanceof HTMLElement) {
+        emptyState.hidden = visibleCount > 0;
+      }
+    };
+
+    search?.addEventListener("input", applyFilters);
+    adapter?.addEventListener("change", applyFilters);
+    tag?.addEventListener("change", applyFilters);
+  </script>
+</SiteLayout>

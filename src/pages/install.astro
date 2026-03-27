@@ -1,0 +1,93 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { siteConfig } from "../site-config";
+---
+
+<SiteLayout
+  title="Install Nodus"
+  description="Install Nodus from a clean public URL, crates.io, or Homebrew."
+>
+  <section class="page-hero">
+    <span class="eyebrow">Install</span>
+    <h1>Install Nodus from a clean public endpoint.</h1>
+    <p>
+      Use the public installer URLs on this domain, or install from crates.io or Homebrew.
+      Release assets still come from GitHub Releases, but the command you share stays stable.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="install-grid">
+      <article class="card">
+        <h2>macOS and Linux</h2>
+        <p class="muted">Downloads the correct release asset for the current OS and architecture.</p>
+        <pre><code>{siteConfig.installUnixCommand}</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>Windows PowerShell</h2>
+        <p class="muted">Use PowerShell 7+ when possible for the smoothest install path.</p>
+        <pre><code>{siteConfig.installWindowsCommand}</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>crates.io</h2>
+        <p class="muted">Install from the Rust ecosystem if you prefer Cargo-managed binaries.</p>
+        <pre><code>cargo install nodus</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>Homebrew</h2>
+        <p class="muted">Uses the prebuilt release archives published by the project.</p>
+        <pre><code>brew install nodus-rs/nodus/nodus</code></pre>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid-2">
+      <article class="card">
+        <h2>Pin a version</h2>
+        <p class="muted">
+          The installer supports a pinned version through <code>NODUS_VERSION</code> on Unix
+          and PowerShell.
+        </p>
+        <pre><code>{`curl -fsSL https://nodus.elata.ai/install.sh | NODUS_VERSION=${siteConfig.latestVersion} bash`}</code></pre>
+        <pre><code>{`$env:NODUS_VERSION = "${siteConfig.latestVersion}"\nirm https://nodus.elata.ai/install.ps1 | iex`}</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>Checksum verification</h2>
+        <p class="muted">
+          The Unix installer supports inline verification. On Windows, download the script to a
+          temporary path and invoke it with <code>-Verify</code>.
+        </p>
+        <pre><code>curl -fsSL https://nodus.elata.ai/install.sh | bash -s -- --verify</code></pre>
+        <pre><code>{`$script = Join-Path $env:TEMP "nodus-install.ps1"\nirm https://nodus.elata.ai/install.ps1 -OutFile $script\n& $script -Verify\nRemove-Item $script`}</code></pre>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid-2">
+      <article class="card">
+        <h2>What the public installer does</h2>
+        <p class="muted">
+          It detects the host platform, resolves the release tag, downloads the matching archive,
+          optionally verifies the checksum, and installs the binary into a standard user-scoped path.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>Raw installer endpoints</h2>
+        <p class="muted">
+          These routes are published as plain text and are intended to be curl- and PowerShell-friendly.
+        </p>
+        <div class="tag-row">
+          <a class="tag" href="/install.sh">/install.sh</a>
+          <a class="tag" href="/install.ps1">/install.ps1</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</SiteLayout>

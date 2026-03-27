@@ -1,0 +1,28 @@
+---
+import DocsPage from "../../layouts/DocsPage.astro";
+---
+
+<DocsPage
+  title="Getting started"
+  description="Install Nodus, add your first package, and validate the resulting runtime files."
+>
+  <p>Install Nodus:</p>
+  <pre><code>curl -fsSL https://nodus.elata.ai/install.sh | bash</code></pre>
+
+  <p>Add your first package:</p>
+  <pre><code>nodus add nodus-rs/nodus --adapter codex</code></pre>
+
+  <p>That command:</p>
+  <ul>
+    <li>creates <code>nodus.toml</code> if needed</li>
+    <li>records the dependency you asked for</li>
+    <li>resolves and locks the exact revision</li>
+    <li>writes the adapter runtime files for the enabled tool</li>
+  </ul>
+
+  <p>Validate the result:</p>
+  <pre><code>nodus doctor</code></pre>
+
+  <p>Common next steps:</p>
+  <pre><code>{`nodus info nodus-rs/nodus\nnodus update\nnodus sync --locked`}</code></pre>
+</DocsPage>
