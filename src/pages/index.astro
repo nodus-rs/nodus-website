@@ -108,9 +108,8 @@ import { siteConfig } from "../site-config";
         "platform" in navigator.userAgentData
           ? String(navigator.userAgentData.platform)
           : "";
-      const platform = navigator.platform ?? "";
       const userAgent = navigator.userAgent ?? "";
-      const fingerprint = `${userAgentDataPlatform} ${platform} ${userAgent}`.toLowerCase();
+      const fingerprint = `${userAgentDataPlatform} ${userAgent}`.toLowerCase();
 
       return fingerprint.includes("win");
     };

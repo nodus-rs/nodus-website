@@ -484,7 +484,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     syncOnLaunchInput?.addEventListener("change", render);
     dryRunInput?.addEventListener("change", render);
     copyButton?.addEventListener("click", () => {
-      if (copyButton instanceof HTMLElement && !copyButton.disabled) {
+      if (copyButton instanceof HTMLButtonElement && !copyButton.disabled) {
         void copyText(copyButton);
       }
     });
