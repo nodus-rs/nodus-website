@@ -1,11 +1,10 @@
 # Nodus Website
 
-Standalone marketing, docs, and package-discovery site for Nodus.
+Standalone marketing, docs, install, and package-command site for Nodus.
 
 ## Stack
 
 - Astro
-- Starlight for docs
 - Static deployment to Cloudflare Pages
 
 ## Development

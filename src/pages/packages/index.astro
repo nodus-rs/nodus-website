@@ -1,102 +1,211 @@
 ---
-import { getCollection } from "astro:content";
 import SiteLayout from "../../layouts/SiteLayout.astro";
-
-const packages = await getCollection("packages");
-const adapters = [...new Set(packages.flatMap((entry) => entry.data.adapters))].sort();
-const tags = [...new Set(packages.flatMap((entry) => entry.data.tags))].sort();
 ---
 
 <SiteLayout
-  title="Discover Nodus packages"
-  description="Browse curated Nodus packages by adapter, component, and workflow."
+  title="Add a package with Nodus"
+  description="Paste a GitHub or Git package link and generate the right nodus add command."
 >
   <section class="page-hero">
-    <span class="eyebrow">Packages</span>
-    <h1>Curated packages for repo-scoped AI tooling.</h1>
+    <span class="eyebrow">Add package</span>
+    <h1>Paste a package link. Get the exact command.</h1>
     <p>
-      Start with a focused catalog instead of scraping random repos. Filter by adapter,
-      workflow, or package type, then jump straight to docs or GitHub.
+      Use a GitHub repo URL, Git URL, or plain <code>owner/repo</code> reference. The page
+      normalizes the source and gives you the exact <code>nodus add</code> command to run.
     </p>
   </section>
 
   <section class="section">
-    <div class="filters">
-      <div class="filters-row">
-        <input id="package-search" type="search" placeholder="Search package name, repo, or summary" />
-        <select id="adapter-filter">
-          <option value="">All adapters</option>
-          {adapters.map((adapter) => <option value={adapter}>{adapter}</option>)}
-        </select>
-        <select id="tag-filter">
-          <option value="">All tags</option>
-          {tags.map((tag) => <option value={tag}>{tag}</option>)}
-        </select>
+    <div class="grid-2 tool-grid">
+      <article class="card command-tool">
+        <div class="tool-form">
+          <label class="field-label" for="package-source">Package link or reference</label>
+          <input
+            id="package-source"
+            type="text"
+            placeholder="https://github.com/nodus-rs/nodus or nodus-rs/nodus"
+            autocomplete="off"
+            spellcheck="false"
+          />
+
+          <label class="field-label" for="adapter-select">Adapter (optional)</label>
+          <select id="adapter-select">
+            <option value="">Auto-detect in repo</option>
+            <option value="agents">agents</option>
+            <option value="claude">claude</option>
+            <option value="codex">codex</option>
+            <option value="copilot">copilot</option>
+            <option value="cursor">cursor</option>
+            <option value="opencode">opencode</option>
+          </select>
+
+        <p class="muted tool-note" id="source-note">
+          GitHub links normalize to <code>owner/repo</code>. Generic Git URLs stay unchanged.
+        </p>
+        <p class="validation-message" id="source-error" hidden></p>
+
+        <div class="command-output" id="command-output" hidden>
+          <div class="command-card-header">
+            <strong>Run this in your repo</strong>
+            <button class="button button-secondary button-inline" id="copy-command" type="button">Copy</button>
+          </div>
+          <pre><code id="command-preview">nodus add nodus-rs/nodus</code></pre>
+        </div>
+
+        <p class="muted tool-note">
+          If Nodus cannot detect your repo adapter yet, append <code>--adapter</code> or pick one above.
+        </p>
       </div>
-    </div>
 
-    <div class="packages-grid" id="package-grid">
-      {
-        packages.map((entry) => (
-          <article
-            class="package-card"
-            data-search={`${entry.data.name} ${entry.data.repo} ${entry.data.summary}`.toLowerCase()}
-            data-adapters={entry.data.adapters.join("|")}
-            data-tags={entry.data.tags.join("|")}
-          >
-            <div class="pill-row">
-              {entry.data.featured && <span class="pill">Featured</span>}
-              <span class="tag">{entry.data.latestVersion}</span>
-            </div>
-            <h3><a href={`/packages/${entry.slug}/`}>{entry.data.name}</a></h3>
-            <p>{entry.data.summary}</p>
-            <div class="tag-row">
-              {entry.data.adapters.map((adapter) => <span class="tag">{adapter}</span>)}
-              {entry.data.components.map((component) => <span class="tag">{component}</span>)}
-            </div>
-            <div class="package-meta">
-              <span>{entry.data.repo}</span>
-              <span>{entry.data.maintainer}</span>
-            </div>
-          </article>
-        ))
-      }
+      <article class="card">
+        <span class="eyebrow">Accepted inputs</span>
+        <h2>Supported in v1</h2>
+        <div class="tool-examples">
+          <div class="command-row">
+            <code>nodus-rs/nodus</code>
+            <span>GitHub shorthand</span>
+          </div>
+          <div class="command-row">
+            <code>https://github.com/nodus-rs/nodus</code>
+            <span>GitHub repo URL</span>
+          </div>
+          <div class="command-row">
+            <code>git@github.com:nodus-rs/nodus.git</code>
+            <span>GitHub SSH URL</span>
+          </div>
+          <div class="command-row">
+            <code>https://git.example.com/team/playbook.git</code>
+            <span>Generic Git URL</span>
+          </div>
+        </div>
+      </article>
     </div>
-
-    <p class="empty-state" id="package-empty" hidden>No packages match the current filters.</p>
   </section>
 
   <script>
-    const search = document.querySelector("#package-search");
-    const adapter = document.querySelector("#adapter-filter");
-    const tag = document.querySelector("#tag-filter");
-    const cards = Array.from(document.querySelectorAll<HTMLElement>(".package-card"));
-    const emptyState = document.querySelector("#package-empty");
+    const sourceInput = document.querySelector("#package-source");
+    const adapterSelect = document.querySelector("#adapter-select");
+    const output = document.querySelector("#command-output");
+    const preview = document.querySelector("#command-preview");
+    const error = document.querySelector("#source-error");
+    const copyButton = document.querySelector("#copy-command");
 
-    const applyFilters = () => {
-      const searchValue = search instanceof HTMLInputElement ? search.value.trim().toLowerCase() : "";
-      const adapterValue = adapter instanceof HTMLSelectElement ? adapter.value : "";
-      const tagValue = tag instanceof HTMLSelectElement ? tag.value : "";
+    const isOwnerRepo = (value: string) => /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(value);
 
-      let visibleCount = 0;
+    const normalizeGitHubPath = (value: string) => {
+      const trimmed = value.trim().replace(/\.git$/i, "").replace(/\/+$/g, "");
 
-      for (const card of cards) {
-        const matchesSearch = !searchValue || card.dataset.search?.includes(searchValue);
-        const matchesAdapter = !adapterValue || card.dataset.adapters?.split("|").includes(adapterValue);
-        const matchesTag = !tagValue || card.dataset.tags?.split("|").includes(tagValue);
-        const visible = Boolean(matchesSearch && matchesAdapter && matchesTag);
-
-        card.hidden = !visible;
-        if (visible) visibleCount += 1;
+      if (isOwnerRepo(trimmed)) {
+        return trimmed;
       }
 
-      if (emptyState instanceof HTMLElement) {
-        emptyState.hidden = visibleCount > 0;
+      const sshMatch = trimmed.match(/^git@github\.com:([^/]+)\/([^/]+)$/i);
+      if (sshMatch) {
+        return `${sshMatch[1]}/${sshMatch[2]}`;
+      }
+
+      try {
+        const url = new URL(trimmed);
+        if (url.hostname !== "github.com") {
+          return null;
+        }
+
+        const [owner, repo] = url.pathname.replace(/^\/+/, "").split("/");
+        if (!owner || !repo) {
+          return null;
+        }
+
+        return `${owner}/${repo.replace(/\.git$/i, "")}`;
+      } catch {
+        return null;
       }
     };
 
-    search?.addEventListener("input", applyFilters);
-    adapter?.addEventListener("change", applyFilters);
-    tag?.addEventListener("change", applyFilters);
+    const isGenericGitUrl = (value: string) => {
+      if (/^(git@|ssh:\/\/|https?:\/\/)/i.test(value) === false) {
+        return false;
+      }
+
+      try {
+        const url = value.startsWith("git@") ? null : new URL(value);
+        return url ? Boolean(url.hostname) : true;
+      } catch {
+        return /^git@[^:]+:.+/.test(value);
+      }
+    };
+
+    const getNormalizedSource = (value: string) => {
+      const trimmed = value.trim();
+      if (!trimmed) {
+        return { error: "" };
+      }
+
+      const github = normalizeGitHubPath(trimmed);
+      if (github) {
+        return { source: github };
+      }
+
+      if (isGenericGitUrl(trimmed)) {
+        return { source: trimmed.replace(/\/+$/g, "") };
+      }
+
+      return {
+        error: "Enter a GitHub repo URL, owner/repo shorthand, or a full Git URL."
+      };
+    };
+
+    const render = () => {
+      const rawValue = sourceInput instanceof HTMLInputElement ? sourceInput.value : "";
+      const adapter = adapterSelect instanceof HTMLSelectElement ? adapterSelect.value : "";
+      const result = getNormalizedSource(rawValue);
+
+      if (!(preview instanceof HTMLElement) || !(output instanceof HTMLElement) || !(error instanceof HTMLElement)) {
+        return;
+      }
+
+      if (!rawValue.trim()) {
+        output.hidden = true;
+        error.hidden = true;
+        error.textContent = "";
+        return;
+      }
+
+      if (result.error) {
+        output.hidden = true;
+        error.hidden = false;
+        error.textContent = result.error;
+        return;
+      }
+
+      const adapterFlag = adapter ? ` --adapter ${adapter}` : "";
+      preview.textContent = `nodus add ${result.source}${adapterFlag}`;
+      output.hidden = false;
+      error.hidden = true;
+      error.textContent = "";
+    };
+
+    const copyCommand = async () => {
+      if (!(preview instanceof HTMLElement) || !(copyButton instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(preview.textContent ?? "");
+        copyButton.textContent = "Copied";
+        window.setTimeout(() => {
+          copyButton.textContent = "Copy";
+        }, 1200);
+      } catch {
+        copyButton.textContent = "Copy failed";
+        window.setTimeout(() => {
+          copyButton.textContent = "Copy";
+        }, 1200);
+      }
+    };
+
+    sourceInput?.addEventListener("input", render);
+    adapterSelect?.addEventListener("change", render);
+    copyButton?.addEventListener("click", copyCommand);
+    render();
   </script>
 </SiteLayout>

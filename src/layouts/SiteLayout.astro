@@ -13,7 +13,7 @@ const pathname = Astro.url.pathname;
 const navItems = [
   { href: "/", label: "Home" },
   { href: siteConfig.docsPath, label: "Docs" },
-  { href: siteConfig.packagesPath, label: "Packages" },
+  { href: siteConfig.packagesPath, label: "Add Package" },
   { href: siteConfig.installPath, label: "Install" }
 ];
 ---
@@ -73,7 +73,7 @@ const navItems = [
         </div>
         <div class="footer-links">
           <a href={siteConfig.docsPath}>Docs</a>
-          <a href={siteConfig.packagesPath}>Packages</a>
+          <a href={siteConfig.packagesPath}>Add Package</a>
           <a href="/install.sh">install.sh</a>
           <a href="/install.ps1">install.ps1</a>
           <a href={siteConfig.repoUrl}>GitHub</a>
