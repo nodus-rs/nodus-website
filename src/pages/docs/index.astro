@@ -12,26 +12,23 @@ import DocsPage from "../../layouts/DocsPage.astro";
     adapters actually use.
   </p>
 
-  <h2>Read this first</h2>
+  <h2 class="docs-overview-heading">Read this first</h2>
   <div class="grid-3">
     <article class="step-card">
-      <span class="pill">Guide</span>
       <h3><a href="/docs/getting-started/">Getting started</a></h3>
       <p>Learn the basic flow and the terms used across the docs.</p>
     </article>
     <article class="step-card">
-      <span class="pill">Install</span>
       <h3><a href="/docs/install/">Install</a></h3>
       <p>Pick the install path that fits your environment and release policy.</p>
     </article>
     <article class="step-card">
-      <span class="pill">Add package</span>
       <h3><a href="/docs/package-discovery/">Add package from link</a></h3>
       <p>See how sources normalize before they become a <code>nodus add</code> command.</p>
     </article>
   </div>
 
-  <h2>Core workflow</h2>
+  <h2 class="docs-overview-heading">Core workflow</h2>
   <pre><code>{`nodus add owner/repo --adapter codex\nnodus sync\nnodus doctor`}</code></pre>
 
   <div class="grid-2">

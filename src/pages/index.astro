@@ -9,14 +9,8 @@ import { siteConfig } from "../site-config";
 >
   <section class="hero home-hero">
     <div class="hero-copy">
-      <span class="eyebrow">Repo-scoped agent tooling • locked revisions • adapter-aware sync</span>
       <h1>Blazing-fast installs. Exact repo output.</h1>
       <p>Nodus pins package revisions and writes only the runtime files your adapters actually read.</p>
-
-      <div class="hero-actions">
-        <a class="button button-primary" href={siteConfig.installPath}>Install Nodus</a>
-        <a class="button button-secondary" href={siteConfig.packagesPath}>Generate add command</a>
-      </div>
     </div>
 
     <div class="hero-stack home-panels">
@@ -99,6 +93,27 @@ import { siteConfig } from "../site-config";
     const installCommandCode = document.querySelector("#install-command-code");
     const installCommandPanel = document.querySelector("#install-command-panel");
     const copyTargets = Array.from(document.querySelectorAll("[data-copy-target]"));
+    const installTabUnix = document.querySelector("#install-tab-unix");
+    const installTabWindows = document.querySelector("#install-tab-windows");
+
+    const prefersWindowsInstall = () => {
+      if (typeof navigator === "undefined") {
+        return false;
+      }
+
+      const userAgentDataPlatform =
+        "userAgentData" in navigator &&
+        typeof navigator.userAgentData === "object" &&
+        navigator.userAgentData !== null &&
+        "platform" in navigator.userAgentData
+          ? String(navigator.userAgentData.platform)
+          : "";
+      const platform = navigator.platform ?? "";
+      const userAgent = navigator.userAgent ?? "";
+      const fingerprint = `${userAgentDataPlatform} ${platform} ${userAgent}`.toLowerCase();
+
+      return fingerprint.includes("win");
+    };
 
     const setActiveInstallTab = (nextTab: HTMLButtonElement) => {
       if (
@@ -151,6 +166,12 @@ import { siteConfig } from "../site-config";
         }
       });
     });
+
+    if (prefersWindowsInstall() && installTabWindows instanceof HTMLButtonElement) {
+      setActiveInstallTab(installTabWindows);
+    } else if (installTabUnix instanceof HTMLButtonElement) {
+      setActiveInstallTab(installTabUnix);
+    }
 
     const fallbackCopyText = (value: string) => {
       const execCommand = Reflect.get(document, "execCommand") as
@@ -242,10 +263,9 @@ import { siteConfig } from "../site-config";
     });
   </script>
 
-  <section class="section home-section">
+  <section class="section home-section home-section-after-hero">
     <div class="section-header">
       <div>
-        <span class="eyebrow">Why Nodus</span>
         <h2>Discover packages fast. Keep repo output exact.</h2>
       </div>
       <p class="section-intro">Built for teams that want a clean install path and predictable repo state.</p>
@@ -253,17 +273,14 @@ import { siteConfig } from "../site-config";
 
     <div class="grid-3 home-single-column">
       <article class="step-card">
-        <span class="pill">Discovery</span>
         <h3>Start from a Git repo</h3>
         <p>Discover packages from GitHub shorthand, repo URLs, or full Git remotes.</p>
       </article>
       <article class="step-card">
-        <span class="pill">Install</span>
         <h3>Use one stable install command</h3>
         <p>Share a public install URL for shell and PowerShell without rewriting docs.</p>
       </article>
       <article class="step-card">
-        <span class="pill">Output</span>
         <h3>Write only what tools read</h3>
         <p>Generate adapter-specific runtime files instead of scattering config across the repo.</p>
       </article>
@@ -273,7 +290,6 @@ import { siteConfig } from "../site-config";
   <section class="section home-section">
     <div class="section-header">
       <div>
-        <span class="eyebrow">Discover</span>
         <h2>Turn a package source into a runnable command.</h2>
       </div>
       <p class="section-intro">Paste a source, copy the command, and keep moving.</p>
@@ -281,7 +297,6 @@ import { siteConfig } from "../site-config";
 
     <div class="grid-2 home-single-column">
       <article class="card">
-        <span class="eyebrow">Add package</span>
         <h2>Paste a repo link. Get the command.</h2>
         <p class="muted">Turn a package URL into the exact <code>nodus add</code> command.</p>
         <div class="tag-row">
@@ -310,7 +325,6 @@ nodus add https://git.example.com/team/playbook.git`}</code></pre>
       </article>
 
       <article class="card">
-        <span class="eyebrow">Read next</span>
         <h2>Install details and docs stay one click away.</h2>
         <p class="muted">Use the install page for pinned versions and the docs for the full workflow.</p>
         <div class="command-list">

@@ -6,132 +6,240 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
   title="Add a package with Nodus"
   description="Normalize a package source into the exact nodus add command you should run."
 >
-  <section class="page-hero">
-    <span class="eyebrow">Add package</span>
+  <section class="page-hero packages-page-hero">
     <h1>Paste a package source. Get the command.</h1>
     <p>
-      Use GitHub shorthand, a repo URL, or a full Git URL. Nodus normalizes the source and
-      prints the exact <code>nodus add</code> command.
+      Use GitHub shorthand, a repo URL, a full Git URL, or a local path. Nodus can also pin
+      a tag, branch, version, or revision and narrow the install to specific components.
     </p>
   </section>
 
-  <section class="section">
-    <div class="section-header">
-      <div>
-        <span class="eyebrow">Command generator</span>
-        <h2>Translate a source into a runnable command.</h2>
-      </div>
-      <p class="section-intro">
-        The form keeps the rules small: GitHub sources normalize to shorthand, generic Git URLs stay intact, and the adapter flag is optional.
-      </p>
-    </div>
+  <section class="section packages-page-section">
+    <div class="packages-workbench">
+      <article class="card command-tool packages-builder">
+        <div class="packages-builder-head">
+          <h2>Generate a real <code>nodus add</code> command.</h2>
+          <p class="muted">
+            Start with the package source, then add pinning, adapters, components, or install behavior only when you need them.
+          </p>
+        </div>
 
-    <div class="grid-2 tool-grid">
-      <article class="card command-tool">
-        <div class="tool-form">
+        <div class="tool-form packages-form">
           <label class="field-label" for="package-source">Package source</label>
           <input
             id="package-source"
             type="text"
-            placeholder="https://github.com/nodus-rs/nodus or nodus-rs/nodus"
+            placeholder="nodus-rs/nodus, ./vendor/playbook, or https://github.com/nodus-rs/nodus"
             autocomplete="off"
             spellcheck="false"
           />
 
-          <label class="field-label" for="adapter-select">Adapter (optional)</label>
-          <select id="adapter-select">
-            <option value="">Auto-detect in repo</option>
-            <option value="agents">agents</option>
-            <option value="claude">claude</option>
-            <option value="codex">codex</option>
-            <option value="copilot">copilot</option>
-            <option value="cursor">cursor</option>
-            <option value="opencode">opencode</option>
-          </select>
-
           <p class="muted tool-note" id="source-note">
-            GitHub links normalize to <code>owner/repo</code>. Generic Git URLs stay unchanged.
+            GitHub links normalize to <code>owner/repo</code>. Local paths and generic Git URLs stay unchanged.
           </p>
           <p class="validation-message" id="source-error" hidden></p>
 
-          <div class="command-output" id="command-output" hidden>
-            <div class="command-card-header">
-              <strong>Run this in your repo</strong>
-              <button class="button button-secondary button-inline" id="copy-command" type="button">Copy</button>
+          <div class="packages-form-section">
+            <div class="packages-form-section-copy">
+              <h3>Pinning</h3>
+              <p class="muted">Leave this empty to use the latest tag or the default branch fallback.</p>
             </div>
+            <div class="tool-field-stack">
+              <div class="select-field">
+                <label class="field-label" for="git-ref-kind">Git ref (optional)</label>
+                <select id="git-ref-kind">
+                  <option value="">Latest tag / default branch</option>
+                  <option value="tag">Tag</option>
+                  <option value="branch">Branch</option>
+                  <option value="version">Version range</option>
+                  <option value="revision">Revision</option>
+                </select>
+              </div>
+
+              <div class="ref-field" id="git-ref-value-field" hidden>
+                <label class="field-label" for="git-ref-value">Ref value</label>
+                <input
+                  id="git-ref-value"
+                  type="text"
+                  placeholder="v1.2.3, main, ^1.2.0, or a commit SHA"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="packages-form-section">
+            <div class="packages-form-section-copy">
+              <h3>Adapters</h3>
+              <p class="muted">Add one or more adapters only when repo auto-detection is not enough.</p>
+            </div>
+            <fieldset class="option-group">
+              <legend class="field-label">Adapters (optional)</legend>
+              <div class="choice-grid choice-grid-wide">
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="agents" /> <span>agents</span></label>
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="claude" /> <span>claude</span></label>
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="codex" /> <span>codex</span></label>
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="copilot" /> <span>copilot</span></label>
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="cursor" /> <span>cursor</span></label>
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="opencode" /> <span>opencode</span></label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="packages-form-section">
+            <div class="packages-form-section-copy">
+              <h3>Components</h3>
+              <p class="muted">Narrow the install only if you want part of a package instead of the whole package.</p>
+            </div>
+            <fieldset class="option-group">
+              <legend class="field-label">Components (optional)</legend>
+              <div class="choice-grid">
+                <label class="toggle-option"><input type="checkbox" name="component" value="skills" /> <span>skills</span></label>
+                <label class="toggle-option"><input type="checkbox" name="component" value="agents" /> <span>agents</span></label>
+                <label class="toggle-option"><input type="checkbox" name="component" value="rules" /> <span>rules</span></label>
+                <label class="toggle-option"><input type="checkbox" name="component" value="commands" /> <span>commands</span></label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="packages-form-section">
+            <div class="packages-form-section-copy">
+              <h3>Scope and behavior</h3>
+              <p class="muted">Switch between project and global installs, record dev-only dependencies, or preview changes first.</p>
+            </div>
+            <fieldset class="option-group">
+              <legend class="field-label">Install options</legend>
+              <div class="choice-grid choice-grid-compact">
+                <label class="toggle-option"><input type="checkbox" id="install-global" /> <span>global</span></label>
+                <label class="toggle-option"><input type="checkbox" id="install-dev" /> <span>dev dependency</span></label>
+                <label class="toggle-option"><input type="checkbox" id="sync-on-launch" /> <span>sync on launch</span></label>
+                <label class="toggle-option"><input type="checkbox" id="dry-run" /> <span>dry run</span></label>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </article>
+
+      <aside class="packages-sidebar">
+        <article class="card packages-preview-card">
+          <div class="command-card-header packages-preview-header">
+            <div>
+              <h2>Command preview</h2>
+              <p class="muted" id="command-status">Enter a package source to build a command.</p>
+            </div>
+            <button
+              class="button button-secondary button-inline"
+              id="copy-command"
+              type="button"
+              data-copy-target="command-preview"
+              disabled
+            >
+              Copy
+            </button>
+          </div>
+          <div class="command-output" id="command-output">
             <pre><code id="command-preview">nodus add nodus-rs/nodus</code></pre>
           </div>
+        </article>
 
-          <p class="muted tool-note">
-            If Nodus cannot detect your repo adapter yet, append <code>--adapter</code> or pick one above.
-          </p>
-        </div>
-      </article>
+        <article class="card packages-reference-card">
+          <h2>Supported source shapes</h2>
+          <div class="tool-examples">
+            <div class="command-row">
+              <code>nodus-rs/nodus</code>
+              <span>GitHub shorthand</span>
+            </div>
+            <div class="command-row">
+              <code>https://github.com/nodus-rs/nodus</code>
+              <span>GitHub repo URL</span>
+            </div>
+            <div class="command-row">
+              <code>git@github.com:nodus-rs/nodus.git</code>
+              <span>GitHub SSH URL</span>
+            </div>
+            <div class="command-row">
+              <code>https://git.example.com/team/playbook.git</code>
+              <span>Generic Git URL</span>
+            </div>
+            <div class="command-row">
+              <code>./vendor/playbook</code>
+              <span>Local package path</span>
+            </div>
+          </div>
+        </article>
 
-      <article class="card">
-        <span class="eyebrow">Accepted inputs</span>
-        <h2>Supported source shapes</h2>
-        <div class="tool-examples">
-          <div class="command-row">
-            <code>nodus-rs/nodus</code>
-            <span>GitHub shorthand</span>
+        <article class="card packages-reference-card">
+          <h2>Common pinning flags</h2>
+          <div class="tool-examples">
+            <div class="command-row">
+              <code>--tag v1.2.3</code>
+              <span>Pin a specific release tag</span>
+            </div>
+            <div class="command-row">
+              <code>--branch main</code>
+              <span>Track a branch head</span>
+            </div>
+            <div class="command-row">
+              <code>--version ^1.2.0</code>
+              <span>Select the highest matching semver tag</span>
+            </div>
+            <div class="command-row">
+              <code>--revision 0123456789abcdef</code>
+              <span>Lock to an exact commit</span>
+            </div>
           </div>
-          <div class="command-row">
-            <code>https://github.com/nodus-rs/nodus</code>
-            <span>GitHub repo URL</span>
-          </div>
-          <div class="command-row">
-            <code>git@github.com:nodus-rs/nodus.git</code>
-            <span>GitHub SSH URL</span>
-          </div>
-          <div class="command-row">
-            <code>https://git.example.com/team/playbook.git</code>
-            <span>Generic Git URL</span>
-          </div>
-        </div>
-      </article>
+        </article>
+      </aside>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section packages-page-section">
     <div class="section-header">
       <div>
-        <span class="eyebrow">How it behaves</span>
-        <h2>Normalization is strict where it matters.</h2>
+        <h2>Build the exact install shape you need.</h2>
       </div>
       <p class="section-intro">
-        Users get one command shape, and the page explains why a source is accepted or rejected instead of hiding the rules.
+        The CLI supports more than a bare source. The page should expose the options people actually use without collapsing everything into dense controls.
       </p>
     </div>
 
-    <div class="grid-3">
+    <div class="grid-3 packages-layout">
       <article class="step-card">
-        <span class="pill">01</span>
-        <h3>Recognize GitHub references</h3>
-        <p>Short forms, repo URLs, and SSH URLs all collapse to the same <code>owner/repo</code> form.</p>
+        <h3>Pin a release or development ref</h3>
+        <p>Use <code>--tag</code>, <code>--branch</code>, <code>--version</code>, or <code>--revision</code> when the default latest-tag behavior is not what you want.</p>
       </article>
       <article class="step-card">
-        <span class="pill">02</span>
-        <h3>Leave generic Git URLs alone</h3>
-        <p>Non-GitHub Git endpoints stay as-is, which keeps enterprise mirrors and private hosts usable.</p>
+        <h3>Narrow to specific package components</h3>
+        <p>Repeat <code>--component</code> to install only <code>skills</code>, <code>agents</code>, <code>rules</code>, or <code>commands</code>.</p>
       </article>
       <article class="step-card">
-        <span class="pill">03</span>
-        <h3>Expose the adapter flag explicitly</h3>
-        <p>Users can copy one command, then add a specific adapter only when auto-detection is not enough.</p>
+        <h3>Switch scope or preview the result</h3>
+        <p>Use <code>--global</code>, <code>--dev</code>, <code>--sync-on-launch</code>, and <code>--dry-run</code> to match the exact install workflow you need.</p>
       </article>
     </div>
   </section>
 
   <script>
     const sourceInput = document.querySelector("#package-source");
-    const adapterSelect = document.querySelector("#adapter-select");
+    const gitRefKind = document.querySelector("#git-ref-kind");
+    const gitRefValue = document.querySelector("#git-ref-value");
+    const gitRefValueField = document.querySelector("#git-ref-value-field");
+    const adapterInputs = Array.from(document.querySelectorAll('input[name="adapter"]'));
+    const componentInputs = Array.from(document.querySelectorAll('input[name="component"]'));
+    const globalInput = document.querySelector("#install-global");
+    const devInput = document.querySelector("#install-dev");
+    const syncOnLaunchInput = document.querySelector("#sync-on-launch");
+    const dryRunInput = document.querySelector("#dry-run");
     const output = document.querySelector("#command-output");
     const preview = document.querySelector("#command-preview");
+    const commandStatus = document.querySelector("#command-status");
     const error = document.querySelector("#source-error");
     const copyButton = document.querySelector("#copy-command");
 
     const isOwnerRepo = (value: string) => /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(value);
+    const isLikelyLocalPath = (value: string) =>
+      /^(\.{1,2}(\/|\\)|~\/|\/|[A-Za-z]:\\)/.test(value);
 
     const normalizeGitHubPath = (value: string) => {
       const trimmed = value.trim().replace(/\.git$/i, "").replace(/\/+$/g, "");
@@ -181,6 +289,10 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
         return { error: "" };
       }
 
+      if (isLikelyLocalPath(trimmed)) {
+        return { source: trimmed };
+      }
+
       const github = normalizeGitHubPath(trimmed);
       if (github) {
         return { source: github };
@@ -191,62 +303,192 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       }
 
       return {
-        error: "Enter a GitHub repo URL, owner/repo shorthand, or a full Git URL."
+        error: "Enter a local path, GitHub repo URL, owner/repo shorthand, or a full Git URL."
       };
+    };
+
+    const getCheckedValues = (elements: Element[]) =>
+      elements.flatMap((element) =>
+        element instanceof HTMLInputElement && element.checked ? [element.value] : []
+      );
+
+    const updateGitRefField = () => {
+      const selectedKind = gitRefKind instanceof HTMLSelectElement ? gitRefKind.value : "";
+      if (!(gitRefValueField instanceof HTMLElement) || !(gitRefValue instanceof HTMLInputElement)) {
+        return;
+      }
+
+      const isEnabled = selectedKind !== "";
+      gitRefValueField.hidden = !isEnabled;
+      gitRefValue.disabled = !isEnabled;
+
+      if (!isEnabled) {
+        gitRefValue.value = "";
+      }
     };
 
     const render = () => {
       const rawValue = sourceInput instanceof HTMLInputElement ? sourceInput.value : "";
-      const adapter = adapterSelect instanceof HTMLSelectElement ? adapterSelect.value : "";
+      const selectedAdapters = getCheckedValues(adapterInputs);
+      const selectedComponents = getCheckedValues(componentInputs);
+      const selectedRefKind = gitRefKind instanceof HTMLSelectElement ? gitRefKind.value : "";
+      const selectedRefValue = gitRefValue instanceof HTMLInputElement ? gitRefValue.value.trim() : "";
+      const isGlobal = globalInput instanceof HTMLInputElement ? globalInput.checked : false;
+      const isDev = devInput instanceof HTMLInputElement ? devInput.checked : false;
+      const syncOnLaunch = syncOnLaunchInput instanceof HTMLInputElement ? syncOnLaunchInput.checked : false;
+      const dryRun = dryRunInput instanceof HTMLInputElement ? dryRunInput.checked : false;
       const result = getNormalizedSource(rawValue);
 
-      if (!(preview instanceof HTMLElement) || !(output instanceof HTMLElement) || !(error instanceof HTMLElement)) {
+      if (
+        !(preview instanceof HTMLElement) ||
+        !(output instanceof HTMLElement) ||
+        !(error instanceof HTMLElement) ||
+        !(commandStatus instanceof HTMLElement)
+      ) {
         return;
       }
 
       if (!rawValue.trim()) {
-        output.hidden = true;
         error.hidden = true;
         error.textContent = "";
+        preview.textContent = "nodus add nodus-rs/nodus";
+        commandStatus.textContent = "Enter a package source to build a command.";
+        if (copyButton instanceof HTMLButtonElement) {
+          copyButton.disabled = true;
+        }
+        return;
+      }
+
+      if (selectedRefKind && !selectedRefValue) {
+        error.hidden = false;
+        error.textContent = `Enter a value for --${selectedRefKind}.`;
+        commandStatus.textContent = "Complete the selected Git ref to generate a valid command.";
+        if (copyButton instanceof HTMLButtonElement) {
+          copyButton.disabled = true;
+        }
+        return;
+      }
+
+      if (isGlobal && syncOnLaunch) {
+        error.hidden = false;
+        error.textContent = "`nodus add --global` does not support `--sync-on-launch`.";
+        commandStatus.textContent = "Adjust the install options to remove the invalid flag combination.";
+        if (copyButton instanceof HTMLButtonElement) {
+          copyButton.disabled = true;
+        }
         return;
       }
 
       if (result.error) {
-        output.hidden = true;
         error.hidden = false;
         error.textContent = result.error;
+        commandStatus.textContent = "Use a supported package source to generate a command.";
+        if (copyButton instanceof HTMLButtonElement) {
+          copyButton.disabled = true;
+        }
         return;
       }
 
-      const adapterFlag = adapter ? ` --adapter ${adapter}` : "";
-      preview.textContent = `nodus add ${result.source}${adapterFlag}`;
-      output.hidden = false;
+      const flags = [
+        isGlobal ? "--global" : "",
+        isDev ? "--dev" : "",
+        selectedRefKind && selectedRefValue ? `--${selectedRefKind} ${selectedRefValue}` : "",
+        ...selectedAdapters.map((adapter) => `--adapter ${adapter}`),
+        ...selectedComponents.map((component) => `--component ${component}`),
+        syncOnLaunch ? "--sync-on-launch" : "",
+        dryRun ? "--dry-run" : ""
+      ].filter(Boolean);
+
+      preview.textContent = ["nodus add", result.source, ...flags].join(" ");
       error.hidden = true;
       error.textContent = "";
+      commandStatus.textContent = "Copy this command and run it from the repo where you want Nodus to manage the package.";
+      if (copyButton instanceof HTMLButtonElement) {
+        copyButton.disabled = false;
+      }
     };
 
-    const copyCommand = async () => {
-      if (!(preview instanceof HTMLElement) || !(copyButton instanceof HTMLButtonElement)) {
+    const fallbackCopyText = (value: string) => {
+      const execCommand = Reflect.get(document, "execCommand") as
+        | ((commandId: string, showUI?: boolean, value?: string) => boolean)
+        | undefined;
+      const textarea = document.createElement("textarea");
+      textarea.value = value;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.top = "0";
+      textarea.style.left = "0";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      let copied = false;
+      try {
+        copied = execCommand?.call(document, "copy") ?? false;
+      } catch {
+        copied = false;
+      }
+
+      document.body.removeChild(textarea);
+      return copied;
+    };
+
+    const setCopyState = (element: HTMLElement, label: "default" | "copied" | "failed") => {
+      if (element instanceof HTMLButtonElement) {
+        element.textContent = label === "copied" ? "Copied" : label === "failed" ? "Copy failed" : "Copy";
+      }
+    };
+
+    const copyText = async (element: HTMLElement) => {
+      const targetId = element.dataset.copyTarget;
+      if (!targetId) {
         return;
       }
 
-      try {
-        await navigator.clipboard.writeText(preview.textContent ?? "");
-        copyButton.textContent = "Copied";
-        window.setTimeout(() => {
-          copyButton.textContent = "Copy";
-        }, 1200);
-      } catch {
-        copyButton.textContent = "Copy failed";
-        window.setTimeout(() => {
-          copyButton.textContent = "Copy";
-        }, 1200);
+      const target = document.getElementById(targetId);
+      if (!(target instanceof HTMLElement)) {
+        return;
       }
+
+      const value = target.textContent ?? "";
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(value);
+          setCopyState(element, "copied");
+        } else if (fallbackCopyText(value)) {
+          setCopyState(element, "copied");
+        } else {
+          setCopyState(element, "failed");
+        }
+      } catch {
+        setCopyState(element, fallbackCopyText(value) ? "copied" : "failed");
+      }
+
+      window.setTimeout(() => {
+        setCopyState(element, "default");
+      }, 1200);
     };
 
     sourceInput?.addEventListener("input", render);
-    adapterSelect?.addEventListener("change", render);
-    copyButton?.addEventListener("click", copyCommand);
+    gitRefKind?.addEventListener("change", () => {
+      updateGitRefField();
+      render();
+    });
+    gitRefValue?.addEventListener("input", render);
+    adapterInputs.forEach((input) => input.addEventListener("change", render));
+    componentInputs.forEach((input) => input.addEventListener("change", render));
+    globalInput?.addEventListener("change", render);
+    devInput?.addEventListener("change", render);
+    syncOnLaunchInput?.addEventListener("change", render);
+    dryRunInput?.addEventListener("change", render);
+    copyButton?.addEventListener("click", () => {
+      if (copyButton instanceof HTMLElement && !copyButton.disabled) {
+        void copyText(copyButton);
+      }
+    });
+    updateGitRefField();
     render();
   </script>
 </SiteLayout>

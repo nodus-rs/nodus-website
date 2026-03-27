@@ -286,6 +286,7 @@ main {
 .home-hero {
   grid-template-columns: 1fr;
   gap: 1.5rem;
+  padding-bottom: 5.4rem;
 }
 
 .hero-copy {
@@ -464,13 +465,11 @@ main {
   z-index: 1;
   display: inline-flex;
   align-items: center;
-  padding: 0.32rem 0.65rem;
-  border: 1px solid rgba(244, 237, 228, 0.12);
-  border-radius: 999px;
-  background: rgba(244, 237, 228, 0.08);
-  color: rgba(255, 246, 238, 0.82);
+  padding: 0;
+  color: rgba(255, 246, 238, 0.58);
   font-size: 0.76rem;
   font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .install-console::before {
@@ -488,7 +487,7 @@ main {
 
 .install-console-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1rem;
@@ -647,6 +646,10 @@ main {
   padding-bottom: 3.2rem;
 }
 
+.home-section-after-hero {
+  padding-top: 4.8rem;
+}
+
 .section-header {
   display: flex;
   align-items: end;
@@ -746,8 +749,80 @@ main {
   padding: 3.35rem 0 1.35rem;
 }
 
+.packages-page-hero {
+  padding-bottom: 1.8rem;
+}
+
+.docs-page-hero {
+  padding-bottom: 1.9rem;
+}
+
+.docs-page-hero .tag-row {
+  margin-top: 1.4rem;
+}
+
 .page-hero h1 {
   font-size: clamp(2.75rem, 7vw, 4.45rem);
+}
+
+.docs-content-section {
+  padding-top: 2.8rem;
+}
+
+.packages-page-section {
+  padding-top: 3.1rem;
+}
+
+.docs-content-card {
+  padding: 1.8rem;
+}
+
+.docs-content-card > * {
+  margin-top: 0;
+}
+
+.docs-content-card > * + * {
+  margin-top: 1.35rem;
+}
+
+.docs-content-card p,
+.docs-content-card li {
+  max-width: 46rem;
+}
+
+.docs-content-card ul,
+.docs-content-card ol {
+  padding-left: 1.35rem;
+}
+
+.docs-content-card ul li + li,
+.docs-content-card ol li + li {
+  margin-top: 0.55rem;
+}
+
+.docs-content-card .grid-2,
+.docs-content-card .grid-3,
+.docs-content-card .command-list,
+.docs-content-card .tag-row {
+  gap: 1.25rem;
+}
+
+.docs-content-card .grid-2,
+.docs-content-card .grid-3 {
+  margin-top: 1.6rem;
+}
+
+.docs-content-card .card,
+.docs-content-card .step-card {
+  padding: 1.5rem;
+}
+
+.docs-content-card .command-row {
+  padding: 0.95rem 1rem;
+}
+
+.docs-content-card > .docs-overview-heading {
+  padding-top: 0.95rem;
 }
 
 .install-grid {
@@ -789,7 +864,7 @@ main {
 
 .filters input,
 .filters select,
-.tool-form input,
+.tool-form input:not([type="checkbox"]),
 .tool-form select {
   width: 100%;
   padding: 0.9rem 1rem;
@@ -799,9 +874,40 @@ main {
   color: var(--text);
 }
 
+.filters select,
+.tool-form select {
+  padding-right: 2.6rem;
+}
+
+.select-field {
+  position: relative;
+}
+
+.select-field::after {
+  content: "";
+  position: absolute;
+  right: 1.05rem;
+  top: calc(50% + 0.7rem);
+  width: 0.6rem;
+  height: 0.4rem;
+  pointer-events: none;
+  background: currentColor;
+  color: rgba(20, 32, 45, 0.5);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform: translateY(-50%);
+}
+
+.select-field > select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: none;
+  padding-right: 3rem;
+}
+
 .filters input:focus,
 .filters select:focus,
-.tool-form input:focus,
+.tool-form input:not([type="checkbox"]):focus,
 .tool-form select:focus {
   border-color: rgba(200, 90, 39, 0.32);
   outline: none;
@@ -818,18 +924,230 @@ main {
   align-items: start;
 }
 
-.command-tool {
-  padding: 1.5rem;
+.packages-workbench {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.packages-layout {
+  gap: 1.35rem;
+}
+
+.packages-builder {
+  padding: 1.9rem;
+  background:
+    radial-gradient(circle at top right, rgba(200, 90, 39, 0.08), transparent 18rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.72));
+}
+
+.packages-builder-head {
+  margin-bottom: 1.6rem;
+}
+
+.packages-builder-head h2,
+.packages-preview-card h2,
+.packages-reference-card h2 {
+  margin: 0;
+  font-size: clamp(1.55rem, 2.4vw, 2.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.packages-builder-head p,
+.packages-preview-header p {
+  margin-top: 0.7rem;
+}
+
+.packages-form {
+  gap: 1.25rem;
+}
+
+.packages-form-section {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem 1.15rem;
+  border: 1px solid rgba(20, 32, 45, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.packages-form-section-copy h3 {
+  margin: 0;
+  font-size: 1.02rem;
+  letter-spacing: -0.02em;
+}
+
+.packages-form-section-copy p {
+  margin: 0.4rem 0 0;
+  max-width: 34rem;
+}
+
+.packages-sidebar {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.packages-preview-card,
+.packages-reference-card {
+  padding: 1.6rem;
+}
+
+.packages-preview-card {
+  position: sticky;
+  top: 6.8rem;
+  z-index: 8;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.78));
+}
+
+.packages-reference-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.68));
 }
 
 .tool-form {
   display: grid;
-  gap: 0.8rem;
+  gap: 1rem;
 }
 
 .field-label {
   font-size: 0.9rem;
   font-weight: 700;
+}
+
+.tool-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.tool-field-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.ref-field[hidden] {
+  display: none;
+}
+
+.option-group {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+}
+
+.option-group legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.choice-grid-wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.choice-grid-compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.toggle-option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 3.35rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(20, 32, 45, 0.1);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.76));
+  color: var(--text);
+  box-shadow:
+    0 8px 22px rgba(16, 24, 32, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease,
+    color 160ms ease;
+}
+
+.toggle-option span {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.toggle-option:hover {
+  border-color: rgba(20, 32, 45, 0.18);
+  box-shadow:
+    0 14px 30px rgba(16, 24, 32, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  transform: translateY(-1px);
+}
+
+.toggle-option input {
+  appearance: none;
+  flex: 0 0 auto;
+  width: 0.82rem;
+  height: 0.82rem;
+  margin: 0;
+  border: 1.25px solid rgba(20, 32, 45, 0.24);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 1px 1px rgba(16, 24, 32, 0.08);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.toggle-option input:hover {
+  border-color: rgba(20, 32, 45, 0.36);
+}
+
+.toggle-option input:checked {
+  border-color: rgba(200, 90, 39, 0.9);
+  background: var(--accent);
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.94);
+}
+
+.toggle-option input:focus-visible {
+  outline: 2px solid rgba(200, 90, 39, 0.55);
+  outline-offset: 2px;
+}
+
+.toggle-option:has(input:checked) {
+  border-color: rgba(200, 90, 39, 0.24);
+  background:
+    linear-gradient(180deg, rgba(255, 243, 236, 0.98), rgba(255, 238, 229, 0.9));
+  box-shadow:
+    0 16px 28px rgba(200, 90, 39, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.toggle-option:has(input:checked) span {
+  color: var(--accent-strong);
 }
 
 .tool-note {
@@ -843,12 +1161,45 @@ main {
 }
 
 .command-output {
-  margin-top: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.packages-preview-header {
+  align-items: start;
+  gap: 1rem;
+}
+
+.packages-preview-header .button[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.packages-preview-card pre {
+  overflow-x: hidden;
+}
+
+.packages-preview-card code {
+  display: block;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .tool-examples {
   display: grid;
-  gap: 0.85rem;
+  gap: 0.95rem;
+}
+
+.packages-reference-card > h2 + .tool-examples {
+  margin-top: 1rem;
+}
+
+.packages-reference-card .command-row {
+  border: 1px solid rgba(20, 32, 45, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.58));
 }
 
 .button-inline {
@@ -935,6 +1286,19 @@ main {
     grid-template-columns: 1fr;
   }
 
+  .packages-workbench,
+  .tool-field-grid,
+  .tool-field-stack,
+  .choice-grid,
+  .choice-grid-wide,
+  .choice-grid-compact {
+    grid-template-columns: 1fr;
+  }
+
+  .packages-preview-card {
+    position: static;
+  }
+
   .install-console-header {
     display: grid;
     align-items: start;
@@ -955,6 +1319,40 @@ main {
   .hero,
   .page-hero {
     padding-top: 2.15rem;
+  }
+
+  .packages-page-hero {
+    padding-bottom: 1.4rem;
+  }
+
+  .docs-page-hero {
+    padding-bottom: 1.5rem;
+  }
+
+  .docs-content-section {
+    padding-top: 2.15rem;
+  }
+
+  .packages-page-section {
+    padding-top: 2.1rem;
+  }
+
+  .packages-builder,
+  .packages-preview-card,
+  .packages-reference-card {
+    padding: 1.2rem;
+  }
+
+  .docs-content-card {
+    padding: 1.2rem;
+  }
+
+  .home-hero {
+    padding-bottom: 3.8rem;
+  }
+
+  .home-section-after-hero {
+    padding-top: 3.2rem;
   }
 
   .hero-actions,
