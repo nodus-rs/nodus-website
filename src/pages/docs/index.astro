@@ -4,29 +4,69 @@ import DocsPage from "../../layouts/DocsPage.astro";
 
 <DocsPage
   title="Nodus docs"
-  description="Start here for install, quick start, and package-management workflows."
+  description="Install Nodus, add a package, and sync deterministic repo output."
 >
   <p>
-    Nodus is a package manager for repo-scoped AI tooling. It installs skills, agents,
-    rules, and commands from GitHub, Git URLs, or local paths, then writes the runtime
-    files your enabled adapters actually use.
+    Nodus is a package manager for repo-scoped agent tooling. It pulls packages from
+    GitHub, Git URLs, or local paths, pins them, and writes the runtime files your enabled
+    adapters actually use.
   </p>
 
-  <h2>Start here</h2>
-  <ul>
-    <li><a href="/docs/getting-started/">Getting started</a></li>
-    <li><a href="/docs/install/">Install</a></li>
-    <li><a href="/docs/package-discovery/">Add package from link</a></li>
-  </ul>
+  <h2>Read this first</h2>
+  <div class="grid-3">
+    <article class="step-card">
+      <span class="pill">Guide</span>
+      <h3><a href="/docs/getting-started/">Getting started</a></h3>
+      <p>Learn the basic flow and the terms used across the docs.</p>
+    </article>
+    <article class="step-card">
+      <span class="pill">Install</span>
+      <h3><a href="/docs/install/">Install</a></h3>
+      <p>Pick the install path that fits your environment and release policy.</p>
+    </article>
+    <article class="step-card">
+      <span class="pill">Add package</span>
+      <h3><a href="/docs/package-discovery/">Add package from link</a></h3>
+      <p>See how sources normalize before they become a <code>nodus add</code> command.</p>
+    </article>
+  </div>
 
   <h2>Core workflow</h2>
   <pre><code>{`nodus add owner/repo --adapter codex\nnodus sync\nnodus doctor`}</code></pre>
 
-  <p>Most teams only need a few commands:</p>
-  <ul>
-    <li><code>nodus add</code> to declare a dependency</li>
-    <li><code>nodus sync</code> to rebuild managed output</li>
-    <li><code>nodus update</code> to move dependencies forward</li>
-    <li><code>nodus doctor</code> to validate manifest, lockfile, store, and generated files</li>
-  </ul>
+  <div class="grid-2">
+    <article class="card">
+      <h3>Most teams only need a few commands</h3>
+      <div class="command-list">
+        <div class="command-row">
+          <code>nodus add</code>
+          <span>Declare a dependency</span>
+        </div>
+        <div class="command-row">
+          <code>nodus sync</code>
+          <span>Rebuild managed output</span>
+        </div>
+        <div class="command-row">
+          <code>nodus update</code>
+          <span>Move dependencies forward</span>
+        </div>
+        <div class="command-row">
+          <code>nodus doctor</code>
+          <span>Validate manifest, lockfile, store, and generated files</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>What to read next</h3>
+      <div class="tag-row">
+        <a class="tag" href="/docs/getting-started/">Getting started</a>
+        <a class="tag" href="/docs/install/">Install</a>
+        <a class="tag" href="/docs/package-discovery/">Package discovery</a>
+      </div>
+      <p class="muted">
+        The docs are organized around the flow most users follow, not around the implementation details.
+      </p>
+    </article>
+  </div>
 </DocsPage>

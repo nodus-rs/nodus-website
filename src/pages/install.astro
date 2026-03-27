@@ -5,46 +5,66 @@ import { siteConfig } from "../site-config";
 
 <SiteLayout
   title="Install Nodus"
-  description="Install Nodus from a clean public URL, crates.io, or Homebrew."
+  description="Install Nodus from a stable public URL, Cargo, or Homebrew."
 >
   <section class="page-hero">
     <span class="eyebrow">Install</span>
-    <h1>Install Nodus from a clean public endpoint.</h1>
+    <h1>Install Nodus from a stable public URL.</h1>
     <p>
-      Use the public installer URLs on this domain, or install from crates.io or Homebrew.
-      Release assets still come from GitHub Releases, but the command you share stays stable.
+      Use the public installer URLs on this domain, or install with Cargo or Homebrew. Release
+      assets still come from GitHub Releases, but the command you paste into docs stays stable.
     </p>
   </section>
 
   <section class="section">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">Pick a path</span>
+        <h2>Choose the install route that matches your workflow.</h2>
+      </div>
+      <p class="section-intro">
+        The public installer is the default. Cargo and Homebrew are there when teams already standardize on them.
+      </p>
+    </div>
+
     <div class="install-grid">
       <article class="card">
         <h2>macOS and Linux</h2>
-        <p class="muted">Downloads the correct release asset for the current OS and architecture.</p>
+        <p class="muted">Fetches the right release for the current OS and architecture.</p>
         <pre><code>{siteConfig.installUnixCommand}</code></pre>
       </article>
 
       <article class="card">
         <h2>Windows PowerShell</h2>
-        <p class="muted">Use PowerShell 7+ when possible for the smoothest install path.</p>
+        <p class="muted">PowerShell 7+ is the cleanest path, but Windows PowerShell also works.</p>
         <pre><code>{siteConfig.installWindowsCommand}</code></pre>
       </article>
 
       <article class="card">
         <h2>crates.io</h2>
-        <p class="muted">Install from the Rust ecosystem if you prefer Cargo-managed binaries.</p>
+        <p class="muted">Install from crates.io if you want Cargo to manage the binary.</p>
         <pre><code>cargo install nodus</code></pre>
       </article>
 
       <article class="card">
         <h2>Homebrew</h2>
-        <p class="muted">Uses the prebuilt release archives published by the project.</p>
+        <p class="muted">Installs the published release build through Homebrew.</p>
         <pre><code>brew install nodus-rs/nodus/nodus</code></pre>
       </article>
     </div>
   </section>
 
   <section class="section">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">Pinned builds</span>
+        <h2>Lock the release when you need exact reproducibility.</h2>
+      </div>
+      <p class="section-intro">
+        Use a version pin for CI, release validation, or any environment that should not move implicitly.
+      </p>
+    </div>
+
     <div class="grid-2">
       <article class="card">
         <h2>Pin a version</h2>
@@ -69,6 +89,16 @@ import { siteConfig } from "../site-config";
   </section>
 
   <section class="section">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">Public installer</span>
+        <h2>Inspect the endpoint before you hand it to a team.</h2>
+      </div>
+      <p class="section-intro">
+        The installer stays curl- and PowerShell-friendly while still exposing the raw routes and the install behavior.
+      </p>
+    </div>
+
     <div class="grid-2">
       <article class="card">
         <h2>What the public installer does</h2>

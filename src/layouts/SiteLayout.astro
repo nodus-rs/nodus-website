@@ -36,6 +36,7 @@ const navItems = [
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" />
   </head>
   <body>
+    <a class="skip-link" href="#content">Skip to content</a>
     <div class="site-shell">
       <header class="site-header">
         <a class="brand" href="/">
@@ -49,6 +50,7 @@ const navItems = [
               <a
                 class={pathname === item.href || pathname.startsWith(item.href) && item.href !== "/" ? "active" : ""}
                 href={item.href}
+                aria-current={pathname === item.href || pathname.startsWith(item.href) && item.href !== "/" ? "page" : undefined}
               >
                 {item.label}
               </a>
@@ -62,14 +64,14 @@ const navItems = [
         </div>
       </header>
 
-      <main>
+      <main id="content">
         <slot />
       </main>
 
       <footer class="site-footer">
         <div>
           <strong>Nodus</strong>
-          <p>Package manager for repo-scoped AI tooling.</p>
+          <p>Package manager for repo-scoped agent tooling.</p>
         </div>
         <div class="footer-links">
           <a href={siteConfig.docsPath}>Docs</a>

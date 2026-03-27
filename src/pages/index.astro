@@ -5,119 +5,328 @@ import { siteConfig } from "../site-config";
 
 <SiteLayout
   title="Nodus | Add agent packages to your repo with one command"
-  description="Nodus installs repo-scoped agent packages from GitHub or local paths, locks exact revisions, and writes the runtime files your tools actually use."
+  description="Nodus pins repo-scoped agent packages and writes only the runtime files your enabled adapters actually use."
 >
-  <section class="hero">
+  <section class="hero home-hero">
     <div class="hero-copy">
-      <span class="eyebrow">Repo-scoped AI tooling • exact lockfiles • adapter-aware sync</span>
-      <h1>Install Nodus fast. Keep your repo outputs exact.</h1>
-      <p>
-        A CLI package manager for agent tooling that locks revisions and writes only the files
-        your adapters need.
-      </p>
+      <span class="eyebrow">Repo-scoped agent tooling • locked revisions • adapter-aware sync</span>
+      <h1>Blazing-fast installs. Exact repo output.</h1>
+      <p>Nodus pins package revisions and writes only the runtime files your adapters actually read.</p>
 
       <div class="hero-actions">
-        <a class="button button-primary" href={siteConfig.installPath}>Install guide</a>
-        <a class="button button-secondary" href={siteConfig.packagesPath}>Add package from link</a>
-      </div>
-
-      <div class="hero-meta hero-meta-tags">
-        <span>Latest {siteConfig.latestVersion}</span>
-        <span>Codex</span>
-        <span>Claude</span>
-        <span>Cursor</span>
-        <span>Copilot</span>
-        <span>Agents</span>
-        <span>OpenCode</span>
+        <a class="button button-primary" href={siteConfig.installPath}>Install Nodus</a>
+        <a class="button button-secondary" href={siteConfig.packagesPath}>Generate add command</a>
       </div>
     </div>
 
-    <div class="hero-stack">
-      <div class="install-console">
+    <div class="hero-stack home-panels">
+      <div class="install-console home-install-console">
         <div class="install-console-header">
-          <div class="install-tabs" aria-hidden="true">
-            <span class="install-tab active">macOS / Linux</span>
-            <span class="install-tab">PowerShell</span>
+          <div class="install-tabs" role="tablist" aria-label="Install command platform">
+            <button
+              class="install-tab active"
+              id="install-tab-unix"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="install-command-panel"
+              data-command={siteConfig.installUnixCommand}
+            >
+              macOS / Linux
+            </button>
+            <button
+              class="install-tab"
+              id="install-tab-windows"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="install-command-panel"
+              data-command={siteConfig.installWindowsCommand}
+            >
+              PowerShell
+            </button>
+            <button
+              class="install-tab"
+              id="install-tab-cargo"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="install-command-panel"
+              data-command="cargo install nodus"
+            >
+              Cargo
+            </button>
+            <button
+              class="install-tab"
+              id="install-tab-homebrew"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="install-command-panel"
+              data-command="brew install nodus-rs/nodus/nodus"
+            >
+              Homebrew
+            </button>
           </div>
-          <a class="install-link" href={siteConfig.installPath}>All install options</a>
+          <span class="install-console-version">Latest {siteConfig.latestVersion}</span>
         </div>
-        <pre class="install-command"><code>{siteConfig.installUnixCommand}</code></pre>
-        <div class="secondary-command">
-          <span class="secondary-command-label">Windows</span>
-          <code>{siteConfig.installWindowsCommand}</code>
+        <div id="install-command-panel" role="tabpanel" aria-labelledby="install-tab-unix">
+          <div
+            class="install-command-shell"
+            role="button"
+            tabindex="0"
+            aria-label="Copy install command"
+            data-copy-target="install-command-code"
+          >
+            <span class="install-command-copy" aria-hidden="true">
+              <svg class="copy-icon copy-icon-default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="10" height="10" rx="2"></rect>
+                <path d="M7 15H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg class="copy-icon copy-icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+            </span>
+            <pre class="install-command"><code id="install-command-code">{siteConfig.installUnixCommand}</code></pre>
+          </div>
         </div>
-      </div>
-
-      <div class="command-card command-card-compact">
-        <div class="command-card-header">
-          <strong>Then run</strong>
-          <span>First repo setup</span>
-        </div>
-        <pre><code>nodus add acme/team-pack --adapter codex
-nodus doctor</code></pre>
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <script>
+    const installTabs = Array.from(document.querySelectorAll(".install-tab"));
+    const installCommandCode = document.querySelector("#install-command-code");
+    const installCommandPanel = document.querySelector("#install-command-panel");
+    const copyTargets = Array.from(document.querySelectorAll("[data-copy-target]"));
+
+    const setActiveInstallTab = (nextTab: HTMLButtonElement) => {
+      if (
+        !(installCommandCode instanceof HTMLElement) ||
+        !(installCommandPanel instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      installTabs.forEach((tab) => {
+        if (!(tab instanceof HTMLButtonElement)) {
+          return;
+        }
+
+        const isActive = tab === nextTab;
+        tab.classList.toggle("active", isActive);
+        tab.setAttribute("aria-selected", isActive ? "true" : "false");
+        tab.tabIndex = isActive ? 0 : -1;
+      });
+
+      installCommandCode.textContent = nextTab.dataset.command ?? "";
+      installCommandPanel.setAttribute("aria-labelledby", nextTab.id);
+    };
+
+    installTabs.forEach((tab, index) => {
+      if (!(tab instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      tab.tabIndex = index === 0 ? 0 : -1;
+
+      tab.addEventListener("click", () => {
+        setActiveInstallTab(tab);
+      });
+
+      tab.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") {
+          return;
+        }
+
+        event.preventDefault();
+
+        const direction = event.key === "ArrowRight" ? 1 : -1;
+        const nextIndex = (installTabs.indexOf(tab) + direction + installTabs.length) % installTabs.length;
+        const nextTab = installTabs[nextIndex];
+
+        if (nextTab instanceof HTMLButtonElement) {
+          nextTab.focus();
+          setActiveInstallTab(nextTab);
+        }
+      });
+    });
+
+    const fallbackCopyText = (value: string) => {
+      const execCommand = Reflect.get(document, "execCommand") as
+        | ((commandId: string, showUI?: boolean, value?: string) => boolean)
+        | undefined;
+      const textarea = document.createElement("textarea");
+      textarea.value = value;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.top = "0";
+      textarea.style.left = "0";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      let copied = false;
+      try {
+        copied = execCommand?.call(document, "copy") ?? false;
+      } catch {
+        copied = false;
+      }
+
+      document.body.removeChild(textarea);
+      return copied;
+    };
+
+    const setCopyState = (element: HTMLElement, label: "default" | "copied" | "failed") => {
+      if (element instanceof HTMLButtonElement) {
+        element.textContent = label === "copied" ? "Copied" : label === "failed" ? "Copy failed" : "Copy";
+        return;
+      }
+
+      element.dataset.copyState = label;
+    };
+
+    const copyText = async (element: HTMLElement) => {
+      const targetId = element.dataset.copyTarget;
+      if (!targetId) {
+        return;
+      }
+
+      const target = document.getElementById(targetId);
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const value = target.textContent ?? "";
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(value);
+          setCopyState(element, "copied");
+        } else if (fallbackCopyText(value)) {
+          setCopyState(element, "copied");
+        } else {
+          setCopyState(element, "failed");
+        }
+      } catch {
+        setCopyState(element, fallbackCopyText(value) ? "copied" : "failed");
+      }
+
+      window.setTimeout(() => {
+        setCopyState(element, "default");
+      }, 1200);
+    };
+
+    copyTargets.forEach((element) => {
+      if (!(element instanceof HTMLElement)) {
+        return;
+      }
+
+      element.addEventListener("click", (event) => {
+        if (element !== event.currentTarget) {
+          return;
+        }
+
+        void copyText(element);
+      });
+
+      element.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") {
+          return;
+        }
+
+        event.preventDefault();
+        void copyText(element);
+      });
+    });
+  </script>
+
+  <section class="section home-section">
     <div class="section-header">
       <div>
-        <span class="eyebrow">Why it works</span>
-        <h2>Three steps. Reviewable output.</h2>
+        <span class="eyebrow">Why Nodus</span>
+        <h2>Discover packages fast. Keep repo output exact.</h2>
       </div>
-      <p class="section-intro">
-        Nodus keeps the flow small: add a package, lock the source, sync the adapter files.
-      </p>
+      <p class="section-intro">Built for teams that want a clean install path and predictable repo state.</p>
     </div>
 
-    <div class="grid-3">
+    <div class="grid-3 home-single-column">
       <article class="step-card">
-        <span class="pill">01</span>
-        <h3>Paste a package link</h3>
-        <p>Start from a GitHub repo, Git URL, or plain <code>owner/repo</code> reference.</p>
-        <code class="inline-command">nodus add org/pkg --adapter codex</code>
+        <span class="pill">Discovery</span>
+        <h3>Start from a Git repo</h3>
+        <p>Discover packages from GitHub shorthand, repo URLs, or full Git remotes.</p>
       </article>
       <article class="step-card">
-        <span class="pill">02</span>
-        <h3>Lock exact revisions</h3>
-        <p>Keep teammates and CI on the same package graph with deterministic inputs.</p>
-        <code class="inline-command">nodus sync --locked</code>
+        <span class="pill">Install</span>
+        <h3>Use one stable install command</h3>
+        <p>Share a public install URL for shell and PowerShell without rewriting docs.</p>
       </article>
       <article class="step-card">
-        <span class="pill">03</span>
-        <h3>Write adapter-specific outputs</h3>
-        <p>Generate only the runtime files each tool actually reads inside the repo.</p>
-        <code class="inline-command">.codex/ .claude/ .github/</code>
+        <span class="pill">Output</span>
+        <h3>Write only what tools read</h3>
+        <p>Generate adapter-specific runtime files instead of scattering config across the repo.</p>
       </article>
     </div>
   </section>
 
-  <section class="section">
-    <div class="grid-2">
+  <section class="section home-section">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">Discover</span>
+        <h2>Turn a package source into a runnable command.</h2>
+      </div>
+      <p class="section-intro">Paste a source, copy the command, and keep moving.</p>
+    </div>
+
+    <div class="grid-2 home-single-column">
       <article class="card">
         <span class="eyebrow">Add package</span>
-        <h2>Paste a repo link. Get the exact command.</h2>
-        <p class="muted">
-          The website now turns package links directly into the <code>nodus add</code> command
-          you should run locally.
-        </p>
+        <h2>Paste a repo link. Get the command.</h2>
+        <p class="muted">Turn a package URL into the exact <code>nodus add</code> command.</p>
         <div class="tag-row">
           <span class="tag">github.com/owner/repo</span>
           <span class="tag">owner/repo</span>
           <span class="tag">git@example.com/org/pkg.git</span>
         </div>
+        <div class="command-card-header">
+          <strong>Example command</strong>
+          <button
+            class="button button-secondary button-inline"
+            id="copy-add-command"
+            type="button"
+            data-copy-target="add-command-code"
+          >
+            Copy
+          </button>
+        </div>
+        <pre><code id="add-command-code">{`nodus add nodus-rs/nodus
+nodus add nodus-rs/nodus --adapter codex
+nodus add https://git.example.com/team/playbook.git`}</code></pre>
         <div class="hero-actions">
-          <a class="button button-primary" href={siteConfig.packagesPath}>Open command generator</a>
+          <a class="button button-primary" href={siteConfig.packagesPath}>Generate command</a>
           <a class="button button-secondary" href="/docs/package-discovery/">How it works</a>
         </div>
       </article>
 
       <article class="card">
-        <span class="eyebrow">Examples</span>
-        <h2>Short command. Optional adapter.</h2>
-        <pre><code>{`nodus add nodus-rs/nodus
-nodus add nodus-rs/nodus --adapter codex
-nodus add https://git.example.com/team/playbook.git`}</code></pre>
+        <span class="eyebrow">Read next</span>
+        <h2>Install details and docs stay one click away.</h2>
+        <p class="muted">Use the install page for pinned versions and the docs for the full workflow.</p>
+        <div class="command-list">
+          <a class="command-row" href="/docs/">
+            <code>/docs/</code>
+            <span>Overview and command flow</span>
+          </a>
+          <a class="command-row" href={siteConfig.installPath}>
+            <code>/install/</code>
+            <span>Stable install URLs and pinning</span>
+          </a>
+          <a class="command-row" href={siteConfig.packagesPath}>
+            <code>/packages/</code>
+            <span>Normalize a source into a runnable command</span>
+          </a>
+        </div>
       </article>
     </div>
   </section>

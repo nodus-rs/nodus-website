@@ -4,22 +4,32 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 
 <SiteLayout
   title="Add a package with Nodus"
-  description="Paste a GitHub or Git package link and generate the right nodus add command."
+  description="Normalize a package source into the exact nodus add command you should run."
 >
   <section class="page-hero">
     <span class="eyebrow">Add package</span>
-    <h1>Paste a package link. Get the exact command.</h1>
+    <h1>Paste a package source. Get the command.</h1>
     <p>
-      Use a GitHub repo URL, Git URL, or plain <code>owner/repo</code> reference. The page
-      normalizes the source and gives you the exact <code>nodus add</code> command to run.
+      Use GitHub shorthand, a repo URL, or a full Git URL. Nodus normalizes the source and
+      prints the exact <code>nodus add</code> command.
     </p>
   </section>
 
   <section class="section">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">Command generator</span>
+        <h2>Translate a source into a runnable command.</h2>
+      </div>
+      <p class="section-intro">
+        The form keeps the rules small: GitHub sources normalize to shorthand, generic Git URLs stay intact, and the adapter flag is optional.
+      </p>
+    </div>
+
     <div class="grid-2 tool-grid">
       <article class="card command-tool">
         <div class="tool-form">
-          <label class="field-label" for="package-source">Package link or reference</label>
+          <label class="field-label" for="package-source">Package source</label>
           <input
             id="package-source"
             type="text"
@@ -39,27 +49,28 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
             <option value="opencode">opencode</option>
           </select>
 
-        <p class="muted tool-note" id="source-note">
-          GitHub links normalize to <code>owner/repo</code>. Generic Git URLs stay unchanged.
-        </p>
-        <p class="validation-message" id="source-error" hidden></p>
+          <p class="muted tool-note" id="source-note">
+            GitHub links normalize to <code>owner/repo</code>. Generic Git URLs stay unchanged.
+          </p>
+          <p class="validation-message" id="source-error" hidden></p>
 
-        <div class="command-output" id="command-output" hidden>
-          <div class="command-card-header">
-            <strong>Run this in your repo</strong>
-            <button class="button button-secondary button-inline" id="copy-command" type="button">Copy</button>
+          <div class="command-output" id="command-output" hidden>
+            <div class="command-card-header">
+              <strong>Run this in your repo</strong>
+              <button class="button button-secondary button-inline" id="copy-command" type="button">Copy</button>
+            </div>
+            <pre><code id="command-preview">nodus add nodus-rs/nodus</code></pre>
           </div>
-          <pre><code id="command-preview">nodus add nodus-rs/nodus</code></pre>
-        </div>
 
-        <p class="muted tool-note">
-          If Nodus cannot detect your repo adapter yet, append <code>--adapter</code> or pick one above.
-        </p>
-      </div>
+          <p class="muted tool-note">
+            If Nodus cannot detect your repo adapter yet, append <code>--adapter</code> or pick one above.
+          </p>
+        </div>
+      </article>
 
       <article class="card">
         <span class="eyebrow">Accepted inputs</span>
-        <h2>Supported in v1</h2>
+        <h2>Supported source shapes</h2>
         <div class="tool-examples">
           <div class="command-row">
             <code>nodus-rs/nodus</code>
@@ -78,6 +89,36 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
             <span>Generic Git URL</span>
           </div>
         </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">How it behaves</span>
+        <h2>Normalization is strict where it matters.</h2>
+      </div>
+      <p class="section-intro">
+        Users get one command shape, and the page explains why a source is accepted or rejected instead of hiding the rules.
+      </p>
+    </div>
+
+    <div class="grid-3">
+      <article class="step-card">
+        <span class="pill">01</span>
+        <h3>Recognize GitHub references</h3>
+        <p>Short forms, repo URLs, and SSH URLs all collapse to the same <code>owner/repo</code> form.</p>
+      </article>
+      <article class="step-card">
+        <span class="pill">02</span>
+        <h3>Leave generic Git URLs alone</h3>
+        <p>Non-GitHub Git endpoints stay as-is, which keeps enterprise mirrors and private hosts usable.</p>
+      </article>
+      <article class="step-card">
+        <span class="pill">03</span>
+        <h3>Expose the adapter flag explicitly</h3>
+        <p>Users can copy one command, then add a specific adapter only when auto-detection is not enough.</p>
       </article>
     </div>
   </section>
