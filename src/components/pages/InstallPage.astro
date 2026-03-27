@@ -1,0 +1,112 @@
+---
+import { type Locale } from "../../i18n";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { siteConfig } from "../../site-config";
+import { getSiteCopy } from "../../site-content";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getSiteCopy(locale);
+const installPage = copy.installPage;
+const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$1</code>");
+---
+
+<SiteLayout
+  title={installPage.title}
+  description={installPage.description}
+  locale={locale}
+  pagePath="/install/"
+>
+  <section class="page-hero">
+    <h1>{installPage.heroTitle}</h1>
+    <p>{installPage.heroDescription}</p>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2>{installPage.routesTitle}</h2>
+      </div>
+      <p class="section-intro">{installPage.routesIntro}</p>
+    </div>
+
+    <div class="install-grid">
+      <article class="card">
+        <h2>{installPage.cards.unix.title}</h2>
+        <p class="muted">{installPage.cards.unix.description}</p>
+        <pre><code>{siteConfig.installUnixCommand}</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>{installPage.cards.windows.title}</h2>
+        <p class="muted">{installPage.cards.windows.description}</p>
+        <pre><code>{siteConfig.installWindowsCommand}</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>{installPage.cards.cargo.title}</h2>
+        <p class="muted">{installPage.cards.cargo.description}</p>
+        <pre><code>cargo install nodus</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>{installPage.cards.homebrew.title}</h2>
+        <p class="muted">{installPage.cards.homebrew.description}</p>
+        <pre><code>brew install nodus-rs/nodus/nodus</code></pre>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2>{installPage.pinningTitle}</h2>
+      </div>
+      <p class="section-intro">{installPage.pinningIntro}</p>
+    </div>
+
+    <div class="grid-2">
+      <article class="card">
+        <h2>{installPage.pinVersionTitle}</h2>
+        <p class="muted" set:html={renderInlineCode(installPage.pinVersionDescription)} />
+        <pre><code>{`curl -fsSL https://nodus.elata.ai/install.sh | NODUS_VERSION=${siteConfig.latestVersion} bash`}</code></pre>
+        <pre><code>{`$env:NODUS_VERSION = "${siteConfig.latestVersion}"\nirm https://nodus.elata.ai/install.ps1 | iex`}</code></pre>
+      </article>
+
+      <article class="card">
+        <h2>{installPage.checksumTitle}</h2>
+        <p class="muted" set:html={renderInlineCode(installPage.checksumDescription)} />
+        <pre><code>curl -fsSL https://nodus.elata.ai/install.sh | bash -s -- --verify</code></pre>
+        <pre><code>{`$script = Join-Path $env:TEMP "nodus-install.ps1"\nirm https://nodus.elata.ai/install.ps1 -OutFile $script\n& $script -Verify\nRemove-Item $script`}</code></pre>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2>{installPage.inspectTitle}</h2>
+      </div>
+      <p class="section-intro">{installPage.inspectIntro}</p>
+    </div>
+
+    <div class="grid-2">
+      <article class="card">
+        <h2>{installPage.installerBehaviorTitle}</h2>
+        <p class="muted">{installPage.installerBehaviorDescription}</p>
+      </article>
+
+      <article class="card">
+        <h2>{installPage.rawEndpointsTitle}</h2>
+        <p class="muted">{installPage.rawEndpointsDescription}</p>
+        <div class="tag-row">
+          <a class="tag" href="/install.sh">/install.sh</a>
+          <a class="tag" href="/install.ps1">/install.ps1</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</SiteLayout>

@@ -1,0 +1,519 @@
+---
+import { type Locale } from "../../i18n";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { getSiteCopy } from "../../site-content";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getSiteCopy(locale);
+const packagesPage = copy.packagesPage;
+const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$1</code>");
+---
+
+<SiteLayout
+  title={packagesPage.title}
+  description={packagesPage.description}
+  locale={locale}
+  pagePath="/packages/"
+>
+  <section class="page-hero packages-page-hero">
+    <h1>{packagesPage.heroTitle}</h1>
+    <p>{packagesPage.heroDescription}</p>
+  </section>
+
+  <section class="section packages-page-section">
+    <div class="packages-workbench">
+      <article class="card command-tool packages-builder">
+        <div class="packages-builder-head">
+          <h2 set:html={renderInlineCode(packagesPage.builderTitle)} />
+          <p class="muted">{packagesPage.builderDescription}</p>
+        </div>
+
+        <div class="tool-form packages-form">
+          <label class="field-label" for="package-source">{packagesPage.packageSourceLabel}</label>
+          <input
+            id="package-source"
+            type="text"
+            placeholder={packagesPage.packageSourcePlaceholder}
+            autocomplete="off"
+            spellcheck="false"
+          />
+
+          <p class="muted tool-note" id="source-note">
+            <Fragment set:html={renderInlineCode(packagesPage.packageSourceNote)} />
+          </p>
+          <p class="validation-message" id="source-error" hidden></p>
+
+          <div class="packages-form-section">
+            <div class="packages-form-section-copy">
+              <h3>{packagesPage.pinningTitle}</h3>
+              <p class="muted">{packagesPage.pinningDescription}</p>
+            </div>
+            <div class="tool-field-stack">
+              <div class="select-field">
+                <label class="field-label" for="git-ref-kind">{packagesPage.gitRefLabel}</label>
+                <select id="git-ref-kind">
+                  <option value="">{packagesPage.gitRefOptions.default}</option>
+                  <option value="tag">{packagesPage.gitRefOptions.tag}</option>
+                  <option value="branch">{packagesPage.gitRefOptions.branch}</option>
+                  <option value="version">{packagesPage.gitRefOptions.version}</option>
+                  <option value="revision">{packagesPage.gitRefOptions.revision}</option>
+                </select>
+              </div>
+
+              <div class="ref-field" id="git-ref-value-field" hidden>
+                <label class="field-label" for="git-ref-value">{packagesPage.refValueLabel}</label>
+                <input
+                  id="git-ref-value"
+                  type="text"
+                  placeholder={packagesPage.refValuePlaceholder}
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="packages-form-section">
+            <div class="packages-form-section-copy">
+              <h3>{packagesPage.adaptersTitle}</h3>
+              <p class="muted">{packagesPage.adaptersDescription}</p>
+            </div>
+            <fieldset class="option-group">
+              <legend class="field-label">{packagesPage.adaptersLegend}</legend>
+              <div class="choice-grid choice-grid-wide">
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="agents" /> <span>agents</span></label>
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="claude" /> <span>claude</span></label>
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="codex" /> <span>codex</span></label>
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="copilot" /> <span>copilot</span></label>
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="cursor" /> <span>cursor</span></label>
+                <label class="toggle-option"><input type="checkbox" name="adapter" value="opencode" /> <span>opencode</span></label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="packages-form-section">
+            <div class="packages-form-section-copy">
+              <h3>{packagesPage.componentsTitle}</h3>
+              <p class="muted">{packagesPage.componentsDescription}</p>
+            </div>
+            <fieldset class="option-group">
+              <legend class="field-label">{packagesPage.componentsLegend}</legend>
+              <div class="choice-grid">
+                <label class="toggle-option"><input type="checkbox" name="component" value="skills" /> <span>skills</span></label>
+                <label class="toggle-option"><input type="checkbox" name="component" value="agents" /> <span>agents</span></label>
+                <label class="toggle-option"><input type="checkbox" name="component" value="rules" /> <span>rules</span></label>
+                <label class="toggle-option"><input type="checkbox" name="component" value="commands" /> <span>commands</span></label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="packages-form-section">
+            <div class="packages-form-section-copy">
+              <h3>{packagesPage.scopeTitle}</h3>
+              <p class="muted">{packagesPage.scopeDescription}</p>
+            </div>
+            <fieldset class="option-group">
+              <legend class="field-label">{packagesPage.installOptionsLegend}</legend>
+              <div class="choice-grid choice-grid-compact">
+                <label class="toggle-option"><input type="checkbox" id="install-global" /> <span>{packagesPage.installOptions.global}</span></label>
+                <label class="toggle-option"><input type="checkbox" id="install-dev" /> <span>{packagesPage.installOptions.dev}</span></label>
+                <label class="toggle-option"><input type="checkbox" id="sync-on-launch" /> <span>{packagesPage.installOptions.syncOnLaunch}</span></label>
+                <label class="toggle-option"><input type="checkbox" id="dry-run" /> <span>{packagesPage.installOptions.dryRun}</span></label>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </article>
+
+      <aside class="packages-sidebar">
+        <article class="card packages-preview-card">
+          <div class="command-card-header packages-preview-header">
+            <div>
+              <h2>{packagesPage.previewTitle}</h2>
+              <p class="muted" id="command-status">{packagesPage.previewIdle}</p>
+            </div>
+            <button
+              class="button button-secondary button-inline"
+              id="copy-command"
+              type="button"
+              data-copy-target="command-preview"
+              disabled
+            >
+              {packagesPage.copyLabels.default}
+            </button>
+          </div>
+          <div class="command-output" id="command-output">
+            <pre><code id="command-preview">nodus add nodus-rs/nodus</code></pre>
+          </div>
+        </article>
+
+        <article class="card packages-reference-card">
+          <h2>{packagesPage.supportedSourcesTitle}</h2>
+          <div class="tool-examples">
+            {
+              packagesPage.supportedSources.map((source) => (
+                <div class="command-row">
+                  <code>{source.code}</code>
+                  <span>{source.label}</span>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+
+        <article class="card packages-reference-card">
+          <h2>{packagesPage.pinningFlagsTitle}</h2>
+          <div class="tool-examples">
+            {
+              packagesPage.pinningFlags.map((flag) => (
+                <div class="command-row">
+                  <code>{flag.code}</code>
+                  <span>{flag.label}</span>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section packages-page-section">
+    <div class="section-header">
+      <div>
+        <h2>{packagesPage.exactShapeTitle}</h2>
+      </div>
+      <p class="section-intro">{packagesPage.exactShapeIntro}</p>
+    </div>
+
+    <div class="grid-3 packages-layout">
+      {
+        packagesPage.shapeCards.map((card) => (
+          <article class="step-card">
+            <h3>{card.title}</h3>
+            <p set:html={renderInlineCode(card.description)} />
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <script type="application/json" id="packages-i18n" is:inline>
+    {JSON.stringify({
+      previewIdle: packagesPage.previewIdle,
+      copyLabels: packagesPage.copyLabels,
+      messages: packagesPage.messages
+    })}
+  </script>
+
+  <script>
+    const sourceInput = document.querySelector("#package-source");
+    const gitRefKind = document.querySelector("#git-ref-kind");
+    const gitRefValue = document.querySelector("#git-ref-value");
+    const gitRefValueField = document.querySelector("#git-ref-value-field");
+    const adapterInputs = Array.from(document.querySelectorAll('input[name="adapter"]'));
+    const componentInputs = Array.from(document.querySelectorAll('input[name="component"]'));
+    const globalInput = document.querySelector("#install-global");
+    const devInput = document.querySelector("#install-dev");
+    const syncOnLaunchInput = document.querySelector("#sync-on-launch");
+    const dryRunInput = document.querySelector("#dry-run");
+    const output = document.querySelector("#command-output");
+    const preview = document.querySelector("#command-preview");
+    const commandStatus = document.querySelector("#command-status");
+    const error = document.querySelector("#source-error");
+    const copyButton = document.querySelector("#copy-command");
+    const packagesI18n = JSON.parse(
+      document.querySelector("#packages-i18n")?.textContent ?? "{}"
+    ) as {
+      previewIdle?: string;
+      copyLabels?: { default?: string; copied?: string; failed?: string };
+      messages?: {
+        invalidSource?: string;
+        refValuePrefix?: string;
+        refValueSuffix?: string;
+        invalidFlagCombo?: string;
+        completeRef?: string;
+        adjustOptions?: string;
+        supportedSourcePrompt?: string;
+        copyPrompt?: string;
+      };
+    };
+
+    const isOwnerRepo = (value: string) => /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(value);
+    const isLikelyLocalPath = (value: string) =>
+      /^(\.{1,2}(\/|\\)|~\/|\/|[A-Za-z]:\\)/.test(value);
+
+    const normalizeGitHubPath = (value: string) => {
+      const trimmed = value.trim().replace(/\.git$/i, "").replace(/\/+$/g, "");
+
+      if (isOwnerRepo(trimmed)) {
+        return trimmed;
+      }
+
+      const sshMatch = trimmed.match(/^git@github\.com:([^/]+)\/([^/]+)$/i);
+      if (sshMatch) {
+        return `${sshMatch[1]}/${sshMatch[2]}`;
+      }
+
+      try {
+        const url = new URL(trimmed);
+        if (url.hostname !== "github.com") {
+          return null;
+        }
+
+        const [owner, repo] = url.pathname.replace(/^\/+/, "").split("/");
+        if (!owner || !repo) {
+          return null;
+        }
+
+        return `${owner}/${repo.replace(/\.git$/i, "")}`;
+      } catch {
+        return null;
+      }
+    };
+
+    const isGenericGitUrl = (value: string) => {
+      if (/^(git@|ssh:\/\/|https?:\/\/)/i.test(value) === false) {
+        return false;
+      }
+
+      try {
+        const url = value.startsWith("git@") ? null : new URL(value);
+        return url ? Boolean(url.hostname) : true;
+      } catch {
+        return /^git@[^:]+:.+/.test(value);
+      }
+    };
+
+    const getNormalizedSource = (value: string) => {
+      const trimmed = value.trim();
+      if (!trimmed) {
+        return { error: "" };
+      }
+
+      if (isLikelyLocalPath(trimmed)) {
+        return { source: trimmed };
+      }
+
+      const github = normalizeGitHubPath(trimmed);
+      if (github) {
+        return { source: github };
+      }
+
+      if (isGenericGitUrl(trimmed)) {
+        return { source: trimmed.replace(/\/+$/g, "") };
+      }
+
+      return {
+        error:
+          packagesI18n.messages?.invalidSource ??
+          "Enter a local path, GitHub repo URL, owner/repo shorthand, or a full Git URL."
+      };
+    };
+
+    const getCheckedValues = (elements: Element[]) =>
+      elements.flatMap((element) =>
+        element instanceof HTMLInputElement && element.checked ? [element.value] : []
+      );
+
+    const updateGitRefField = () => {
+      const selectedKind = gitRefKind instanceof HTMLSelectElement ? gitRefKind.value : "";
+      if (!(gitRefValueField instanceof HTMLElement) || !(gitRefValue instanceof HTMLInputElement)) {
+        return;
+      }
+
+      const isEnabled = selectedKind !== "";
+      gitRefValueField.hidden = !isEnabled;
+      gitRefValue.disabled = !isEnabled;
+
+      if (!isEnabled) {
+        gitRefValue.value = "";
+      }
+    };
+
+    const render = () => {
+      const rawValue = sourceInput instanceof HTMLInputElement ? sourceInput.value : "";
+      const selectedAdapters = getCheckedValues(adapterInputs);
+      const selectedComponents = getCheckedValues(componentInputs);
+      const selectedRefKind = gitRefKind instanceof HTMLSelectElement ? gitRefKind.value : "";
+      const selectedRefValue = gitRefValue instanceof HTMLInputElement ? gitRefValue.value.trim() : "";
+      const isGlobal = globalInput instanceof HTMLInputElement ? globalInput.checked : false;
+      const isDev = devInput instanceof HTMLInputElement ? devInput.checked : false;
+      const syncOnLaunch = syncOnLaunchInput instanceof HTMLInputElement ? syncOnLaunchInput.checked : false;
+      const dryRun = dryRunInput instanceof HTMLInputElement ? dryRunInput.checked : false;
+      const result = getNormalizedSource(rawValue);
+
+      if (
+        !(preview instanceof HTMLElement) ||
+        !(output instanceof HTMLElement) ||
+        !(error instanceof HTMLElement) ||
+        !(commandStatus instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      if (!rawValue.trim()) {
+        error.hidden = true;
+        error.textContent = "";
+        preview.textContent = "nodus add nodus-rs/nodus";
+        commandStatus.textContent =
+          packagesI18n.previewIdle ?? "Enter a package source to build a command.";
+        if (copyButton instanceof HTMLButtonElement) {
+          copyButton.disabled = true;
+        }
+        return;
+      }
+
+      if (selectedRefKind && !selectedRefValue) {
+        error.hidden = false;
+        error.textContent = `${packagesI18n.messages?.refValuePrefix ?? "Enter a value for"} --${selectedRefKind}${packagesI18n.messages?.refValueSuffix ?? "."}`;
+        commandStatus.textContent =
+          packagesI18n.messages?.completeRef ??
+          "Complete the selected Git ref to generate a valid command.";
+        if (copyButton instanceof HTMLButtonElement) {
+          copyButton.disabled = true;
+        }
+        return;
+      }
+
+      if (isGlobal && syncOnLaunch) {
+        error.hidden = false;
+        error.textContent =
+          packagesI18n.messages?.invalidFlagCombo ??
+          "`nodus add --global` does not support `--sync-on-launch`.";
+        commandStatus.textContent =
+          packagesI18n.messages?.adjustOptions ??
+          "Adjust the install options to remove the invalid flag combination.";
+        if (copyButton instanceof HTMLButtonElement) {
+          copyButton.disabled = true;
+        }
+        return;
+      }
+
+      if (result.error) {
+        error.hidden = false;
+        error.textContent = result.error;
+        commandStatus.textContent =
+          packagesI18n.messages?.supportedSourcePrompt ??
+          "Use a supported package source to generate a command.";
+        if (copyButton instanceof HTMLButtonElement) {
+          copyButton.disabled = true;
+        }
+        return;
+      }
+
+      const flags = [
+        isGlobal ? "--global" : "",
+        isDev ? "--dev" : "",
+        selectedRefKind && selectedRefValue ? `--${selectedRefKind} ${selectedRefValue}` : "",
+        ...selectedAdapters.map((adapter) => `--adapter ${adapter}`),
+        ...selectedComponents.map((component) => `--component ${component}`),
+        syncOnLaunch ? "--sync-on-launch" : "",
+        dryRun ? "--dry-run" : ""
+      ].filter(Boolean);
+
+      preview.textContent = ["nodus add", result.source, ...flags].join(" ");
+      error.hidden = true;
+      error.textContent = "";
+      commandStatus.textContent =
+        packagesI18n.messages?.copyPrompt ??
+        "Copy this command and run it from the repo where you want Nodus to manage the package.";
+      if (copyButton instanceof HTMLButtonElement) {
+        copyButton.disabled = false;
+      }
+    };
+
+    const fallbackCopyText = (value: string) => {
+      const execCommand = Reflect.get(document, "execCommand") as
+        | ((commandId: string, showUI?: boolean, value?: string) => boolean)
+        | undefined;
+      const textarea = document.createElement("textarea");
+      textarea.value = value;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.top = "0";
+      textarea.style.left = "0";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      let copied = false;
+      try {
+        copied = execCommand?.call(document, "copy") ?? false;
+      } catch {
+        copied = false;
+      }
+
+      document.body.removeChild(textarea);
+      return copied;
+    };
+
+    const setCopyState = (element: HTMLElement, label: "default" | "copied" | "failed") => {
+      const labelMap = {
+        default: packagesI18n.copyLabels?.default ?? "Copy",
+        copied: packagesI18n.copyLabels?.copied ?? "Copied",
+        failed: packagesI18n.copyLabels?.failed ?? "Copy failed"
+      };
+
+      if (element instanceof HTMLButtonElement) {
+        element.textContent = labelMap[label];
+      }
+    };
+
+    const copyText = async (element: HTMLElement) => {
+      const targetId = element.dataset.copyTarget;
+      if (!targetId) {
+        return;
+      }
+
+      const target = document.getElementById(targetId);
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const value = target.textContent ?? "";
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(value);
+          setCopyState(element, "copied");
+        } else if (fallbackCopyText(value)) {
+          setCopyState(element, "copied");
+        } else {
+          setCopyState(element, "failed");
+        }
+      } catch {
+        setCopyState(element, fallbackCopyText(value) ? "copied" : "failed");
+      }
+
+      window.setTimeout(() => {
+        setCopyState(element, "default");
+      }, 1200);
+    };
+
+    sourceInput?.addEventListener("input", render);
+    gitRefKind?.addEventListener("change", () => {
+      updateGitRefField();
+      render();
+    });
+    gitRefValue?.addEventListener("input", render);
+    adapterInputs.forEach((input) => input.addEventListener("change", render));
+    componentInputs.forEach((input) => input.addEventListener("change", render));
+    globalInput?.addEventListener("change", render);
+    devInput?.addEventListener("change", render);
+    syncOnLaunchInput?.addEventListener("change", render);
+    dryRunInput?.addEventListener("change", render);
+    copyButton?.addEventListener("click", () => {
+      if (copyButton instanceof HTMLButtonElement && !copyButton.disabled) {
+        void copyText(copyButton);
+      }
+    });
+    updateGitRefField();
+    render();
+  </script>
+</SiteLayout>

@@ -1,19 +1,26 @@
 ---
+import { getLocaleFromPathname, localizedPath } from "../i18n";
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { getSiteCopy } from "../site-content";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const copy = getSiteCopy(locale);
+const notFound = copy.notFound;
 ---
 
-<SiteLayout title="Page not found" description="The page you requested does not exist.">
+<SiteLayout
+  title={notFound.title}
+  description={notFound.description}
+  locale={locale}
+>
   <section class="page-hero">
     <span class="eyebrow">404</span>
-    <h1>Page not found.</h1>
-    <p>
-      The URL does not match a public Nodus route. Jump back to the docs, install page,
-      or package command generator instead.
-    </p>
+    <h1>{notFound.heroTitle}</h1>
+    <p>{notFound.heroDescription}</p>
     <div class="hero-actions">
-      <a class="button button-primary" href="/docs/">Docs</a>
-      <a class="button button-secondary" href="/packages/">Add package</a>
-      <a class="button button-secondary" href="/install/">Install</a>
+      <a class="button button-primary" href={localizedPath("/docs/", locale)}>{copy.layout.docs}</a>
+      <a class="button button-secondary" href={localizedPath("/packages/", locale)}>{copy.layout.addPackage}</a>
+      <a class="button button-secondary" href={localizedPath("/install/", locale)}>{copy.layout.install}</a>
     </div>
   </section>
 </SiteLayout>

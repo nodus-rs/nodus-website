@@ -1,23 +1,5 @@
 ---
-import DocsPage from "../../layouts/DocsPage.astro";
+import DocsPackageDiscoveryPage from "../../components/pages/DocsPackageDiscoveryPage.astro";
 ---
 
-<DocsPage
-  title="Add package from link"
-  description="Paste a GitHub or Git URL, generate the right nodus add command, then run it locally."
->
-  <p>
-    Nodus does not need a registry to install packages. If you have a GitHub repo link,
-    Git URL, or <code>owner/repo</code> reference, you can turn it directly into the right
-    <code>nodus add</code> command.
-  </p>
-
-  <p>Use the package page to:</p>
-  <ul>
-    <li>paste a package reference and normalize it into the right source</li>
-    <li>optionally append <code>--adapter</code> for the target tool</li>
-    <li>copy the exact command you should run in your repo</li>
-  </ul>
-
-  <p>Use the live generator at <a href="/packages/">/packages/</a>.</p>
-</DocsPage>
+<DocsPackageDiscoveryPage locale="en" />

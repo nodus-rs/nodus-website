@@ -1,0 +1,31 @@
+---
+import { localizedPath, type Locale } from "../../i18n";
+import DocsPage from "../../layouts/DocsPage.astro";
+import { getSiteCopy } from "../../site-content";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getSiteCopy(locale);
+const page = copy.docs.packageDiscovery;
+---
+
+<DocsPage
+  title={page.title}
+  description={page.description}
+  locale={locale}
+  pagePath="/docs/package-discovery/"
+>
+  <p set:html={page.intro.replace(/`([^`]+)`/g, "<code>$1</code>")} />
+
+  <p>{page.usePage}</p>
+  <ul>
+    {
+      page.bullets.map((item) => <li set:html={item.replace(/`([^`]+)`/g, "<code>$1</code>")}></li>)
+    }
+  </ul>
+
+  <p>{page.liveGenerator} <a href={localizedPath("/packages/", locale)}>{localizedPath("/packages/", locale)}</a>.</p>
+</DocsPage>

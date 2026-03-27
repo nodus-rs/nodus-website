@@ -1,25 +1,47 @@
 ---
 import "../styles/global.css";
 import logo from "../assets/nodus-mark.svg";
+import { LOCALES, LOCALE_LABELS, getLocaleFromPathname, localizedPath, withLocalePrefix, type Locale } from "../i18n";
 import { siteConfig } from "../site-config";
+import { getSiteCopy } from "../site-content";
 
 interface Props {
   title: string;
   description: string;
+  locale: Locale;
+  pagePath?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, locale, pagePath } = Astro.props;
 const pathname = Astro.url.pathname;
+const currentLocale = getLocaleFromPathname(pathname);
+const copy = getSiteCopy(locale);
+const htmlLang = locale === "zh-cn" ? "zh-CN" : "en";
+
 const navItems = [
-  { href: "/", label: "Home" },
-  { href: siteConfig.docsPath, label: "Docs" },
-  { href: siteConfig.packagesPath, label: "Add Package" },
-  { href: siteConfig.installPath, label: "Install" }
+  { href: localizedPath("/", locale), label: copy.layout.home },
+  { href: localizedPath(siteConfig.docsPath, locale), label: copy.layout.docs },
+  { href: localizedPath(siteConfig.packagesPath, locale), label: copy.layout.addPackage },
+  { href: localizedPath(siteConfig.installPath, locale), label: copy.layout.install }
 ];
+
+const localizedPagePath = pagePath ? localizedPath(pagePath, locale) : undefined;
+const alternateLinks = pagePath
+  ? LOCALES.map((targetLocale) => ({
+      locale: targetLocale,
+      href: new URL(localizedPath(pagePath, targetLocale), Astro.site).toString()
+    }))
+  : [];
+
+const languageOptions = LOCALES.map((targetLocale) => ({
+  locale: targetLocale,
+  label: LOCALE_LABELS[targetLocale],
+  href: withLocalePrefix(pathname, targetLocale)
+}));
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,37 +52,104 @@ const navItems = [
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url.toString()} />
     <meta name="twitter:card" content="summary_large_image" />
+    {localizedPagePath && <link rel="canonical" href={new URL(localizedPagePath, Astro.site).toString()} />}
+    {
+      alternateLinks.map((link) => (
+        <link
+          rel="alternate"
+          hreflang={link.locale === "zh-cn" ? "zh-CN" : "en"}
+          href={link.href}
+        />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL("/", Astro.site).toString()} />
     <link rel="icon" href={logo.src} type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" />
+    <script is:inline>
+      (() => {
+        const storageKey = "nodus-theme";
+        const root = document.documentElement;
+        const getTheme = (preference) => {
+          if (preference === "light" || preference === "dark") {
+            return preference;
+          }
+
+          return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        };
+
+        let preference = "system";
+
+        try {
+          const stored = window.localStorage.getItem(storageKey);
+          if (stored === "light" || stored === "dark") {
+            preference = stored;
+          }
+        } catch {
+          preference = "system";
+        }
+
+        const theme = getTheme(preference);
+        root.dataset.themePreference = preference;
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+      })();
+    </script>
   </head>
   <body>
-    <a class="skip-link" href="#content">Skip to content</a>
+    <a class="skip-link" href="#content">{copy.layout.skipLink}</a>
     <div class="site-shell">
       <header class="site-header">
-        <a class="brand" href="/">
+        <a class="brand" href={localizedPath("/", locale)}>
           <img src={logo.src} alt="" width="36" height="36" />
           <span>Nodus</span>
         </a>
 
         <nav class="site-nav" aria-label="Primary">
           {
-            navItems.map((item) => (
-              <a
-                class={pathname === item.href || pathname.startsWith(item.href) && item.href !== "/" ? "active" : ""}
-                href={item.href}
-                aria-current={pathname === item.href || pathname.startsWith(item.href) && item.href !== "/" ? "page" : undefined}
-              >
-                {item.label}
-              </a>
-            ))
+            navItems.map((item) => {
+              const isActive =
+                pathname === item.href || (item.href !== localizedPath("/", locale) && pathname.startsWith(item.href));
+
+              return (
+                <a
+                  class={isActive ? "active" : ""}
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {item.label}
+                </a>
+              );
+            })
           }
         </nav>
 
         <div class="header-actions">
-          <a class="subtle-link" href={siteConfig.repoUrl}>GitHub</a>
-          <a class="button button-small" href={siteConfig.installPath}>Install</a>
+          <div class="header-control">
+            <label class="header-control-label" for="language-select">{copy.layout.language}</label>
+            <select id="language-select" class="header-select" data-language-select>
+              {
+                languageOptions.map((option) => (
+                  <option value={option.href} selected={currentLocale === option.locale}>
+                    {option.label}
+                  </option>
+                ))
+              }
+            </select>
+          </div>
+          <div class="header-control">
+            <label class="header-control-label" for="theme-select">{copy.layout.theme}</label>
+            <select id="theme-select" class="header-select" data-theme-select>
+              <option value="system">{copy.layout.themeOptions.system}</option>
+              <option value="light">{copy.layout.themeOptions.light}</option>
+              <option value="dark">{copy.layout.themeOptions.dark}</option>
+            </select>
+          </div>
+          <a class="subtle-link" href={siteConfig.repoUrl}>{copy.layout.github}</a>
+          <a class="button button-small" href={localizedPath(siteConfig.installPath, locale)}>
+            {copy.layout.install}
+          </a>
         </div>
       </header>
 
@@ -71,16 +160,74 @@ const navItems = [
       <footer class="site-footer">
         <div>
           <strong>Nodus</strong>
-          <p>Package manager for repo-scoped agent tooling.</p>
+          <p>{copy.layout.footerDescription}</p>
         </div>
         <div class="footer-links">
-          <a href={siteConfig.docsPath}>Docs</a>
-          <a href={siteConfig.packagesPath}>Add Package</a>
+          <a href={localizedPath(siteConfig.docsPath, locale)}>{copy.layout.docs}</a>
+          <a href={localizedPath(siteConfig.packagesPath, locale)}>{copy.layout.addPackage}</a>
           <a href="/install.sh">install.sh</a>
           <a href="/install.ps1">install.ps1</a>
-          <a href={siteConfig.repoUrl}>GitHub</a>
+          <a href={siteConfig.repoUrl}>{copy.layout.github}</a>
         </div>
       </footer>
     </div>
+
+    <script is:inline>
+      (() => {
+        const storageKey = "nodus-theme";
+        const root = document.documentElement;
+        const languageSelect = document.querySelector("[data-language-select]");
+        const themeSelect = document.querySelector("[data-theme-select]");
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+        const resolveTheme = (preference) => {
+          if (preference === "light" || preference === "dark") {
+            return preference;
+          }
+
+          return mediaQuery.matches ? "dark" : "light";
+        };
+
+        const applyTheme = (preference) => {
+          const theme = resolveTheme(preference);
+          root.dataset.themePreference = preference;
+          root.dataset.theme = theme;
+          root.style.colorScheme = theme;
+        };
+
+        if (themeSelect instanceof HTMLSelectElement) {
+          const currentPreference = root.dataset.themePreference || "system";
+          themeSelect.value = currentPreference;
+
+          themeSelect.addEventListener("change", () => {
+            const nextPreference = themeSelect.value;
+
+            if (nextPreference === "system") {
+              window.localStorage.removeItem(storageKey);
+            } else {
+              window.localStorage.setItem(storageKey, nextPreference);
+            }
+
+            applyTheme(nextPreference);
+          });
+        }
+
+        const handleSystemChange = () => {
+          if ((root.dataset.themePreference || "system") === "system") {
+            applyTheme("system");
+          }
+        };
+
+        if (typeof mediaQuery.addEventListener === "function") {
+          mediaQuery.addEventListener("change", handleSystemChange);
+        }
+
+        if (languageSelect instanceof HTMLSelectElement) {
+          languageSelect.addEventListener("change", () => {
+            window.location.assign(languageSelect.value);
+          });
+        }
+      })();
+    </script>
   </body>
 </html>

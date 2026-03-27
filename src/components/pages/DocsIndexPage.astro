@@ -1,0 +1,64 @@
+---
+import { localizedPath, type Locale } from "../../i18n";
+import DocsPage from "../../layouts/DocsPage.astro";
+import { getSiteCopy } from "../../site-content";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getSiteCopy(locale);
+const docs = copy.docs.index;
+const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$1</code>");
+---
+
+<DocsPage
+  title={docs.title}
+  description={docs.description}
+  locale={locale}
+  pagePath="/docs/"
+>
+  <p>{docs.intro}</p>
+
+  <h2 class="docs-overview-heading">{docs.readFirst}</h2>
+  <div class="grid-3">
+    {
+      docs.cards.map((card) => (
+        <article class="step-card">
+          <h3><a href={localizedPath(card.path, locale)}>{card.title}</a></h3>
+          <p set:html={renderInlineCode(card.description)} />
+        </article>
+      ))
+    }
+  </div>
+
+  <h2 class="docs-overview-heading">{docs.coreWorkflow}</h2>
+  <pre><code>{`nodus add owner/repo --adapter codex\nnodus sync\nnodus doctor`}</code></pre>
+
+  <div class="grid-2">
+    <article class="card">
+      <h3>{docs.teamsNeed}</h3>
+      <div class="command-list">
+        {
+          docs.commandList.map((command) => (
+            <div class="command-row">
+              <code>{command.code}</code>
+              <span>{command.label}</span>
+            </div>
+          ))
+        }
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>{docs.whatNext}</h3>
+      <div class="tag-row">
+        <a class="tag" href={localizedPath("/docs/getting-started/", locale)}>{copy.docsNav.gettingStarted}</a>
+        <a class="tag" href={localizedPath("/docs/install/", locale)}>{copy.docsNav.install}</a>
+        <a class="tag" href={localizedPath("/docs/package-discovery/", locale)}>{copy.docsNav.packageDiscovery}</a>
+      </div>
+      <p class="muted">{docs.nextDescription}</p>
+    </article>
+  </div>
+</DocsPage>

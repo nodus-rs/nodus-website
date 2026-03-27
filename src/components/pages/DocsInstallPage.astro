@@ -1,0 +1,41 @@
+---
+import { type Locale } from "../../i18n";
+import DocsPage from "../../layouts/DocsPage.astro";
+import { siteConfig } from "../../site-config";
+import { getSiteCopy } from "../../site-content";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getSiteCopy(locale);
+const page = copy.docs.install;
+---
+
+<DocsPage
+  title={page.title}
+  description={page.description}
+  locale={locale}
+  pagePath="/docs/install/"
+>
+  <h2>{page.publicUrls}</h2>
+  <p>{page.unix}</p>
+  <pre><code>{siteConfig.installUnixCommand}</code></pre>
+  <p>{page.windows}</p>
+  <pre><code>{siteConfig.installWindowsCommand}</code></pre>
+
+  <h2>{page.alternativeMethods}</h2>
+  <p>{page.cargo}</p>
+  <pre><code>cargo install nodus</code></pre>
+  <p>{page.homebrew}</p>
+  <pre><code>brew install nodus-rs/nodus/nodus</code></pre>
+
+  <h2>{page.pinVersion}</h2>
+  <pre><code>{`curl -fsSL https://nodus.elata.ai/install.sh | NODUS_VERSION=${siteConfig.latestVersion} bash`}</code></pre>
+  <pre><code>{`$env:NODUS_VERSION = "${siteConfig.latestVersion}"\nirm https://nodus.elata.ai/install.ps1 | iex`}</code></pre>
+
+  <h2>{page.verify}</h2>
+  <pre><code>curl -fsSL https://nodus.elata.ai/install.sh | bash -s -- --verify</code></pre>
+  <pre><code>{`$script = Join-Path $env:TEMP "nodus-install.ps1"\nirm https://nodus.elata.ai/install.ps1 -OutFile $script\n& $script -Verify\nRemove-Item $script`}</code></pre>
+</DocsPage>

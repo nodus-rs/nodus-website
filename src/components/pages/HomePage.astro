@@ -1,0 +1,363 @@
+---
+import { localizedPath, type Locale } from "../../i18n";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { siteConfig } from "../../site-config";
+import { getSiteCopy } from "../../site-content";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getSiteCopy(locale);
+const home = copy.home;
+const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$1</code>");
+---
+
+<SiteLayout title={home.title} description={home.description} locale={locale} pagePath="/">
+  <section class="hero home-hero">
+    <div class="hero-copy">
+      <h1>{home.heroTitle}</h1>
+      <p>{home.heroDescription}</p>
+    </div>
+
+    <div class="hero-stack home-panels">
+      <div class="install-console home-install-console">
+        <div class="install-console-header">
+          <div class="install-tabs" role="tablist" aria-label={home.installPlatformLabel}>
+            <button
+              class="install-tab active"
+              id="install-tab-unix"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="install-command-panel"
+              data-command={siteConfig.installUnixCommand}
+            >
+              {home.installTabs.unix}
+            </button>
+            <button
+              class="install-tab"
+              id="install-tab-windows"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="install-command-panel"
+              data-command={siteConfig.installWindowsCommand}
+            >
+              {home.installTabs.windows}
+            </button>
+            <button
+              class="install-tab"
+              id="install-tab-cargo"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="install-command-panel"
+              data-command="cargo install nodus"
+            >
+              {home.installTabs.cargo}
+            </button>
+            <button
+              class="install-tab"
+              id="install-tab-homebrew"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="install-command-panel"
+              data-command="brew install nodus-rs/nodus/nodus"
+            >
+              {home.installTabs.homebrew}
+            </button>
+          </div>
+          <span class="install-console-version">{home.latestVersionLabel} {siteConfig.latestVersion}</span>
+        </div>
+        <div id="install-command-panel" role="tabpanel" aria-labelledby="install-tab-unix">
+          <div
+            class="install-command-shell"
+            role="button"
+            tabindex="0"
+            aria-label={home.installCommandAria}
+            data-copy-target="install-command-code"
+          >
+            <span class="install-command-copy" aria-hidden="true">
+              <svg class="copy-icon copy-icon-default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="10" height="10" rx="2"></rect>
+                <path d="M7 15H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg class="copy-icon copy-icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+            </span>
+            <pre class="install-command"><code id="install-command-code">{siteConfig.installUnixCommand}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section home-section home-section-after-hero">
+    <div class="section-header">
+      <div>
+        <h2>{home.featuresTitle}</h2>
+      </div>
+      <p class="section-intro">{home.featuresIntro}</p>
+    </div>
+
+    <div class="grid-3 home-single-column">
+      {
+        home.featureCards.map((card) => (
+          <article class="step-card">
+            <h3>{card.title}</h3>
+            <p>{card.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section home-section">
+    <div class="section-header">
+      <div>
+        <h2>{home.workflowTitle}</h2>
+      </div>
+      <p class="section-intro">{home.workflowIntro}</p>
+    </div>
+
+    <div class="grid-2 home-single-column">
+      <article class="card">
+        <h2>{home.commandCardTitle}</h2>
+        <p class="muted" set:html={renderInlineCode(home.commandCardDescription)} />
+        <div class="tag-row">
+          <span class="tag">github.com/owner/repo</span>
+          <span class="tag">owner/repo</span>
+          <span class="tag">git@example.com/org/pkg.git</span>
+        </div>
+        <div class="command-card-header">
+          <strong>{home.exampleCommandLabel}</strong>
+          <button
+            class="button button-secondary button-inline"
+            id="copy-add-command"
+            type="button"
+            data-copy-target="add-command-code"
+          >
+            {home.installCopyLabels.default}
+          </button>
+        </div>
+        <pre><code id="add-command-code">{`nodus add nodus-rs/nodus
+nodus add nodus-rs/nodus --adapter codex
+nodus add https://git.example.com/team/playbook.git`}</code></pre>
+        <div class="hero-actions">
+          <a class="button button-primary" href={localizedPath("/packages/", locale)}>
+            {home.generateCommand}
+          </a>
+          <a class="button button-secondary" href={localizedPath("/docs/package-discovery/", locale)}>
+            {home.howItWorks}
+          </a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>{home.docsCardTitle}</h2>
+        <p class="muted">{home.docsCardDescription}</p>
+        <div class="command-list">
+          {
+            home.docsLinks.map((link) => (
+              <a class="command-row" href={localizedPath(link.path, locale)}>
+                <code>{link.code}</code>
+                <span>{link.label}</span>
+              </a>
+            ))
+          }
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <script type="application/json" id="home-copy-labels" is:inline>
+    {JSON.stringify(home.installCopyLabels)}
+  </script>
+
+  <script>
+    const installTabs = Array.from(document.querySelectorAll(".install-tab"));
+    const installCommandCode = document.querySelector("#install-command-code");
+    const installCommandPanel = document.querySelector("#install-command-panel");
+    const copyTargets = Array.from(document.querySelectorAll("[data-copy-target]"));
+    const installTabUnix = document.querySelector("#install-tab-unix");
+    const installTabWindows = document.querySelector("#install-tab-windows");
+    const copyLabels = JSON.parse(
+      document.querySelector("#home-copy-labels")?.textContent ?? "{}"
+    ) as { default?: string; copied?: string; failed?: string };
+
+    const prefersWindowsInstall = () => {
+      if (typeof navigator === "undefined") {
+        return false;
+      }
+
+      const userAgentDataPlatform =
+        "userAgentData" in navigator &&
+        typeof navigator.userAgentData === "object" &&
+        navigator.userAgentData !== null &&
+        "platform" in navigator.userAgentData
+          ? String(navigator.userAgentData.platform)
+          : "";
+      const userAgent = navigator.userAgent ?? "";
+      const fingerprint = `${userAgentDataPlatform} ${userAgent}`.toLowerCase();
+
+      return fingerprint.includes("win");
+    };
+
+    const setActiveInstallTab = (nextTab: HTMLButtonElement) => {
+      if (
+        !(installCommandCode instanceof HTMLElement) ||
+        !(installCommandPanel instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      installTabs.forEach((tab) => {
+        if (!(tab instanceof HTMLButtonElement)) {
+          return;
+        }
+
+        const isActive = tab === nextTab;
+        tab.classList.toggle("active", isActive);
+        tab.setAttribute("aria-selected", isActive ? "true" : "false");
+        tab.tabIndex = isActive ? 0 : -1;
+      });
+
+      installCommandCode.textContent = nextTab.dataset.command ?? "";
+      installCommandPanel.setAttribute("aria-labelledby", nextTab.id);
+    };
+
+    installTabs.forEach((tab, index) => {
+      if (!(tab instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      tab.tabIndex = index === 0 ? 0 : -1;
+
+      tab.addEventListener("click", () => {
+        setActiveInstallTab(tab);
+      });
+
+      tab.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") {
+          return;
+        }
+
+        event.preventDefault();
+
+        const direction = event.key === "ArrowRight" ? 1 : -1;
+        const nextIndex = (installTabs.indexOf(tab) + direction + installTabs.length) % installTabs.length;
+        const nextTab = installTabs[nextIndex];
+
+        if (nextTab instanceof HTMLButtonElement) {
+          nextTab.focus();
+          setActiveInstallTab(nextTab);
+        }
+      });
+    });
+
+    if (prefersWindowsInstall() && installTabWindows instanceof HTMLButtonElement) {
+      setActiveInstallTab(installTabWindows);
+    } else if (installTabUnix instanceof HTMLButtonElement) {
+      setActiveInstallTab(installTabUnix);
+    }
+
+    const fallbackCopyText = (value: string) => {
+      const execCommand = Reflect.get(document, "execCommand") as
+        | ((commandId: string, showUI?: boolean, value?: string) => boolean)
+        | undefined;
+      const textarea = document.createElement("textarea");
+      textarea.value = value;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.top = "0";
+      textarea.style.left = "0";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      let copied = false;
+      try {
+        copied = execCommand?.call(document, "copy") ?? false;
+      } catch {
+        copied = false;
+      }
+
+      document.body.removeChild(textarea);
+      return copied;
+    };
+
+    const setCopyState = (element: HTMLElement, label: "default" | "copied" | "failed") => {
+      const labelMap = {
+        default: copyLabels.default ?? "Copy",
+        copied: copyLabels.copied ?? "Copied",
+        failed: copyLabels.failed ?? "Copy failed"
+      };
+
+      if (element instanceof HTMLButtonElement) {
+        element.textContent = labelMap[label];
+        return;
+      }
+
+      element.dataset.copyState = label;
+    };
+
+    const copyText = async (element: HTMLElement) => {
+      const targetId = element.dataset.copyTarget;
+      if (!targetId) {
+        return;
+      }
+
+      const target = document.getElementById(targetId);
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const value = target.textContent ?? "";
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(value);
+          setCopyState(element, "copied");
+        } else if (fallbackCopyText(value)) {
+          setCopyState(element, "copied");
+        } else {
+          setCopyState(element, "failed");
+        }
+      } catch {
+        setCopyState(element, fallbackCopyText(value) ? "copied" : "failed");
+      }
+
+      window.setTimeout(() => {
+        setCopyState(element, "default");
+      }, 1200);
+    };
+
+    copyTargets.forEach((element) => {
+      if (!(element instanceof HTMLElement)) {
+        return;
+      }
+
+      element.addEventListener("click", (event) => {
+        if (element !== event.currentTarget) {
+          return;
+        }
+
+        void copyText(element);
+      });
+
+      element.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") {
+          return;
+        }
+
+        event.preventDefault();
+        void copyText(element);
+      });
+    });
+  </script>
+</SiteLayout>

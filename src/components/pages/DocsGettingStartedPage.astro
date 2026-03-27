@@ -1,0 +1,39 @@
+---
+import { type Locale } from "../../i18n";
+import DocsPage from "../../layouts/DocsPage.astro";
+import { getSiteCopy } from "../../site-content";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getSiteCopy(locale);
+const page = copy.docs.gettingStarted;
+---
+
+<DocsPage
+  title={page.title}
+  description={page.description}
+  locale={locale}
+  pagePath="/docs/getting-started/"
+>
+  <p>{page.installLabel}</p>
+  <pre><code>curl -fsSL https://nodus.elata.ai/install.sh | bash</code></pre>
+
+  <p>{page.firstPackageLabel}</p>
+  <pre><code>nodus add nodus-rs/nodus --adapter codex</code></pre>
+
+  <p>{page.thatCommandLabel}</p>
+  <ul>
+    {
+      page.bulletPoints.map((item) => <li set:html={item.replace(/`([^`]+)`/g, "<code>$1</code>")}></li>)
+    }
+  </ul>
+
+  <p>{page.validateLabel}</p>
+  <pre><code>nodus doctor</code></pre>
+
+  <p>{page.nextStepsLabel}</p>
+  <pre><code>{`nodus info nodus-rs/nodus\nnodus update\nnodus sync --locked`}</code></pre>
+</DocsPage>

@@ -1,23 +1,38 @@
 ---
+import { localizedPath, type Locale } from "../i18n";
+import { getSiteCopy } from "../site-content";
 import SiteLayout from "./SiteLayout.astro";
 
 interface Props {
   title: string;
   description: string;
+  locale: Locale;
+  pagePath: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, locale, pagePath } = Astro.props;
+const copy = getSiteCopy(locale);
+const pageTitle = title === copy.docs.titleSuffix ? title : `${title} | ${copy.docs.titleSuffix}`;
 ---
 
-<SiteLayout title={`${title} | Nodus docs`} description={description}>
+<SiteLayout
+  title={pageTitle}
+  description={description}
+  locale={locale}
+  pagePath={pagePath}
+>
   <section class="page-hero docs-page-hero">
     <h1>{title}</h1>
     <p>{description}</p>
     <div class="tag-row">
-      <a class="tag" href="/docs/">Overview</a>
-      <a class="tag" href="/docs/getting-started/">Getting started</a>
-      <a class="tag" href="/docs/install/">Install</a>
-      <a class="tag" href="/docs/package-discovery/">Add package from link</a>
+      <a class="tag" href={localizedPath("/docs/", locale)}>{copy.docsNav.overview}</a>
+      <a class="tag" href={localizedPath("/docs/getting-started/", locale)}>
+        {copy.docsNav.gettingStarted}
+      </a>
+      <a class="tag" href={localizedPath("/docs/install/", locale)}>{copy.docsNav.install}</a>
+      <a class="tag" href={localizedPath("/docs/package-discovery/", locale)}>
+        {copy.docsNav.packageDiscovery}
+      </a>
     </div>
   </section>
 
