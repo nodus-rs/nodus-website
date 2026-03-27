@@ -13,59 +13,53 @@ const packages = (await getCollection("packages"))
   description="Nodus installs repo-scoped agent packages from GitHub or local paths, locks exact revisions, and writes the runtime files your tools actually use."
 >
   <section class="hero">
-    <div>
-      <span class="eyebrow">Local-first workflow • exact lockfiles • multi-adapter outputs</span>
-      <h1>Add agent packages to your repo with one command.</h1>
+    <div class="hero-copy">
+      <span class="eyebrow">Repo-scoped AI tooling • exact lockfiles • adapter-aware sync</span>
+      <h1>Install Nodus fast. Keep your repo outputs exact.</h1>
       <p>
-        Nodus installs skills, agents, rules, and commands from GitHub or local paths,
-        locks exact revisions, and writes the runtime files your tools actually use.
+        A CLI package manager for agent tooling that locks revisions and writes only the files
+        your adapters need.
       </p>
 
       <div class="hero-actions">
-        <a class="button button-primary" href={siteConfig.installPath}>Install Nodus</a>
-        <a class="button button-secondary" href={siteConfig.docsPath}>Read the docs</a>
+        <a class="button button-primary" href={siteConfig.installPath}>Install guide</a>
+        <a class="button button-secondary" href={siteConfig.packagesPath}>Browse packages</a>
       </div>
 
-      <div class="hero-meta">
-        <span>Latest release: {siteConfig.latestVersion}</span>
-        <span>Adapters: Codex, Claude, Cursor, Copilot, Agents, OpenCode</span>
+      <div class="hero-meta hero-meta-tags">
+        <span>Latest {siteConfig.latestVersion}</span>
+        <span>Codex</span>
+        <span>Claude</span>
+        <span>Cursor</span>
+        <span>Copilot</span>
+        <span>Agents</span>
+        <span>OpenCode</span>
       </div>
     </div>
 
-    <div class="hero-grid">
-      <div class="command-card">
-        <div class="command-card-header">
-          <strong>Quick start</strong>
-          <div class="traffic-lights" aria-hidden="true">
-            <span />
-            <span />
-            <span />
+    <div class="hero-stack">
+      <div class="install-console">
+        <div class="install-console-header">
+          <div class="install-tabs" aria-hidden="true">
+            <span class="install-tab active">macOS / Linux</span>
+            <span class="install-tab">PowerShell</span>
           </div>
+          <a class="install-link" href={siteConfig.installPath}>All install options</a>
         </div>
-        <pre><code>{siteConfig.installUnixCommand}
-nodus add nodus-rs/nodus --adapter codex
-nodus doctor</code></pre>
+        <pre class="install-command"><code>{siteConfig.installUnixCommand}</code></pre>
+        <div class="secondary-command">
+          <span class="secondary-command-label">Windows</span>
+          <code>{siteConfig.installWindowsCommand}</code>
+        </div>
       </div>
 
-      <div class="command-card">
+      <div class="command-card command-card-compact">
         <div class="command-card-header">
-          <strong>What Nodus manages</strong>
-          <span>Generated output</span>
+          <strong>Then run</strong>
+          <span>First repo setup</span>
         </div>
-        <div class="command-list">
-          <div class="command-row">
-            <code>.codex/skills/&lt;skill&gt;_&lt;source&gt;/</code>
-            <span>Codex runtime files</span>
-          </div>
-          <div class="command-row">
-            <code>.claude/skills/&lt;skill&gt;_&lt;source&gt;/</code>
-            <span>Claude package output</span>
-          </div>
-          <div class="command-row">
-            <code>.github/agents/&lt;agent&gt;_&lt;source&gt;.agent.md</code>
-            <span>GitHub agent assets</span>
-          </div>
-        </div>
+        <pre><code>nodus add acme/team-pack --adapter codex
+nodus doctor</code></pre>
       </div>
     </div>
   </section>
@@ -73,78 +67,32 @@ nodus doctor</code></pre>
   <section class="section">
     <div class="section-header">
       <div>
-        <span class="eyebrow">How it works</span>
-        <h2>Fast, deterministic, and built for real repos</h2>
+        <span class="eyebrow">Why it works</span>
+        <h2>Three steps. Reviewable output.</h2>
       </div>
       <p class="section-intro">
-        Nodus keeps the package-manager shape simple: add a dependency, lock the exact
-        source revision, and materialize only the runtime files your chosen adapters need.
+        Nodus keeps the flow small: add a package, lock the source, sync the adapter files.
       </p>
     </div>
 
     <div class="grid-3">
       <article class="step-card">
         <span class="pill">01</span>
-        <h3>Add from GitHub, Git, or a local path</h3>
-        <p>
-          Pull in public packages, private repos, or local checkouts without changing your
-          workflow or forcing a registry migration first.
-        </p>
+        <h3>Add from GitHub or local paths</h3>
+        <p>Pull in packages without changing how the rest of the repo works.</p>
+        <code class="inline-command">nodus add org/pkg --adapter codex</code>
       </article>
-
       <article class="step-card">
         <span class="pill">02</span>
-        <h3>Pin exactly what you asked for</h3>
-        <p>
-          Nodus records the dependency in <code>nodus.toml</code>, resolves the version,
-          and writes an exact lockfile so CI and teammates stay consistent.
-        </p>
+        <h3>Lock exact revisions</h3>
+        <p>Keep teammates and CI on the same package graph with deterministic inputs.</p>
+        <code class="inline-command">nodus sync --locked</code>
       </article>
-
       <article class="step-card">
         <span class="pill">03</span>
-        <h3>Generate only the runtime files your tools use</h3>
-        <p>
-          Output lands in adapter-specific folders such as <code>.codex/</code>,
-          <code>.claude/</code>, <code>.cursor/</code>, or <code>.github/</code>.
-        </p>
-      </article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-header">
-      <div>
-        <span class="eyebrow">Core capabilities</span>
-        <h2>CLI-first, not workflow-heavy</h2>
-      </div>
-      <p class="section-intro">
-        Most repos only need a handful of commands. Nodus is designed for quick,
-        transactional operations rather than a long-running control plane.
-      </p>
-    </div>
-
-    <div class="grid-3">
-      <article class="feature-card">
-        <h3>Repo-scoped package management</h3>
-        <p>
-          Install packages into the current repo, lock them, and sync managed files without
-          touching unrelated local state.
-        </p>
-      </article>
-      <article class="feature-card">
-        <h3>Adapter-aware outputs</h3>
-        <p>
-          Generate runtime files for Codex, Claude, Cursor, Copilot, Agents, and OpenCode
-          from one manifest.
-        </p>
-      </article>
-      <article class="feature-card">
-        <h3>Predictable CI and teammate sync</h3>
-        <p>
-          Use <code>nodus sync --locked</code> or <code>nodus sync --frozen</code> to
-          keep repo automation stable and reviewable.
-        </p>
+        <h3>Write adapter-specific outputs</h3>
+        <p>Generate only the runtime files each tool actually reads inside the repo.</p>
+        <code class="inline-command">.codex/ .claude/ .github/</code>
       </article>
     </div>
   </section>
@@ -178,33 +126,6 @@ nodus doctor</code></pre>
           </article>
         ))
       }
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="grid-2">
-      <article class="card">
-        <span class="eyebrow">Install</span>
-        <h2>Use a clean public install URL</h2>
-        <p>
-          The site publishes stable installer endpoints so the public command stays clean
-          even if release infrastructure changes behind the scenes later.
-        </p>
-        <pre><code>{siteConfig.installUnixCommand}</code></pre>
-      </article>
-
-      <article class="card">
-        <span class="eyebrow">Docs</span>
-        <h2>Get productive quickly</h2>
-        <p>
-          Start with install, add your first package, then validate with <code>nodus doctor</code>.
-          The docs cover manifest shape, update flows, and common package-management tasks.
-        </p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="/docs/getting-started/">Getting started</a>
-          <a class="button button-secondary" href="/install/">Install options</a>
-        </div>
-      </article>
     </div>
   </section>
 </SiteLayout>

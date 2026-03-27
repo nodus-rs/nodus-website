@@ -4,12 +4,14 @@
   --bg: #f3eee7;
   --bg-elevated: rgba(255, 255, 255, 0.75);
   --bg-strong: #101820;
+  --bg-code: #0b1118;
   --text: #13212e;
   --muted: #566678;
   --line: rgba(19, 33, 46, 0.14);
   --accent: #d95f27;
   --accent-strong: #b94511;
   --accent-soft: rgba(217, 95, 39, 0.12);
+  --code-line: rgba(244, 237, 228, 0.12);
   --green-soft: rgba(0, 140, 110, 0.12);
   --green-text: #006d59;
   --shadow: 0 28px 70px rgba(16, 24, 32, 0.12);
@@ -31,8 +33,8 @@ body {
   margin: 0;
   color: var(--text);
   background:
-    radial-gradient(circle at top right, rgba(217, 95, 39, 0.18), transparent 24rem),
-    radial-gradient(circle at left 18%, rgba(0, 140, 110, 0.16), transparent 20rem),
+    radial-gradient(circle at top right, rgba(217, 95, 39, 0.14), transparent 24rem),
+    radial-gradient(circle at left 18%, rgba(0, 140, 110, 0.1), transparent 20rem),
     linear-gradient(180deg, #f7f2ec 0%, #f3eee7 48%, #efe8de 100%);
   font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
   line-height: 1.6;
@@ -92,7 +94,7 @@ pre {
   padding: 0.35rem;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.42);
   backdrop-filter: blur(18px);
 }
 
@@ -105,12 +107,12 @@ pre {
 .site-nav a {
   padding: 0.55rem 0.95rem;
   border-radius: 999px;
-  color: var(--muted);
+  color: color-mix(in srgb, var(--muted) 84%, white);
 }
 
 .site-nav a.active,
 .site-nav a:hover {
-  background: rgba(19, 33, 46, 0.08);
+  background: rgba(19, 33, 46, 0.06);
   color: var(--text);
 }
 
@@ -158,7 +160,8 @@ pre {
 .button-small {
   padding: 0.7rem 1rem;
   color: white;
-  background: var(--bg-strong);
+  background: linear-gradient(135deg, var(--accent) 0%, #ef7c3a 100%);
+  box-shadow: 0 16px 24px rgba(217, 95, 39, 0.22);
 }
 
 .hero {
@@ -166,7 +169,11 @@ pre {
   grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.95fr);
   gap: 2rem;
   align-items: center;
-  padding: 3.5rem 0 2rem;
+  padding: 3.5rem 0 2.4rem;
+}
+
+.hero-copy {
+  max-width: 39rem;
 }
 
 .eyebrow {
@@ -202,7 +209,7 @@ pre {
   display: flex;
   flex-wrap: wrap;
   gap: 0.9rem;
-  margin: 1.6rem 0 1.25rem;
+  margin: 1.25rem 0 1rem;
 }
 
 .hero-meta {
@@ -217,6 +224,13 @@ pre {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+}
+
+.hero-meta-tags span {
+  padding: 0.38rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(19, 33, 46, 0.08);
+  background: rgba(255, 255, 255, 0.54);
 }
 
 .panel,
@@ -235,6 +249,10 @@ pre {
 .command-card {
   padding: 1.35rem;
   overflow: hidden;
+}
+
+.command-card-compact pre {
+  font-size: 0.95rem;
 }
 
 .command-card-header {
@@ -262,14 +280,120 @@ pre {
   margin: 0;
   padding: 1rem 1.05rem;
   border-radius: 16px;
-  background: #0f1720;
+  background: var(--bg-code);
   color: #f4ede4;
   overflow-x: auto;
 }
 
-.hero-grid {
+.hero-stack {
   display: grid;
   gap: 1rem;
+}
+
+.install-console {
+  position: relative;
+  padding: 1.25rem;
+  border: 1px solid rgba(11, 17, 24, 0.08);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04)),
+    linear-gradient(145deg, #101820 0%, #0b1118 100%);
+  box-shadow:
+    0 28px 60px rgba(10, 16, 22, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: #f4ede4;
+}
+
+.install-console::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(transparent 95%, rgba(255, 255, 255, 0.02) 95%),
+    linear-gradient(90deg, transparent 95%, rgba(255, 255, 255, 0.02) 95%);
+  background-size: 100% 2.2rem, 2.2rem 100%;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.install-console-header,
+.secondary-command {
+  position: relative;
+  z-index: 1;
+}
+
+.install-console-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.install-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.install-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.32rem 0.68rem;
+  border-radius: 999px;
+  background: rgba(244, 237, 228, 0.08);
+  color: rgba(244, 237, 228, 0.68);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.install-tab.active {
+  background: rgba(217, 95, 39, 0.18);
+  color: #fff2ea;
+}
+
+.install-link {
+  color: rgba(244, 237, 228, 0.72);
+  font-size: 0.88rem;
+}
+
+.install-link:hover {
+  color: white;
+}
+
+.install-command {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 1.2rem 1.15rem;
+  border: 1px solid var(--code-line);
+  border-radius: 18px;
+  background: rgba(5, 8, 13, 0.7);
+  color: #fff6ee;
+  overflow-x: auto;
+  font-size: clamp(0.98rem, 1.35vw, 1.08rem);
+}
+
+.secondary-command {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(244, 237, 228, 0.09);
+  color: rgba(244, 237, 228, 0.76);
+}
+
+.secondary-command-label {
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(244, 237, 228, 0.58);
+}
+
+.secondary-command code {
+  font-size: 0.92rem;
+  word-break: break-all;
 }
 
 .command-list {
@@ -369,6 +493,17 @@ pre {
 .pill {
   background: var(--green-soft);
   color: var(--green-text);
+}
+
+.inline-command {
+  display: inline-flex;
+  margin-top: 0.55rem;
+  padding: 0.42rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(19, 33, 46, 0.08);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 500;
 }
 
 .tag {
@@ -516,6 +651,12 @@ pre {
   .packages-grid {
     grid-template-columns: 1fr;
   }
+
+  .install-console-header {
+    align-items: start;
+    grid-template-columns: 1fr;
+    display: grid;
+  }
 }
 
 @media (max-width: 640px) {
@@ -537,5 +678,20 @@ pre {
   .hero-meta,
   .section-header {
     display: grid;
+  }
+
+  .hero h1,
+  .page-hero h1 {
+    line-height: 0.98;
+  }
+
+  .install-console,
+  .command-card {
+    padding: 1rem;
+  }
+
+  .install-command,
+  .command-card pre {
+    font-size: 0.92rem;
   }
 }
