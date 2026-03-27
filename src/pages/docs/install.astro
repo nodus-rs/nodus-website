@@ -1,5 +1,6 @@
 ---
 import DocsPage from "../../layouts/DocsPage.astro";
+import { siteConfig } from "../../site-config";
 ---
 
 <DocsPage
@@ -19,8 +20,8 @@ import DocsPage from "../../layouts/DocsPage.astro";
   <pre><code>brew install nodus-rs/nodus/nodus</code></pre>
 
   <h2>Pin a version</h2>
-  <pre><code>curl -fsSL https://nodus.elata.ai/install.sh | NODUS_VERSION=v0.5.2 bash</code></pre>
-  <pre><code>{`$env:NODUS_VERSION = "v0.5.2"\nirm https://nodus.elata.ai/install.ps1 | iex`}</code></pre>
+  <pre><code>{`curl -fsSL https://nodus.elata.ai/install.sh | NODUS_VERSION=${siteConfig.latestVersion} bash`}</code></pre>
+  <pre><code>{`$env:NODUS_VERSION = "${siteConfig.latestVersion}"\nirm https://nodus.elata.ai/install.ps1 | iex`}</code></pre>
 
   <h2>Verify checksums</h2>
   <pre><code>curl -fsSL https://nodus.elata.ai/install.sh | bash -s -- --verify</code></pre>

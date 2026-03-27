@@ -27,6 +27,12 @@ To refresh them from a local `nodus` checkout:
 NODUS_SOURCE_DIR=../nodus npm run sync:installers
 ```
 
+To sync installers and bump the published release version together:
+
+```bash
+NODUS_SOURCE_DIR=../nodus NODUS_RELEASE_TAG=v0.5.2 npm run sync:release
+```
+
 ## Cloudflare Pages
 
 Use these build settings in Cloudflare Pages:

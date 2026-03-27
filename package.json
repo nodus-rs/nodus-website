@@ -12,6 +12,7 @@
     "preview": "npm run build && wrangler dev",
     "check": "astro check",
     "sync:installers": "node ./scripts/sync-installers.mjs",
+    "sync:release": "node ./scripts/sync-release.mjs",
     "deploy": "npm run build && wrangler deploy",
     "cf-typegen": "wrangler types"
   },
