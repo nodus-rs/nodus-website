@@ -127,8 +127,13 @@ const languageOptions = LOCALES.map((targetLocale) => ({
 
         <div class="header-actions">
           <div class="header-control">
-            <label class="header-control-label" for="language-select">{copy.layout.language}</label>
-            <select id="language-select" class="header-select" data-language-select>
+            <select
+              id="language-select"
+              class="header-select"
+              data-language-select
+              aria-label={copy.layout.language}
+              title={copy.layout.language}
+            >
               {
                 languageOptions.map((option) => (
                   <option value={option.href} selected={currentLocale === option.locale}>
@@ -139,8 +144,13 @@ const languageOptions = LOCALES.map((targetLocale) => ({
             </select>
           </div>
           <div class="header-control">
-            <label class="header-control-label" for="theme-select">{copy.layout.theme}</label>
-            <select id="theme-select" class="header-select" data-theme-select>
+            <select
+              id="theme-select"
+              class="header-select"
+              data-theme-select
+              aria-label={copy.layout.theme}
+              title={copy.layout.theme}
+            >
               <option value="system">{copy.layout.themeOptions.system}</option>
               <option value="light">{copy.layout.themeOptions.light}</option>
               <option value="dark">{copy.layout.themeOptions.dark}</option>

@@ -26,20 +26,48 @@
   --nav-active-bg: rgba(20, 32, 45, 0.07);
   --button-secondary-bg: rgba(255, 255, 255, 0.78);
   --button-secondary-hover-bg: rgba(255, 255, 255, 0.92);
+  --console-action-bg: rgba(244, 237, 228, 0.12);
+  --console-action-border: rgba(244, 237, 228, 0.14);
+  --console-action-text: #fff6ee;
+  --console-action-hover-bg: rgba(244, 237, 228, 0.18);
+  --console-tab-bg: rgba(244, 237, 228, 0.08);
+  --console-tab-active-text: #fff2ea;
+  --console-tab-hover-text: #fff6ee;
   --chip-bg: rgba(255, 255, 255, 0.7);
   --chip-bg-strong: rgba(255, 255, 255, 0.58);
   --input-bg: rgba(255, 255, 255, 0.8);
   --form-section-bg: rgba(255, 255, 255, 0.46);
+  --surface-inset-highlight: rgba(255, 255, 255, 0.1);
+  --surface-inset-highlight-strong: rgba(255, 255, 255, 0.14);
+  --surface-inset-highlight-accent: rgba(255, 255, 255, 0.18);
   --card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.64));
   --card-bg-strong: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.78));
   --card-bg-muted: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.68));
   --toggle-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.76));
   --toggle-bg-active: linear-gradient(180deg, rgba(255, 243, 236, 0.98), rgba(255, 238, 229, 0.9));
+  --control-shadow-rest: 0 8px 22px rgba(16, 24, 32, 0.05);
+  --control-shadow-hover: 0 14px 30px rgba(16, 24, 32, 0.08);
+  --control-shadow-active: 0 16px 28px rgba(200, 90, 39, 0.08);
+  --toggle-shadow:
+    var(--control-shadow-rest),
+    inset 0 1px 0 var(--surface-inset-highlight);
+  --toggle-shadow-hover:
+    var(--control-shadow-hover),
+    inset 0 1px 0 var(--surface-inset-highlight-strong);
+  --toggle-shadow-active:
+    var(--control-shadow-active),
+    inset 0 1px 0 var(--surface-inset-highlight-accent);
+  --control-input-shadow: inset 0 1px 1px rgba(16, 24, 32, 0.08);
+  --toggle-control-checked-ring: rgba(255, 255, 255, 0.94);
   --empty-state-bg: rgba(255, 255, 255, 0.5);
   --footer-border: var(--line);
   --accent: #c85a27;
+  --accent-gradient-end: #ef7b3a;
   --accent-strong: #a94412;
   --accent-soft: rgba(200, 90, 39, 0.12);
+  --accent-shadow: 0 18px 34px rgba(200, 90, 39, 0.24);
+  --accent-shadow-strong: 0 22px 38px rgba(200, 90, 39, 0.28);
+  --accent-shadow-small: 0 16px 24px rgba(200, 90, 39, 0.2);
   --accent-green: #0d7a62;
   --accent-green-soft: rgba(13, 122, 98, 0.12);
   --selection-bg: rgba(200, 90, 39, 0.2);
@@ -92,20 +120,48 @@
   --nav-active-bg: rgba(255, 255, 255, 0.08);
   --button-secondary-bg: rgba(255, 255, 255, 0.06);
   --button-secondary-hover-bg: rgba(255, 255, 255, 0.1);
+  --console-action-bg: rgba(255, 255, 255, 0.08);
+  --console-action-border: rgba(255, 255, 255, 0.12);
+  --console-action-text: rgba(245, 239, 231, 0.94);
+  --console-action-hover-bg: rgba(255, 255, 255, 0.14);
+  --console-tab-bg: rgba(255, 255, 255, 0.07);
+  --console-tab-active-text: rgba(255, 245, 237, 0.98);
+  --console-tab-hover-text: rgba(255, 247, 241, 0.98);
   --chip-bg: rgba(255, 255, 255, 0.06);
   --chip-bg-strong: rgba(255, 255, 255, 0.08);
   --input-bg: rgba(255, 255, 255, 0.05);
   --form-section-bg: rgba(255, 255, 255, 0.04);
+  --surface-inset-highlight: rgba(255, 255, 255, 0.06);
+  --surface-inset-highlight-strong: rgba(255, 255, 255, 0.1);
+  --surface-inset-highlight-accent: rgba(255, 255, 255, 0.1);
   --card-bg: linear-gradient(180deg, rgba(18, 26, 36, 0.9), rgba(14, 21, 30, 0.82));
   --card-bg-strong: linear-gradient(180deg, rgba(20, 28, 39, 0.92), rgba(14, 21, 30, 0.84));
   --card-bg-muted: linear-gradient(180deg, rgba(20, 28, 39, 0.86), rgba(14, 21, 30, 0.78));
   --toggle-bg: linear-gradient(180deg, rgba(23, 31, 42, 0.96), rgba(15, 22, 31, 0.86));
   --toggle-bg-active: linear-gradient(180deg, rgba(242, 137, 84, 0.14), rgba(242, 137, 84, 0.08));
+  --control-shadow-rest: 0 12px 28px rgba(0, 0, 0, 0.24);
+  --control-shadow-hover: 0 18px 34px rgba(0, 0, 0, 0.3);
+  --control-shadow-active: 0 20px 36px rgba(242, 137, 84, 0.12);
+  --toggle-shadow:
+    var(--control-shadow-rest),
+    inset 0 1px 0 var(--surface-inset-highlight);
+  --toggle-shadow-hover:
+    var(--control-shadow-hover),
+    inset 0 1px 0 var(--surface-inset-highlight-strong);
+  --toggle-shadow-active:
+    var(--control-shadow-active),
+    inset 0 1px 0 var(--surface-inset-highlight-accent);
+  --control-input-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.28);
+  --toggle-control-checked-ring: rgba(8, 12, 18, 0.92);
   --empty-state-bg: rgba(255, 255, 255, 0.03);
   --footer-border: rgba(255, 255, 255, 0.1);
   --accent: #f28954;
+  --accent-gradient-end: #ffb183;
   --accent-strong: #ff9c6b;
   --accent-soft: rgba(242, 137, 84, 0.16);
+  --accent-shadow: 0 20px 38px rgba(242, 137, 84, 0.22);
+  --accent-shadow-strong: 0 24px 42px rgba(242, 137, 84, 0.28);
+  --accent-shadow-small: 0 18px 28px rgba(242, 137, 84, 0.2);
   --accent-green: #45c6a3;
   --accent-green-soft: rgba(69, 198, 163, 0.12);
   --selection-bg: rgba(242, 137, 84, 0.28);
@@ -326,16 +382,6 @@ main {
 
 .header-control {
   display: inline-flex;
-  flex-direction: column;
-  gap: 0.28rem;
-}
-
-.header-control-label {
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .header-select {
@@ -389,12 +435,12 @@ main {
 
 .button-primary {
   color: white;
-  background: linear-gradient(135deg, var(--accent) 0%, #ef7b3a 100%);
-  box-shadow: 0 18px 34px rgba(200, 90, 39, 0.24);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-gradient-end) 100%);
+  box-shadow: var(--accent-shadow);
 }
 
 .button-primary:hover {
-  box-shadow: 0 22px 38px rgba(200, 90, 39, 0.28);
+  box-shadow: var(--accent-shadow-strong);
 }
 
 .button-secondary {
@@ -410,8 +456,8 @@ main {
 .button-small {
   padding: 0.7rem 1rem;
   color: white;
-  background: linear-gradient(135deg, var(--accent) 0%, #ef7b3a 100%);
-  box-shadow: 0 16px 24px rgba(200, 90, 39, 0.2);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-gradient-end) 100%);
+  box-shadow: var(--accent-shadow-small);
 }
 
 .hero {
@@ -551,13 +597,13 @@ main {
 }
 
 .install-console-actions .button-secondary {
-  background: rgba(244, 237, 228, 0.12);
-  border-color: rgba(244, 237, 228, 0.14);
-  color: #fff6ee;
+  background: var(--console-action-bg);
+  border-color: var(--console-action-border);
+  color: var(--console-action-text);
 }
 
 .install-console-actions .button-secondary:hover {
-  background: rgba(244, 237, 228, 0.18);
+  background: var(--console-action-hover-bg);
 }
 
 .traffic-lights {
@@ -644,7 +690,7 @@ main {
   padding: 0.32rem 0.68rem;
   border: 1px solid transparent;
   border-radius: 999px;
-  background: rgba(244, 237, 228, 0.08);
+  background: var(--console-tab-bg);
   color: color-mix(in srgb, var(--code-text) 68%, transparent);
   font-size: 0.8rem;
   font-weight: 600;
@@ -653,11 +699,11 @@ main {
 .install-tab.active,
 .install-tab[aria-selected="true"] {
   background: var(--accent-soft);
-  color: #fff2ea;
+  color: var(--console-tab-active-text);
 }
 
 .install-tab:hover {
-  color: #fff6ee;
+  color: var(--console-tab-hover-text);
 }
 
 .install-command-shell {
@@ -1110,7 +1156,7 @@ main {
   border: 1px solid var(--line);
   border-radius: 22px;
   background: var(--form-section-bg);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 var(--surface-inset-highlight);
 }
 
 .packages-form-section-copy h3 {
@@ -1217,9 +1263,7 @@ main {
   border-radius: 18px;
   background: var(--toggle-bg);
   color: var(--text);
-  box-shadow:
-    0 8px 22px rgba(16, 24, 32, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: var(--toggle-shadow);
   transition:
     border-color 160ms ease,
     background 160ms ease,
@@ -1235,9 +1279,7 @@ main {
 
 .toggle-option:hover {
   border-color: var(--line-strong);
-  box-shadow:
-    0 14px 30px rgba(16, 24, 32, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  box-shadow: var(--toggle-shadow-hover);
   transform: translateY(-1px);
 }
 
@@ -1250,7 +1292,7 @@ main {
   border: 1.25px solid var(--line-strong);
   border-radius: 999px;
   background: var(--surface-strong);
-  box-shadow: inset 0 1px 1px rgba(16, 24, 32, 0.08);
+  box-shadow: var(--control-input-shadow);
   transition:
     border-color 160ms ease,
     background-color 160ms ease,
@@ -1265,7 +1307,7 @@ main {
 .toggle-option input:checked {
   border-color: var(--accent);
   background: var(--accent);
-  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.94);
+  box-shadow: inset 0 0 0 1.5px var(--toggle-control-checked-ring);
 }
 
 .toggle-option input:focus-visible {
@@ -1276,9 +1318,7 @@ main {
 .toggle-option:has(input:checked) {
   border-color: var(--accent-soft);
   background: var(--toggle-bg-active);
-  box-shadow:
-    0 16px 28px rgba(200, 90, 39, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  box-shadow: var(--toggle-shadow-active);
 }
 
 .toggle-option:has(input:checked) span {
