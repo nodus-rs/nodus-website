@@ -94,7 +94,7 @@
   --container: 1180px;
 }
 
-:where(html[data-theme="dark"], body[data-theme="dark"]) {
+:root[data-theme="dark"] {
   color-scheme: dark;
   --bg-top: #111823;
   --bg: #0c121a;
