@@ -11,6 +11,7 @@ interface Props {
 const { locale } = Astro.props;
 const copy = getSiteCopy(locale);
 const page = copy.docs.install;
+const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$1</code>");
 ---
 
 <DocsPage
@@ -24,6 +25,8 @@ const page = copy.docs.install;
   <pre><code>{siteConfig.installUnixCommand}</code></pre>
   <p>{page.windows}</p>
   <pre><code>{siteConfig.installWindowsCommand}</code></pre>
+
+  <p class="muted" set:html={renderInlineCode(page.afterInstall)} />
 
   <h2>{page.alternativeMethods}</h2>
   <p>{page.cargo}</p>

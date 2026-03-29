@@ -144,9 +144,9 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
             {home.installCopyLabels.default}
           </button>
         </div>
-        <pre><code id="add-command-code">{`nodus add nodus-rs/nodus
-nodus add nodus-rs/nodus --adapter codex
-nodus add https://git.example.com/team/playbook.git`}</code></pre>
+        <pre><code id="add-command-code">{`nodus add nodus-rs/nodus --adapter <adapter>
+nodus doctor
+nodus --help`}</code></pre>
         <div class="hero-actions">
           <a class="button button-primary" href={localizedPath("/packages/", locale)}>
             {home.generateCommand}
