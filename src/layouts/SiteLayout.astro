@@ -19,10 +19,10 @@ const copy = getSiteCopy(locale);
 const htmlLang = locale === "zh-cn" ? "zh-CN" : "en";
 
 const navItems = [
-  { href: localizedPath("/", locale), label: copy.layout.home },
-  { href: localizedPath(siteConfig.docsPath, locale), label: copy.layout.docs },
-  { href: localizedPath(siteConfig.packagesPath, locale), label: copy.layout.addPackage },
-  { href: localizedPath(siteConfig.installPath, locale), label: copy.layout.install }
+  { id: "home", href: localizedPath("/", locale), label: copy.layout.home },
+  { id: "docs", href: localizedPath(siteConfig.docsPath, locale), label: copy.layout.docs },
+  { id: "packages", href: localizedPath(siteConfig.packagesPath, locale), label: copy.layout.addPackage },
+  { id: "install", href: localizedPath(siteConfig.installPath, locale), label: copy.layout.install }
 ];
 
 const localizedPagePath = pagePath ? localizedPath(pagePath, locale) : undefined;
@@ -114,7 +114,7 @@ const languageOptions = LOCALES.map((targetLocale) => ({
 
               return (
                 <a
-                  class={isActive ? "active" : ""}
+                  class={[item.id === "install" ? "nav-install" : "", isActive ? "active" : ""].filter(Boolean).join(" ")}
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
                 >
@@ -157,9 +157,6 @@ const languageOptions = LOCALES.map((targetLocale) => ({
             </select>
           </div>
           <a class="subtle-link" href={siteConfig.repoUrl}>{copy.layout.github}</a>
-          <a class="button button-small" href={localizedPath(siteConfig.installPath, locale)}>
-            {copy.layout.install}
-          </a>
         </div>
       </header>
 

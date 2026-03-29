@@ -384,11 +384,22 @@ main {
   white-space: nowrap;
 }
 
+.site-nav a.nav-install {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 .site-nav a.active,
 .site-nav a[aria-current="page"],
 .site-nav a:hover {
   background: var(--nav-active-bg);
   color: var(--text);
+}
+
+.site-nav a.nav-install.active,
+.site-nav a.nav-install[aria-current="page"],
+.site-nav a.nav-install:hover {
+  color: var(--accent-strong);
 }
 
 .header-actions {
