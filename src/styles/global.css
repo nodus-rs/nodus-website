@@ -36,6 +36,9 @@
   --chip-bg: rgba(255, 255, 255, 0.7);
   --chip-bg-strong: rgba(255, 255, 255, 0.58);
   --input-bg: rgba(255, 255, 255, 0.8);
+  --control-color-scheme: light;
+  --control-menu-bg: #fffaf4;
+  --control-menu-text: #14202d;
   --form-section-bg: rgba(255, 255, 255, 0.46);
   --surface-inset-highlight: rgba(255, 255, 255, 0.1);
   --surface-inset-highlight-strong: rgba(255, 255, 255, 0.14);
@@ -130,6 +133,9 @@
   --chip-bg: rgba(255, 255, 255, 0.06);
   --chip-bg-strong: rgba(255, 255, 255, 0.08);
   --input-bg: rgba(255, 255, 255, 0.05);
+  --control-color-scheme: dark;
+  --control-menu-bg: #17222d;
+  --control-menu-text: #f5efe7;
   --form-section-bg: rgba(255, 255, 255, 0.04);
   --surface-inset-highlight: rgba(255, 255, 255, 0.06);
   --surface-inset-highlight-strong: rgba(255, 255, 255, 0.1);
@@ -234,6 +240,18 @@ input,
 select,
 textarea {
   font: inherit;
+  color-scheme: var(--control-color-scheme);
+}
+
+select,
+option,
+optgroup {
+  color: var(--control-menu-text);
+}
+
+option,
+optgroup {
+  background-color: var(--control-menu-bg);
 }
 
 button {
