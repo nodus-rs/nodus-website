@@ -5,3 +5,11 @@
 /install.ps1
   Content-Type: text/plain; charset=utf-8
   X-Content-Type-Options: nosniff
+
+/prompts/README.md
+  Content-Type: text/markdown; charset=utf-8
+  X-Content-Type-Options: nosniff
+
+/zh-cn/prompts/README.md
+  Content-Type: text/markdown; charset=utf-8
+  X-Content-Type-Options: nosniff

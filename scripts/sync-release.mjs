@@ -1,4 +1,4 @@
-import { chmod, copyFile, readFile, stat, writeFile } from "node:fs/promises";
+import { chmod, copyFile, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -20,7 +20,9 @@ if (!/^v\d+\.\d+\.\d+$/.test(rawReleaseTag)) {
 
 const targets = [
   ["install.sh", "public/install.sh"],
-  ["install.ps1", "public/install.ps1"]
+  ["install.ps1", "public/install.ps1"],
+  ["docs/prompts/README.md", "public/prompts/README.md"],
+  ["docs/prompts/README.cn.md", "public/zh-cn/prompts/README.md"]
 ];
 
 for (const [sourceName, targetName] of targets) {
@@ -35,6 +37,7 @@ for (const [sourceName, targetName] of targets) {
     process.exit(1);
   }
 
+  await mkdir(path.dirname(targetPath), { recursive: true });
   await copyFile(sourcePath, targetPath);
 }
 
@@ -56,4 +59,4 @@ const nextSiteConfig = siteConfig.replace(
 
 await writeFile(siteConfigPath, nextSiteConfig);
 
-console.log(`synced website release assets from ${sourceRoot} for ${rawReleaseTag}`);
+console.log(`synced website release and prompt assets from ${sourceRoot} for ${rawReleaseTag}`);

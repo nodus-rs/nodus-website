@@ -341,6 +341,7 @@ export const siteContent = {
           "Prefer tags for released packages. Use branches or revisions only when the user clearly needs them.",
           "After changing package state, finish with `nodus doctor`."
         ],
+        promptUrlLabel: "Fetch the raw assistant prompt directly:",
         installCheckLabel: "Check whether Nodus is installed:",
         packageGuideLabel: "If the user only has a package link, normalize it first:",
         installCommandLabel: "For a first project-scoped install, start here:",
@@ -695,6 +696,7 @@ export const siteContent = {
           "对已发布包优先使用 tag；只有在用户明确需要时才改用 branch 或 revision。",
           "只要改动了包状态，最后都用 `nodus doctor` 做确认。"
         ],
+        promptUrlLabel: "直接获取原始助手提示词：",
         installCheckLabel: "先检查 Nodus 是否已安装：",
         packageGuideLabel: "如果用户手里只有包链接，先把它规范成命令：",
         installCommandLabel: "首次项目级安装可以从这里开始：",

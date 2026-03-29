@@ -16,10 +16,12 @@ npm run dev
 
 ## Sync installer endpoints
 
-The website keeps vendored copies of the public installer scripts at:
+The website keeps vendored copies of the public installer scripts and AI prompt markdown at:
 
 - `public/install.sh`
 - `public/install.ps1`
+- `public/prompts/README.md`
+- `public/zh-cn/prompts/README.md`
 
 To refresh them from a local `nodus` checkout:
 
@@ -27,7 +29,7 @@ To refresh them from a local `nodus` checkout:
 NODUS_SOURCE_DIR=../nodus npm run sync:installers
 ```
 
-To sync installers and bump the published release version together:
+To sync installers, prompt markdown, and bump the published release version together:
 
 ```bash
 NODUS_SOURCE_DIR=../nodus NODUS_RELEASE_TAG=v0.5.2 npm run sync:release

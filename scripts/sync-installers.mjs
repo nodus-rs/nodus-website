@@ -1,4 +1,4 @@
-import { chmod, copyFile, stat } from "node:fs/promises";
+import { chmod, copyFile, mkdir, stat } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -9,7 +9,9 @@ const sourceRoot = process.env.NODUS_SOURCE_DIR
 
 const targets = [
   ["install.sh", "public/install.sh"],
-  ["install.ps1", "public/install.ps1"]
+  ["install.ps1", "public/install.ps1"],
+  ["docs/prompts/README.md", "public/prompts/README.md"],
+  ["docs/prompts/README.cn.md", "public/zh-cn/prompts/README.md"]
 ];
 
 for (const [sourceName, targetName] of targets) {
@@ -24,8 +26,9 @@ for (const [sourceName, targetName] of targets) {
     process.exit(1);
   }
 
+  await mkdir(path.dirname(targetPath), { recursive: true });
   await copyFile(sourcePath, targetPath);
 }
 
 await chmod(path.join(repoRoot, "public/install.sh"), 0o755);
-console.log(`synced installers from ${sourceRoot}`);
+console.log(`synced public installer and prompt assets from ${sourceRoot}`);

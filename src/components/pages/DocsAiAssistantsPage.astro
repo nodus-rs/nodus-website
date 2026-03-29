@@ -38,6 +38,9 @@ const renderInlineCode = (value: string) =>
     }
   </ul>
 
+  <p>{page.promptUrlLabel}</p>
+  <pre><code>{`https://nodus.elata.ai${localizedPath("/prompts/README.md", locale)}`}</code></pre>
+
   <p>{page.installCheckLabel}</p>
   <pre><code>nodus --version</code></pre>
 
