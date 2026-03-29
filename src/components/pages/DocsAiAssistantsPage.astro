@@ -1,0 +1,63 @@
+---
+import { localizedPath, type Locale } from "../../i18n";
+import DocsPage from "../../layouts/DocsPage.astro";
+import { getSiteCopy } from "../../site-content";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getSiteCopy(locale);
+const page = copy.docs.aiAssistants;
+const escapeHtml = (value: string) =>
+  value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const renderInlineCode = (value: string) =>
+  escapeHtml(value).replace(/`([^`]+)`/g, "<code>$1</code>");
+---
+
+<DocsPage
+  title={page.title}
+  description={page.description}
+  locale={locale}
+  pagePath="/docs/ai-assistants/"
+>
+  <p set:html={renderInlineCode(page.intro)} />
+
+  <h2>{page.firstChecksTitle}</h2>
+  <ul>
+    {
+      page.firstChecks.map((item) => <li set:html={renderInlineCode(item)}></li>)
+    }
+  </ul>
+
+  <h2>{page.rulesTitle}</h2>
+  <ul>
+    {
+      page.rules.map((item) => <li set:html={renderInlineCode(item)}></li>)
+    }
+  </ul>
+
+  <p>{page.installCheckLabel}</p>
+  <pre><code>nodus --version</code></pre>
+
+  <p>{page.packageGuideLabel}</p>
+  <pre><code>{localizedPath("/packages/", locale)}</code></pre>
+
+  <p>{page.installCommandLabel}</p>
+  <pre><code>nodus add owner/repo --adapter &lt;adapter&gt;</code></pre>
+
+  <p>{page.validateLabel}</p>
+  <pre><code>nodus doctor</code></pre>
+
+  <h2>{page.linksTitle}</h2>
+  <ul>
+    {
+      page.links.map((item) => (
+        <li>
+          <a href={localizedPath(item.path, locale)}>{item.label}</a>
+        </li>
+      ))
+    }
+  </ul>
+</DocsPage>

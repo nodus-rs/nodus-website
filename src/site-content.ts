@@ -22,7 +22,8 @@ export const siteContent = {
       overview: "Overview",
       gettingStarted: "Getting started",
       install: "Install",
-      packageDiscovery: "Add package from link"
+      packageDiscovery: "Add package from link",
+      aiAssistants: "For AI assistants"
     },
     home: {
       title: "Nodus | Install agent packages in your repo",
@@ -254,6 +255,11 @@ export const siteContent = {
             path: "/docs/package-discovery/",
             title: "Add package from link",
             description: "See how sources normalize before they become a `nodus add` command."
+          },
+          {
+            path: "/docs/ai-assistants/",
+            title: "For AI assistants",
+            description: "Give one public page to an assistant so it can operate Nodus safely."
           }
         ],
         coreWorkflow: "Core workflow",
@@ -314,6 +320,37 @@ export const siteContent = {
           "copy the exact command you should run in your repo"
         ],
         liveGenerator: "Use the live generator at"
+      },
+      aiAssistants: {
+        title: "For AI assistants",
+        description:
+          "Public instructions you can hand to an AI assistant before it operates Nodus in your repo.",
+        intro:
+          "Give this page to the assistant when you want it to operate Nodus for you. It tells the assistant how to identify the repo role, choose the target adapter, prefer safe defaults, and finish with `nodus doctor`.",
+        firstChecksTitle: "Confirm these facts first",
+        firstChecks: [
+          "Decide whether the repo is already using Nodus packages or authoring a Nodus package.",
+          "Identify the target tool: `codex`, `claude`, `cursor`, `copilot`, `opencode`, or `agents`.",
+          "Work out whether the user wants install, sync, update, inspect, remove, or package initialization."
+        ],
+        rulesTitle: "Prefer these defaults",
+        rules: [
+          "Treat `nodus.toml` as the source of truth for requested dependencies and `nodus.lock` as the source of truth for resolved revisions.",
+          "Do not tell users to hand-edit `.codex/`, `.claude/`, `.cursor/`, `.github/`, `.opencode/`, or `.agents/` outputs.",
+          "Default to project-scoped installs and install the whole package unless the user clearly asks for narrower components.",
+          "Prefer tags for released packages. Use branches or revisions only when the user clearly needs them.",
+          "After changing package state, finish with `nodus doctor`."
+        ],
+        installCheckLabel: "Check whether Nodus is installed:",
+        packageGuideLabel: "If the user only has a package link, normalize it first:",
+        installCommandLabel: "For a first project-scoped install, start here:",
+        validateLabel: "Then validate the result:",
+        linksTitle: "Related public pages",
+        links: [
+          { path: "/docs/install/", label: "Install Nodus" },
+          { path: "/docs/package-discovery/", label: "Turn a repo link into the right command" },
+          { path: "/packages/", label: "Open the package command generator" }
+        ]
       }
     },
     notFound: {
@@ -345,7 +382,8 @@ export const siteContent = {
       overview: "概览",
       gettingStarted: "快速开始",
       install: "安装",
-      packageDiscovery: "从链接添加包"
+      packageDiscovery: "从链接添加包",
+      aiAssistants: "给 AI 助手"
     },
     home: {
       title: "Nodus | 在仓库里安装代理包",
@@ -570,6 +608,11 @@ export const siteContent = {
             path: "/docs/package-discovery/",
             title: "从链接添加包",
             description: "了解来源如何在变成 `nodus add` 命令前被规范化。"
+          },
+          {
+            path: "/docs/ai-assistants/",
+            title: "给 AI 助手",
+            description: "给助手一个公开页面，让它按安全默认值操作 Nodus。"
           }
         ],
         coreWorkflow: "核心流程",
@@ -632,6 +675,36 @@ export const siteContent = {
           "复制应在仓库中执行的精确命令"
         ],
         liveGenerator: "在线生成器地址："
+      },
+      aiAssistants: {
+        title: "给 AI 助手",
+        description: "一份可以直接交给 AI 助手的公开说明，帮助它在你的仓库里安全操作 Nodus。",
+        intro:
+          "当你希望 AI 助手代你操作 Nodus 时，把这个页面发给它。这里会告诉它如何判断仓库角色、选择目标 adapter、优先使用安全默认值，并最终用 `nodus doctor` 收尾。",
+        firstChecksTitle: "先确认这些事实",
+        firstChecks: [
+          "判断当前仓库是已经在使用 Nodus 包，还是正在编写一个 Nodus 包。",
+          "识别目标工具：`codex`、`claude`、`cursor`、`copilot`、`opencode` 或 `agents`。",
+          "确认用户要做的是安装、同步、更新、检查、移除，还是初始化包。"
+        ],
+        rulesTitle: "优先使用这些默认策略",
+        rules: [
+          "把 `nodus.toml` 视为“想安装什么”的事实源，把 `nodus.lock` 视为“实际解析到什么版本”的事实源。",
+          "不要建议用户手工修改 `.codex/`、`.claude/`、`.cursor/`、`.github/`、`.opencode/` 或 `.agents/` 下的受管理输出。",
+          "默认使用项目级安装，并且默认安装整个包；只有用户明确要求时才缩小组件范围。",
+          "对已发布包优先使用 tag；只有在用户明确需要时才改用 branch 或 revision。",
+          "只要改动了包状态，最后都用 `nodus doctor` 做确认。"
+        ],
+        installCheckLabel: "先检查 Nodus 是否已安装：",
+        packageGuideLabel: "如果用户手里只有包链接，先把它规范成命令：",
+        installCommandLabel: "首次项目级安装可以从这里开始：",
+        validateLabel: "然后验证结果：",
+        linksTitle: "相关公开页面",
+        links: [
+          { path: "/docs/install/", label: "安装 Nodus" },
+          { path: "/docs/package-discovery/", label: "把仓库链接变成正确命令" },
+          { path: "/packages/", label: "打开包命令生成器" }
+        ]
       }
     },
     notFound: {
