@@ -10,6 +10,10 @@ interface Props {
 const { locale } = Astro.props;
 const copy = getSiteCopy(locale);
 const page = copy.docs.packageDiscovery;
+const escapeHtml = (value: string) =>
+  value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const renderInlineCode = (value: string) =>
+  escapeHtml(value).replace(/`([^`]+)`/g, "<code>$1</code>");
 ---
 
 <DocsPage
@@ -18,12 +22,12 @@ const page = copy.docs.packageDiscovery;
   locale={locale}
   pagePath="/docs/package-discovery/"
 >
-  <p set:html={page.intro.replace(/`([^`]+)`/g, "<code>$1</code>")} />
+  <p set:html={renderInlineCode(page.intro)} />
 
   <p>{page.usePage}</p>
   <ul>
     {
-      page.bullets.map((item) => <li set:html={item.replace(/`([^`]+)`/g, "<code>$1</code>")}></li>)
+      page.bullets.map((item) => <li set:html={renderInlineCode(item)}></li>)
     }
   </ul>
 

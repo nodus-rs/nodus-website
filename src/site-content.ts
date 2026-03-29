@@ -9,7 +9,7 @@ export const siteContent = {
       addPackage: "Add Package",
       install: "Install",
       github: "GitHub",
-      footerDescription: "Package manager for repo-scoped agent tooling.",
+      footerDescription: "Product docs and install site for repo-scoped agent tooling.",
       theme: "Theme",
       language: "Language",
       themeOptions: {
@@ -25,12 +25,12 @@ export const siteContent = {
       packageDiscovery: "Add package from link"
     },
     home: {
-      title: "Nodus | Add agent packages to your repo with one command",
+      title: "Nodus | Install agent packages in your repo",
       description:
-        "Nodus pins repo-scoped agent packages and writes only the runtime files your enabled adapters actually use.",
-      heroTitle: "Blazing-fast installs. Exact repo output.",
+        "Nodus installs repo-scoped agent packages, keeps versions pinned, and writes only the files your enabled adapters use.",
+      heroTitle: "Install in one command. Keep repo output exact.",
       heroDescription:
-        "Nodus pins package revisions and writes only the runtime files your adapters actually read.",
+        "Start with a project-scoped install, then use `nodus --help` to learn the rest. Nodus pins package revisions and writes only the runtime files your adapters read.",
       installPlatformLabel: "Install command platform",
       installTabs: {
         unix: "macOS / Linux",
@@ -45,17 +45,16 @@ export const siteContent = {
         copied: "Copied",
         failed: "Copy failed"
       },
-      featuresTitle: "Discover packages fast. Keep repo output exact.",
-      featuresIntro:
-        "Built for teams that want a clean install path and predictable repo state.",
+      featuresTitle: "Simple start. Exact output.",
+      featuresIntro: "Built for teams that want a clear first command and predictable repo state.",
       featureCards: [
         {
-          title: "Start from a Git repo",
-          description: "Discover packages from GitHub shorthand, repo URLs, or full Git remotes."
+          title: "Start from a repo link",
+          description: "Use GitHub shorthand, repo URLs, or a full Git remote."
         },
         {
-          title: "Use one stable install command",
-          description: "Share a public install URL for shell and PowerShell without rewriting docs."
+          title: "Use one project-scoped install path",
+          description: "Start with `nodus add ... --adapter <adapter>` and keep the command reproducible."
         },
         {
           title: "Write only what tools read",
@@ -63,17 +62,17 @@ export const siteContent = {
             "Generate adapter-specific runtime files instead of scattering config across the repo."
         }
       ],
-      workflowTitle: "Turn a package source into a runnable command.",
-      workflowIntro: "Paste a source, copy the command, and keep moving.",
+      workflowTitle: "Start with `nodus add`, then learn the rest from `nodus --help`.",
+      workflowIntro: "Paste a source, choose an adapter, and validate with `nodus doctor`.",
       commandCardTitle: "Paste a repo link. Get the command.",
       commandCardDescription:
-        "Turn a package URL into the exact `nodus add` command.",
-      exampleCommandLabel: "Example command",
+        "Turn a package URL into the exact `nodus add` command for your repo.",
+      exampleCommandLabel: "Project-scoped example",
       howItWorks: "How it works",
       generateCommand: "Generate command",
       docsCardTitle: "Install details and docs stay one click away.",
       docsCardDescription:
-        "Use the install page for pinned versions and the docs for the full workflow.",
+        "Use the install page for binaries, `nodus --help` for the local command guide, and the docs for the full workflow.",
       docsLinks: [
         { path: "/docs/", code: "/docs/", label: "Overview and command flow" },
         { path: "/install/", code: "/install/", label: "Stable install URLs and pinning" },
@@ -89,7 +88,7 @@ export const siteContent = {
       description: "Install Nodus from a stable public URL, Cargo, or Homebrew.",
       heroTitle: "Install Nodus from a stable public URL.",
       heroDescription:
-        "Use the public installer URLs on this domain, or install with Cargo or Homebrew. Release assets still come from GitHub Releases, but the command you paste into docs stays stable.",
+        "Use the public installer URLs on this domain, or install with Cargo or Homebrew. After install, run `nodus --help` for the local command guide, then start a project-scoped install with `nodus add ... --adapter <adapter>`.",
       routesTitle: "Choose the install route that matches your workflow.",
       routesIntro:
         "The public installer is the default. Cargo and Homebrew are there when teams already standardize on them.",
@@ -132,13 +131,13 @@ export const siteContent = {
     },
     packagesPage: {
       title: "Add a package with Nodus",
-      description: "Normalize a package source into the exact nodus add command you should run.",
+      description: "Build the exact `nodus add` command for your repo.",
       heroTitle: "Paste a package source. Get the command.",
       heroDescription:
-        "Use GitHub shorthand, a repo URL, a full Git URL, or a local path. Nodus can also pin a tag, branch, version, or revision and narrow the install to specific components.",
+        "Use GitHub shorthand, a repo URL, a full Git URL, or a local path. Start with `nodus add <source> --adapter <adapter>` for project-scoped installs, then add pinning or other options only when you need them.",
       builderTitle: "Generate a real `nodus add` command.",
       builderDescription:
-        "Start with the package source, then add pinning, adapters, components, or install behavior only when you need them.",
+        "Start with a package source, then add adapter selection, pinning, or install behavior only when you need it.",
       packageSourceLabel: "Package source",
       packageSourcePlaceholder:
         "nodus-rs/nodus, ./vendor/playbook, or https://github.com/nodus-rs/nodus",
@@ -165,7 +164,7 @@ export const siteContent = {
       componentsLegend: "Components (optional)",
       scopeTitle: "Scope and behavior",
       scopeDescription:
-        "Switch between project and global installs, record dev-only dependencies, or preview changes first.",
+        "Project-scoped install is the default. Switch to global only when you need home-scoped outputs, or preview changes first.",
       installOptionsLegend: "Install options",
       installOptions: {
         global: "global",
@@ -174,7 +173,7 @@ export const siteContent = {
         dryRun: "dry run"
       },
       previewTitle: "Command preview",
-      previewIdle: "Enter a package source to build a command.",
+      previewIdle: "Enter a package source and adapter to build a command.",
       copyLabels: {
         default: "Copy",
         copied: "Copied",
@@ -197,7 +196,7 @@ export const siteContent = {
       ],
       exactShapeTitle: "Build the exact install shape you need.",
       exactShapeIntro:
-        "The CLI supports more than a bare source. The page should expose the options people actually use without collapsing everything into dense controls.",
+        "The CLI supports more than a bare source. The page surfaces the options people actually use while keeping the project-scoped default visible.",
       shapeCards: [
         {
           title: "Pin a release or development ref",
@@ -212,7 +211,7 @@ export const siteContent = {
         {
           title: "Switch scope or preview the result",
           description:
-            "Use `--global`, `--dev`, `--sync-on-launch`, and `--dry-run` to match the exact install workflow you need."
+            "Use `--dev`, `--sync-on-launch`, and `--dry-run` to match the exact install workflow you need. Use `--global` only when you want home-scoped outputs."
         }
       ],
       messages: {
@@ -221,7 +220,7 @@ export const siteContent = {
         refValuePrefix: "Enter a value for",
         refValueSuffix: ".",
         invalidFlagCombo:
-          "`nodus add --global` does not support `--sync-on-launch`.",
+          "`nodus add --global` does not support `--sync-on-launch`; use a project-scoped install instead.",
         completeRef:
           "Complete the selected Git ref to generate a valid command.",
         adjustOptions:
@@ -229,22 +228,22 @@ export const siteContent = {
         supportedSourcePrompt:
           "Use a supported package source to generate a command.",
         copyPrompt:
-          "Copy this command and run it from the repo where you want Nodus to manage the package."
+          "Copy this command and run it in the repo where you want Nodus to manage the package."
       }
     },
     docs: {
       titleSuffix: "Nodus docs",
       index: {
         title: "Nodus docs",
-        description: "Install Nodus, add a package, and sync deterministic repo output.",
+        description: "Install Nodus, open `nodus --help`, add a package, and sync deterministic repo output.",
         intro:
-          "Nodus is a package manager for repo-scoped agent tooling. It pulls packages from GitHub, Git URLs, or local paths, pins them, and writes the runtime files your enabled adapters actually use.",
+          "Nodus is a package manager for repo-scoped agent tooling. It pulls packages from GitHub, Git URLs, or local paths, pins them, and writes the runtime files your enabled adapters actually use. After install, run `nodus --help` to see the local workflow.",
         readFirst: "Read this first",
         cards: [
           {
             path: "/docs/getting-started/",
             title: "Getting started",
-            description: "Learn the basic flow and the terms used across the docs."
+            description: "Set up the first project-scoped install and validate the result."
           },
           {
             path: "/docs/install/",
@@ -260,12 +259,12 @@ export const siteContent = {
         coreWorkflow: "Core workflow",
         teamsNeed: "Most teams only need a few commands",
         commandList: [
-          { code: "nodus add", label: "Declare a dependency" },
-          { code: "nodus sync", label: "Rebuild managed output" },
-          { code: "nodus update", label: "Move dependencies forward" },
+          { code: "nodus --help", label: "See the local command guide" },
+          { code: "nodus add", label: "Declare a project-scoped dependency" },
+          { code: "nodus doctor", label: "Validate the result" },
           {
-            code: "nodus doctor",
-            label: "Validate manifest, lockfile, store, and generated files"
+            code: "nodus update",
+            label: "Move dependencies forward"
           }
         ],
         whatNext: "What to read next",
@@ -275,14 +274,15 @@ export const siteContent = {
       gettingStarted: {
         title: "Getting started",
         description:
-          "Install Nodus, add your first package, and validate the resulting runtime files.",
+          "Install Nodus, open `nodus --help`, add your first package, and validate the resulting runtime files.",
         installLabel: "Install Nodus:",
+        helpLabel: "Open the local guide:",
         firstPackageLabel: "Add your first package:",
         thatCommandLabel: "That command:",
         bulletPoints: [
           "creates `nodus.toml` if needed",
           "records the dependency you asked for",
-          "resolves and locks the exact revision",
+          "locks the exact resolved revision",
           "writes the adapter runtime files for the enabled tool"
         ],
         validateLabel: "Validate the result:",
@@ -291,6 +291,7 @@ export const siteContent = {
       install: {
         title: "Install",
         description: "Public install endpoints, alternative install methods, and version pinning.",
+        afterInstall: "After install, open `nodus --help` to see the local command guide.",
         publicUrls: "Public installer URLs",
         unix: "Unix:",
         windows: "Windows PowerShell:",
@@ -305,11 +306,11 @@ export const siteContent = {
         description:
           "Paste a GitHub or Git URL, generate the right nodus add command, then run it locally.",
         intro:
-          "Nodus does not need a registry to install packages. If you have a GitHub repo link, Git URL, or `owner/repo` reference, you can turn it directly into the right `nodus add` command.",
+          "Nodus does not need a registry to install packages. If you have a GitHub repo link, Git URL, or `owner/repo` reference, you can turn it directly into the right `nodus add --adapter <adapter>` command.",
         usePage: "Use the package page to:",
         bullets: [
           "paste a package reference and normalize it into the right source",
-          "optionally append `--adapter` for the target tool",
+          "add `--adapter <adapter>` for the target tool when auto-detection is not enough",
           "copy the exact command you should run in your repo"
         ],
         liveGenerator: "Use the live generator at"
@@ -331,7 +332,7 @@ export const siteContent = {
       addPackage: "添加包",
       install: "安装",
       github: "GitHub",
-      footerDescription: "面向仓库级代理工具的包管理器。",
+      footerDescription: "面向仓库级代理工具的产品文档和安装站点。",
       theme: "主题",
       language: "语言",
       themeOptions: {
@@ -347,12 +348,12 @@ export const siteContent = {
       packageDiscovery: "从链接添加包"
     },
     home: {
-      title: "Nodus | 用一条命令把代理包加入仓库",
+      title: "Nodus | 在仓库里安装代理包",
       description:
-        "Nodus 会固定仓库级代理包的版本，只写入已启用适配器真正需要的运行时文件。",
-      heroTitle: "安装够快，仓库输出够准。",
+        "Nodus 会安装仓库级代理包、锁定版本，并且只写入已启用适配器真正需要的文件。",
+      heroTitle: "一条命令开始，仓库输出保持精确。",
       heroDescription:
-        "Nodus 会固定包版本，只生成你的适配器实际读取的运行时文件。",
+        "先用项目级安装起步，再通过 `nodus --help` 了解其余命令。Nodus 会锁定包版本，并只生成你的适配器真正读取的运行时文件。",
       installPlatformLabel: "安装命令平台",
       installTabs: {
         unix: "macOS / Linux",
@@ -367,31 +368,31 @@ export const siteContent = {
         copied: "已复制",
         failed: "复制失败"
       },
-      featuresTitle: "更快发现包，更稳生成仓库输出。",
-      featuresIntro: "适合需要清晰安装路径和可预测仓库状态的团队。",
+      featuresTitle: "起步更简单，输出更精确。",
+      featuresIntro: "适合需要清晰第一条命令和可预测仓库状态的团队。",
       featureCards: [
         {
-          title: "从 Git 仓库开始",
+          title: "从仓库链接开始",
           description: "支持 GitHub 简写、仓库 URL 和完整 Git remote。"
         },
         {
-          title: "统一公开安装命令",
-          description: "给 Shell 和 PowerShell 提供稳定安装地址，不用反复改文档。"
+          title: "使用项目级安装路径",
+          description: "先用 `nodus add ... --adapter <adapter>`，让命令保持可复现。"
         },
         {
           title: "只写工具真正会读取的文件",
           description: "按适配器生成运行时文件，而不是把配置散落到整个仓库。"
         }
       ],
-      workflowTitle: "把包来源直接变成可运行命令。",
-      workflowIntro: "粘贴来源，复制命令，继续推进工作。",
+      workflowTitle: "先用 `nodus add`，其余命令再看 `nodus --help`。",
+      workflowIntro: "贴入来源，选择适配器，再用 `nodus doctor` 验证结果。",
       commandCardTitle: "贴一个仓库链接，拿到命令。",
-      commandCardDescription: "把包 URL 转成准确的 `nodus add` 命令。",
-      exampleCommandLabel: "示例命令",
+      commandCardDescription: "把包 URL 转成适合你仓库的准确 `nodus add` 命令。",
+      exampleCommandLabel: "项目级示例",
       howItWorks: "工作方式",
       generateCommand: "生成命令",
       docsCardTitle: "安装细节和文档始终只差一跳。",
-      docsCardDescription: "安装页提供版本固定方式，文档页说明完整工作流。",
+      docsCardDescription: "安装页提供二进制安装，`nodus --help` 提供本地命令指南，文档页说明完整工作流。",
       docsLinks: [
         { path: "/docs/", code: "/docs/", label: "概览与命令流程" },
         { path: "/install/", code: "/install/", label: "稳定安装地址与版本固定" },
@@ -407,7 +408,7 @@ export const siteContent = {
       description: "通过稳定公开地址、Cargo 或 Homebrew 安装 Nodus。",
       heroTitle: "通过稳定公开地址安装 Nodus。",
       heroDescription:
-        "你可以使用本站公开安装地址，也可以通过 Cargo 或 Homebrew 安装。发布资产仍来自 GitHub Releases，但你粘贴到文档里的命令会保持稳定。",
+        "你可以使用本站公开安装地址，也可以通过 Cargo 或 Homebrew 安装。安装完成后，先运行 `nodus --help` 查看本地命令指南，再用 `nodus add ... --adapter <adapter>` 开始项目级安装。",
       routesTitle: "选择最适合你工作流的安装方式。",
       routesIntro: "公开安装器是默认方案。如果团队已统一用 Cargo 或 Homebrew，也可以直接走这些路径。",
       cards: {
@@ -448,13 +449,13 @@ export const siteContent = {
     },
     packagesPage: {
       title: "用 Nodus 添加包",
-      description: "把包来源规范化成你应该执行的 nodus add 命令。",
+      description: "把包来源生成成适合你仓库的准确 `nodus add` 命令。",
       heroTitle: "粘贴包来源，直接拿命令。",
       heroDescription:
-        "支持 GitHub 简写、仓库 URL、完整 Git URL 或本地路径。Nodus 还可以固定 tag、branch、version、revision，并限制只安装指定组件。",
+        "支持 GitHub 简写、仓库 URL、完整 Git URL 或本地路径。先用 `nodus add <来源> --adapter <adapter>` 做项目级安装，再按需加上固定版本或其他选项。",
       builderTitle: "生成真实可用的 `nodus add` 命令。",
       builderDescription:
-        "先输入包来源，再按需补充固定版本、适配器、组件或安装行为。",
+        "先输入包来源，再按需补充适配器、固定版本或安装行为。",
       packageSourceLabel: "包来源",
       packageSourcePlaceholder:
         "nodus-rs/nodus、./vendor/playbook 或 https://github.com/nodus-rs/nodus",
@@ -479,7 +480,7 @@ export const siteContent = {
       componentsDescription: "如果你只想装包的一部分，而不是整个包，就在这里收窄范围。",
       componentsLegend: "组件（可选）",
       scopeTitle: "范围与行为",
-      scopeDescription: "可以切换项目级或全局安装，记录 dev 依赖，或者先预览结果。",
+      scopeDescription: "项目级安装是默认路径。只有在你需要主目录级输出时才切换到全局安装，也可以先预览结果。",
       installOptionsLegend: "安装选项",
       installOptions: {
         global: "global",
@@ -488,7 +489,7 @@ export const siteContent = {
         dryRun: "dry run"
       },
       previewTitle: "命令预览",
-      previewIdle: "输入包来源后即可生成命令。",
+      previewIdle: "输入包来源和适配器后即可生成命令。",
       copyLabels: {
         default: "复制",
         copied: "已复制",
@@ -511,7 +512,7 @@ export const siteContent = {
       ],
       exactShapeTitle: "把安装形态精确到你需要的程度。",
       exactShapeIntro:
-        "CLI 能做的不只是给一个来源。这个页面应该暴露真实常用选项，而不是把所有东西都挤成一团。",
+        "CLI 能做的不只是给一个来源。这个页面会直接展示最常用的选项，同时保持项目级默认路径可见。",
       shapeCards: [
         {
           title: "固定发布版或开发引用",
@@ -526,7 +527,7 @@ export const siteContent = {
         {
           title: "切换安装范围或先预览",
           description:
-            "使用 `--global`、`--dev`、`--sync-on-launch` 和 `--dry-run` 来贴合你的实际安装流程。"
+            "使用 `--dev`、`--sync-on-launch` 和 `--dry-run` 来贴合你的实际安装流程。只有在你需要主目录级输出时才使用 `--global`。"
         }
       ],
       messages: {
@@ -535,7 +536,7 @@ export const siteContent = {
         refValuePrefix: "请为",
         refValueSuffix: "输入一个值。",
         invalidFlagCombo:
-          "`nodus add --global` 不支持 `--sync-on-launch`。",
+          "`nodus add --global` 不支持 `--sync-on-launch`；请改用项目级安装。",
         completeRef:
           "请补全所选 Git 引用后再生成有效命令。",
         adjustOptions:
@@ -550,15 +551,15 @@ export const siteContent = {
       titleSuffix: "Nodus 文档",
       index: {
         title: "Nodus 文档",
-        description: "安装 Nodus、添加包，并同步确定性的仓库输出。",
+        description: "安装 Nodus，打开 `nodus --help`，添加包，并同步确定性的仓库输出。",
         intro:
-          "Nodus 是一个面向仓库级代理工具的包管理器。它可以从 GitHub、Git URL 或本地路径拉取包，固定版本，并只生成已启用适配器真正会读取的运行时文件。",
+          "Nodus 是一个面向仓库级代理工具的包管理器。它可以从 GitHub、Git URL 或本地路径拉取包，固定版本，并只生成已启用适配器真正会读取的运行时文件。安装完成后，先运行 `nodus --help` 看本地工作流。",
         readFirst: "先读这些",
         cards: [
           {
             path: "/docs/getting-started/",
             title: "快速开始",
-            description: "先理解基础流程和文档中的关键术语。"
+            description: "先完成第一个项目级安装，并验证结果。"
           },
           {
             path: "/docs/install/",
@@ -574,12 +575,15 @@ export const siteContent = {
         coreWorkflow: "核心流程",
         teamsNeed: "大多数团队只需要少数几个命令",
         commandList: [
-          { code: "nodus add", label: "声明一个依赖" },
-          { code: "nodus sync", label: "重新生成受管理输出" },
-          { code: "nodus update", label: "把依赖向前升级" },
+          { code: "nodus --help", label: "查看本地命令指南" },
+          { code: "nodus add", label: "声明一个项目级依赖" },
           {
             code: "nodus doctor",
-            label: "校验 manifest、lockfile、store 和生成文件"
+            label: "验证结果"
+          },
+          {
+            code: "nodus update",
+            label: "把依赖向前升级"
           }
         ],
         whatNext: "接下来读什么",
@@ -588,14 +592,15 @@ export const siteContent = {
       },
       gettingStarted: {
         title: "快速开始",
-        description: "安装 Nodus，添加第一个包，并验证生成出的运行时文件。",
+        description: "安装 Nodus，打开 `nodus --help`，添加第一个包，并验证生成出的运行时文件。",
         installLabel: "安装 Nodus：",
+        helpLabel: "打开本地指南：",
         firstPackageLabel: "添加第一个包：",
         thatCommandLabel: "这条命令会：",
         bulletPoints: [
           "在需要时创建 `nodus.toml`",
           "记录你声明的依赖",
-          "解析并锁定精确修订版本",
+          "锁定解析后的精确版本",
           "为已启用工具写入适配器运行时文件"
         ],
         validateLabel: "验证结果：",
@@ -604,6 +609,7 @@ export const siteContent = {
       install: {
         title: "安装",
         description: "公开安装端点、替代安装方式与版本固定。",
+        afterInstall: "安装完成后，先打开 `nodus --help` 查看本地命令指南。",
         publicUrls: "公开安装器地址",
         unix: "Unix：",
         windows: "Windows PowerShell：",
@@ -618,11 +624,11 @@ export const siteContent = {
         description:
           "粘贴 GitHub 或 Git URL，生成正确的 nodus add 命令，然后在本地执行。",
         intro:
-          "Nodus 不需要 registry 也能安装包。只要你有 GitHub 仓库链接、Git URL，或者 `owner/repo` 形式的引用，就能直接转换成正确的 `nodus add` 命令。",
+          "Nodus 不需要 registry 也能安装包。只要你有 GitHub 仓库链接、Git URL，或者 `owner/repo` 形式的引用，就能直接转换成正确的 `nodus add --adapter <adapter>` 命令。",
         usePage: "这个包页面可以帮助你：",
         bullets: [
           "粘贴包引用并规范成正确来源",
-          "按需追加目标工具的 `--adapter`",
+          "在自动检测不够时，为目标工具补上 `--adapter <adapter>`",
           "复制应在仓库中执行的精确命令"
         ],
         liveGenerator: "在线生成器地址："

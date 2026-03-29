@@ -147,7 +147,7 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
             </button>
           </div>
           <div class="command-output" id="command-output">
-            <pre><code id="command-preview">nodus add nodus-rs/nodus</code></pre>
+            <pre><code id="command-preview">nodus add &lt;source&gt; --adapter &lt;adapter&gt;</code></pre>
           </div>
         </article>
 
@@ -359,7 +359,7 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
       if (!rawValue.trim()) {
         error.hidden = true;
         error.textContent = "";
-        preview.textContent = "nodus add nodus-rs/nodus";
+        preview.textContent = "nodus add <source> --adapter <adapter>";
         commandStatus.textContent =
           packagesI18n.previewIdle ?? "Enter a package source to build a command.";
         if (copyButton instanceof HTMLButtonElement) {
@@ -384,7 +384,7 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
         error.hidden = false;
         error.textContent =
           packagesI18n.messages?.invalidFlagCombo ??
-          "`nodus add --global` does not support `--sync-on-launch`.";
+          "`nodus add --global` does not support `--sync-on-launch`; use a project-scoped install instead.";
         commandStatus.textContent =
           packagesI18n.messages?.adjustOptions ??
           "Adjust the install options to remove the invalid flag combination.";
@@ -421,7 +421,7 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
       error.textContent = "";
       commandStatus.textContent =
         packagesI18n.messages?.copyPrompt ??
-        "Copy this command and run it from the repo where you want Nodus to manage the package.";
+        "Copy this command and run it in the repo where you want Nodus to manage the package.";
       if (copyButton instanceof HTMLButtonElement) {
         copyButton.disabled = false;
       }
