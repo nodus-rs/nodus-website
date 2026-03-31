@@ -4,7 +4,7 @@ export const siteConfig = {
   docsPath: "/docs/",
   packagesPath: "/packages/",
   installPath: "/install/",
-  latestVersion: "v0.7.0",
+  latestVersion: "v0.7.1",
   installUnixCommand: "curl -fsSL https://nodus.elata.ai/install.sh | bash",
   installWindowsCommand: "irm https://nodus.elata.ai/install.ps1 | iex"
 };
