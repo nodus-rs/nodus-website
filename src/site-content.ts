@@ -165,12 +165,12 @@ export const siteContent = {
       componentsLegend: "Components (optional)",
       scopeTitle: "Scope and behavior",
       scopeDescription:
-        "Project-scoped install is the default. Switch to global only when you need home-scoped outputs, or preview changes first.",
+        "Project-scoped install is the default. Supported adapters also persist startup sync hooks by default. Switch to global only when you need home-scoped outputs, or opt out of hooks before you run the command.",
       installOptionsLegend: "Install options",
       installOptions: {
         global: "global",
         dev: "dev dependency",
-        syncOnLaunch: "sync on launch",
+        noSyncOnLaunch: "disable startup sync hooks",
         dryRun: "dry run"
       },
       previewTitle: "Command preview",
@@ -212,7 +212,7 @@ export const siteContent = {
         {
           title: "Switch scope or preview the result",
           description:
-            "Use `--dev`, `--sync-on-launch`, and `--dry-run` to match the exact install workflow you need. Use `--global` only when you want home-scoped outputs."
+            "Use `--dev`, `--no-sync-on-launch`, and `--dry-run` to match the exact install workflow you need. Use `--global` only when you want home-scoped outputs."
         }
       ],
       messages: {
@@ -220,12 +220,8 @@ export const siteContent = {
           "Enter a local path, GitHub repo URL, owner/repo shorthand, or a full Git URL.",
         refValuePrefix: "Enter a value for",
         refValueSuffix: ".",
-        invalidFlagCombo:
-          "`nodus add --global` does not support `--sync-on-launch`; use a project-scoped install instead.",
         completeRef:
           "Complete the selected Git ref to generate a valid command.",
-        adjustOptions:
-          "Adjust the install options to remove the invalid flag combination.",
         supportedSourcePrompt:
           "Use a supported package source to generate a command.",
         copyPrompt:
@@ -519,12 +515,13 @@ export const siteContent = {
       componentsDescription: "如果你只想装包的一部分，而不是整个包，就在这里收窄范围。",
       componentsLegend: "组件（可选）",
       scopeTitle: "范围与行为",
-      scopeDescription: "项目级安装是默认路径。只有在你需要主目录级输出时才切换到全局安装，也可以先预览结果。",
+      scopeDescription:
+        "项目级安装是默认路径。支持的适配器也会默认持久化启动时同步钩子。只有在你需要主目录级输出时才切换到全局安装，或者在执行前显式关闭这些钩子。",
       installOptionsLegend: "安装选项",
       installOptions: {
         global: "global",
         dev: "dev 依赖",
-        syncOnLaunch: "启动时同步",
+        noSyncOnLaunch: "禁用启动同步钩子",
         dryRun: "dry run"
       },
       previewTitle: "命令预览",
@@ -566,7 +563,7 @@ export const siteContent = {
         {
           title: "切换安装范围或先预览",
           description:
-            "使用 `--dev`、`--sync-on-launch` 和 `--dry-run` 来贴合你的实际安装流程。只有在你需要主目录级输出时才使用 `--global`。"
+            "使用 `--dev`、`--no-sync-on-launch` 和 `--dry-run` 来贴合你的实际安装流程。只有在你需要主目录级输出时才使用 `--global`。"
         }
       ],
       messages: {
@@ -574,12 +571,8 @@ export const siteContent = {
           "请输入本地路径、GitHub 仓库 URL、owner/repo 简写或完整 Git URL。",
         refValuePrefix: "请为",
         refValueSuffix: "输入一个值。",
-        invalidFlagCombo:
-          "`nodus add --global` 不支持 `--sync-on-launch`；请改用项目级安装。",
         completeRef:
           "请补全所选 Git 引用后再生成有效命令。",
-        adjustOptions:
-          "请调整安装选项，移除无效的参数组合。",
         supportedSourcePrompt:
           "请使用受支持的包来源来生成命令。",
         copyPrompt:

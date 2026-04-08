@@ -121,7 +121,7 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
               <div class="choice-grid choice-grid-compact">
                 <label class="toggle-option"><input type="checkbox" id="install-global" /> <span>{packagesPage.installOptions.global}</span></label>
                 <label class="toggle-option"><input type="checkbox" id="install-dev" /> <span>{packagesPage.installOptions.dev}</span></label>
-                <label class="toggle-option"><input type="checkbox" id="sync-on-launch" /> <span>{packagesPage.installOptions.syncOnLaunch}</span></label>
+                <label class="toggle-option"><input type="checkbox" id="no-sync-on-launch" /> <span>{packagesPage.installOptions.noSyncOnLaunch}</span></label>
                 <label class="toggle-option"><input type="checkbox" id="dry-run" /> <span>{packagesPage.installOptions.dryRun}</span></label>
               </div>
             </fieldset>
@@ -222,7 +222,7 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
     const componentInputs = Array.from(document.querySelectorAll('input[name="component"]'));
     const globalInput = document.querySelector("#install-global");
     const devInput = document.querySelector("#install-dev");
-    const syncOnLaunchInput = document.querySelector("#sync-on-launch");
+    const noSyncOnLaunchInput = document.querySelector("#no-sync-on-launch");
     const dryRunInput = document.querySelector("#dry-run");
     const output = document.querySelector("#command-output");
     const preview = document.querySelector("#command-preview");
@@ -238,9 +238,7 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
         invalidSource?: string;
         refValuePrefix?: string;
         refValueSuffix?: string;
-        invalidFlagCombo?: string;
         completeRef?: string;
-        adjustOptions?: string;
         supportedSourcePrompt?: string;
         copyPrompt?: string;
       };
@@ -346,7 +344,8 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
       const selectedRefValue = gitRefValue instanceof HTMLInputElement ? gitRefValue.value.trim() : "";
       const isGlobal = globalInput instanceof HTMLInputElement ? globalInput.checked : false;
       const isDev = devInput instanceof HTMLInputElement ? devInput.checked : false;
-      const syncOnLaunch = syncOnLaunchInput instanceof HTMLInputElement ? syncOnLaunchInput.checked : false;
+      const noSyncOnLaunch =
+        noSyncOnLaunchInput instanceof HTMLInputElement ? noSyncOnLaunchInput.checked : false;
       const dryRun = dryRunInput instanceof HTMLInputElement ? dryRunInput.checked : false;
       const result = getNormalizedSource(rawValue);
 
@@ -383,20 +382,6 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
         return;
       }
 
-      if (isGlobal && syncOnLaunch) {
-        error.hidden = false;
-        error.textContent =
-          packagesI18n.messages?.invalidFlagCombo ??
-          "`nodus add --global` does not support `--sync-on-launch`; use a project-scoped install instead.";
-        commandStatus.textContent =
-          packagesI18n.messages?.adjustOptions ??
-          "Adjust the install options to remove the invalid flag combination.";
-        if (copyButton instanceof HTMLButtonElement) {
-          copyButton.disabled = true;
-        }
-        return;
-      }
-
       if (result.error) {
         error.hidden = false;
         error.textContent = result.error;
@@ -415,7 +400,7 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
         selectedRefKind && selectedRefValue ? `--${selectedRefKind} ${selectedRefValue}` : "",
         ...selectedAdapters.map((adapter) => `--adapter ${adapter}`),
         ...selectedComponents.map((component) => `--component ${component}`),
-        syncOnLaunch ? "--sync-on-launch" : "",
+        noSyncOnLaunch ? "--no-sync-on-launch" : "",
         dryRun ? "--dry-run" : ""
       ].filter(Boolean);
 
@@ -509,7 +494,7 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
     componentInputs.forEach((input) => input.addEventListener("change", render));
     globalInput?.addEventListener("change", render);
     devInput?.addEventListener("change", render);
-    syncOnLaunchInput?.addEventListener("change", render);
+    noSyncOnLaunchInput?.addEventListener("change", render);
     dryRunInput?.addEventListener("change", render);
     copyButton?.addEventListener("click", () => {
       if (copyButton instanceof HTMLButtonElement && !copyButton.disabled) {
