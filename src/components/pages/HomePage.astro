@@ -174,9 +174,12 @@ nodus --help`}</code></pre>
     </div>
   </section>
 
-  <script type="application/json" id="home-copy-labels" is:inline>
-    {JSON.stringify(home.installCopyLabels)}
-  </script>
+  <script
+    type="application/json"
+    id="home-copy-labels"
+    is:inline
+    set:html={JSON.stringify(home.installCopyLabels)}
+  />
 
   <script>
     const installTabs = Array.from(document.querySelectorAll(".install-tab"));

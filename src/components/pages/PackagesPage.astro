@@ -202,13 +202,16 @@ const renderInlineCode = (value: string) => value.replace(/`([^`]+)`/g, "<code>$
     </div>
   </section>
 
-  <script type="application/json" id="packages-i18n" is:inline>
-    {JSON.stringify({
+  <script
+    type="application/json"
+    id="packages-i18n"
+    is:inline
+    set:html={JSON.stringify({
       previewIdle: packagesPage.previewIdle,
       copyLabels: packagesPage.copyLabels,
       messages: packagesPage.messages
     })}
-  </script>
+  />
 
   <script>
     const sourceInput = document.querySelector("#package-source");
